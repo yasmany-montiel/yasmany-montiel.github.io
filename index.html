@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yasmany Montiel Rivera — Senior Software Architect</title>
+  <meta name="description" content="Senior Software Architect at Zucchetti. .NET, React, SQL Server, DevOps & Cloud Architecture, AI & Automation Expert.">
+  <meta name="author" content="Yasmany Montiel Rivera">
+
+  <meta property="og:title" content="Yasmany Montiel Rivera — Senior Software Architect">
+  <meta property="og:description" content=".NET · React · SQL Server · AI & Automation Expert">
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/63186744?v=4">
+
+  <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/63186744?v=4">
+
+  <!-- Boxicons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+  <!-- Mono font: JetBrains Mono for the whole UI (terminal/code aesthetic) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =============================================
+       THEME — Dark (default) + Light
+       Purple/Violet palette inspired by the reference
+       ============================================= */
+    :root {
+      /* DARK theme (default) */
+      --bg: #0a0a16;
+      --bg-stars: #0a0a16;
+      --card: #14142b;
+      --card-hover: #1a1a36;
+      --card-inset: #1d1d3d;
+      --border: #2a2a4d;
+      --border-strong: #3a3a6b;
+
+      --text: #e8e6ff;
+      --text-muted: #a8a4d8;
+      --text-soft: #7a76b0;
+      --text-dim: #5a5688;
+
+      /* Purple accent system */
+      --accent: #b794f6;
+      --accent-bright: #c4a8ff;
+      --accent-dim: #8b5fdc;
+      --accent-soft: rgba(183, 148, 246, 0.15);
+      --accent-glow: rgba(183, 148, 246, 0.35);
+
+      --star-color: rgba(183, 148, 246, 0.4);
+      --shadow-card: 0 0 0 1px var(--border), 0 4px 12px rgba(0, 0, 0, 0.2);
+
+      --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    body.light-theme {
+      --bg: #f5f0ff;
+      --bg-stars: #f5f0ff;
+      --card: #ffffff;
+      --card-hover: #faf7ff;
+      --card-inset: #f5f0ff;
+      --border: #e4d9f7;
+      --border-strong: #cdbeed;
+
+      --text: #1f1640;
+      --text-muted: #4a3d75;
+      --text-soft: #6b5d99;
+      --text-dim: #9085c0;
+
+      --accent: #7c3aed;
+      --accent-bright: #6d28d9;
+      --accent-dim: #5b21b6;
+      --accent-soft: rgba(124, 58, 237, 0.1);
+      --accent-glow: rgba(124, 58, 237, 0.2);
+
+      --star-color: rgba(124, 58, 237, 0.25);
+      --shadow-card: 0 0 0 1px var(--border), 0 4px 12px rgba(124, 58, 237, 0.06);
+    }
+
+    /* =============================================
+       BASE
+       ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-mono);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 14px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background 0.4s ease, color 0.4s ease;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Starfield background */
+    #stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* =============================================
+       LAYOUT
+       ============================================= */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .resume {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .col-left, .col-right {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* =============================================
+       CARDS
+       ============================================= */
+    .card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 1.75rem;
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+
+    /* Floating action buttons inside home card */
+    .card-actions {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--accent);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn:hover {
+      background: var(--accent-soft);
+      color: var(--accent-bright);
+    }
+
+    /* =============================================
+       HOME / PROFILE
+       ============================================= */
+    .home {
+      text-align: center;
+      padding-top: 4rem;
+    }
+
+    .home__photo {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 1.5rem;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 4px var(--card), 0 0 30px var(--accent-glow);
+      filter: grayscale(0.4) contrast(1.05);
+    }
+
+    .home__name {
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .home__name b {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .home__title {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .home__info {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .home__info a, .home__info span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: color 0.2s;
+      word-break: break-all;
+    }
+    .home__info a:hover { color: var(--accent); }
+    .home__info i {
+      color: var(--accent);
+      font-size: 1.05rem;
+      min-width: 18px;
+    }
+
+    /* =============================================
+       SECTION TITLE (underscore terminal style)
+       ============================================= */
+    .section__title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      border-bottom: 1.5px solid var(--accent);
+      padding-bottom: 0.3rem;
+      padding-right: 0.4rem;
+    }
+    .section__title::after {
+      content: '_';
+      color: var(--accent);
+      animation: blink 1.2s steps(1) infinite;
+      margin-left: 2px;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    /* =============================================
+       SOCIAL LINKS
+       ============================================= */
+    .social__list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .social__link {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.7rem 0.9rem;
+      background: var(--card-inset);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+    .social__link:hover {
+      border-color: var(--accent);
+      transform: translateX(2px);
+    }
+    .social__icon {
+      font-size: 1.4rem;
+      color: var(--accent);
+      min-width: 22px;
+    }
+    .social__meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .social__label {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .social__handle {
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    .social__link:hover .social__handle { color: var(--accent); }
+
+    /* =============================================
+       PROFILE TEXT
+       ============================================= */
+    .profile__text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+    .profile__text:last-child { margin-bottom: 0; }
+    .profile__text strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* =============================================
+       EXPERIENCE / EDUCATION ITEMS
+       ============================================= */
+    .item {
+      position: relative;
+      padding-left: 1.4rem;
+      margin-bottom: 2rem;
+    }
+    .item:last-child { margin-bottom: 0; }
+
+    .item__marker {
+      position: absolute;
+      left: 0;
+      top: 0.35rem;
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 2px;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .item__title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+    }
+
+    .item__meta {
+      font-size: 0.78rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+    .item__meta .sep {
+      color: var(--text-dim);
+      margin: 0 0.5rem;
+    }
+
+    .item__list {
+      list-style: none;
+      padding: 0;
+    }
+    .item__list li {
+      position: relative;
+      padding-left: 1.1rem;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 0.55rem;
+    }
+    .item__list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.65rem;
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 1px;
+    }
+    .item__list li strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .item__tech-label {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      margin: 1rem 0 0.5rem;
+    }
+
+    .item__tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .item__tech span {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      background: var(--card-inset);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    /* =============================================
+       SKILLS (grid of cards)
+       ============================================= */
+    .skills__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+    .skill {
+      padding: 0.7rem 0.85rem;
+      background: var(--card-inset);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .skill:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .skill__name {
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .skill__name::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 1px;
+    }
+    .skill__meta {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      padding-left: 0.65rem;
+    }
+    .skill__stars {
+      color: var(--accent);
+    }
+    .skill--highlight { background: var(--accent-soft); border-color: var(--accent); }
+
+    .skills__more {
+      display: inline-block;
+      margin-top: 1.2rem;
+      font-size: 0.78rem;
+      color: var(--accent);
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s;
+      background: transparent;
+      font-family: var(--font-mono);
+    }
+    .skills__more:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+    }
+
+    .skill.hidden { display: none; }
+    .skills__grid.expanded .skill.hidden { display: block; }
+
+    /* =============================================
+       CERTIFICATES
+       ============================================= */
+    .certs__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+    .cert {
+      padding: 1rem 1.2rem;
+      background: var(--card-inset);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s;
+    }
+    .cert:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .cert__title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+    .cert__meta {
+      font-size: 0.74rem;
+      color: var(--accent);
+    }
+    .cert__meta .sep { color: var(--text-dim); margin: 0 0.3rem; }
+    .cert__meta a { color: var(--accent); }
+    .cert__meta a i { font-size: 0.85rem; vertical-align: middle; }
+
+    /* =============================================
+       LANGUAGES
+       ============================================= */
+    .lang__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .lang__list li {
+      position: relative;
+      padding-left: 1.1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .lang__list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 1px;
+    }
+    .lang__list strong { color: var(--text); font-weight: 600; }
+
+    /* =============================================
+       INTERESTS
+       ============================================= */
+    .interests {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .interest {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+    .interest i {
+      font-size: 1.6rem;
+      color: var(--accent);
+    }
+
+    /* =============================================
+       PROJECTS
+       ============================================= */
+    .projects__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.8rem;
+    }
+    .project {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 1rem 1.1rem;
+      background: var(--card-inset);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s;
+      color: inherit;
+    }
+    .project:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .project__lang {
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+    }
+    .project__name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .project__desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      flex-grow: 1;
+    }
+    .project__icon {
+      align-self: flex-end;
+      color: var(--text-dim);
+      font-size: 1.05rem;
+      transition: all 0.2s;
+    }
+    .project:hover .project__icon {
+      color: var(--accent);
+      transform: translate(3px, -3px);
+    }
+
+    /* =============================================
+       CONTACT FORM
+       ============================================= */
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .form__row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form__field label {
+      display: block;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-soft);
+      margin-bottom: 0.4rem;
+    }
+    .form__field input,
+    .form__field textarea {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      background: var(--card-inset);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .form__field input:focus,
+    .form__field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .form__field textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .form__submit {
+      align-self: flex-start;
+      padding: 0.75rem 1.5rem;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .form__submit:hover {
+      background: var(--accent-bright);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+    .form__status {
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+      min-height: 1.3rem;
+    }
+    .form__status.success { color: var(--accent); }
+    .form__status.error { color: #ff6b9b; }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    /* =============================================
+       REVEAL ANIMATIONS
+       ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media (max-width: 980px) {
+      .resume { grid-template-columns: 1fr; }
+      .container { padding: 2rem 1.2rem; }
+      .card { padding: 1.5rem 1.3rem; }
+      .home { padding-top: 3.5rem; }
+    }
+
+    @media (max-width: 560px) {
+      .skills__grid,
+      .certs__grid,
+      .form__row { grid-template-columns: 1fr; }
+      .interests { gap: 1.2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .section__title::after { animation: none; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Starfield background -->
+  <canvas id="stars"></canvas>
+
+  <div class="container">
+    <div class="resume">
+
+      <!-- ============================================
+           LEFT COLUMN
+           ============================================ -->
+      <aside class="col-left">
+
+        <!-- HOME -->
+        <section class="card home">
+          <div class="card-actions">
+            <a class="icon-btn" href="cv-yasmany-montiel.pdf" download title="Download CV" aria-label="Download CV">
+              <i class="bx bx-download"></i>
+            </a>
+            <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+              <i class="bx bx-sun"></i>
+            </button>
+          </div>
+
+          <img src="https://avatars.githubusercontent.com/u/63186744?v=4" alt="Yasmany Montiel" class="home__photo">
+          <h1 class="home__name">YASMANY MONTIEL <b>RIVERA</b></h1>
+          <p class="home__title">Senior Software Architect</p>
+
+          <div class="home__info">
+            <span><i class="bx bx-map"></i> Colle di Val d'Elsa, Tuscany, Italy</span>
+            <a href="mailto:yasmontiel87@gmail.com"><i class="bx bx-envelope"></i> yasmontiel87@gmail.com</a>
+            <a href="tel:+393926354390"><i class="bx bx-phone"></i> +39 392 635 4390</a>
+            <span><i class="bx bx-buildings"></i> Zucchetti</span>
+          </div>
+        </section>
+
+        <!-- SOCIAL -->
+        <section class="card reveal">
+          <h2 class="section__title">SOCIAL</h2>
+          <div class="social__list">
+            <a href="https://www.linkedin.com/in/yasmany-montiel-rivera/" target="_blank" rel="noopener" class="social__link">
+              <i class="bx bxl-linkedin-square social__icon"></i>
+              <div class="social__meta">
+                <span class="social__label">LINKEDIN</span>
+                <span class="social__handle">@yasmany-montiel-rivera</span>
+              </div>
+            </a>
+            <a href="https://github.com/yasmany-montiel" target="_blank" rel="noopener" class="social__link">
+              <i class="bx bxl-github social__icon"></i>
+              <div class="social__meta">
+                <span class="social__label">GITHUB</span>
+                <span class="social__handle">@yasmany-montiel</span>
+              </div>
+            </a>
+            <a href="https://twitter.com/rivera_yasmany" target="_blank" rel="noopener" class="social__link">
+              <i class="bx bxl-twitter social__icon"></i>
+              <div class="social__meta">
+                <span class="social__label">TWITTER</span>
+                <span class="social__handle">@rivera_yasmany</span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- PROFILE -->
+        <section class="card reveal">
+          <h2 class="section__title">PROFILE</h2>
+          <p class="profile__text">
+            Senior <strong>Software Architect</strong> at <strong>Zucchetti</strong> with over a decade of full-stack experience. I lead the definition and evolution of complex software ecosystems, ensuring scalability, security, and high performance for enterprise solutions.
+          </p>
+          <p class="profile__text">
+            Proficient in <strong>.NET</strong>, <strong>React</strong>, <strong>SQL Server</strong>, microservices, modular monolith architecture, and advanced <strong>CI/CD</strong> pipelines. Deep expertise in <strong>Clean Architecture</strong>, <strong>SOLID</strong>, and <strong>Design Patterns</strong>.
+          </p>
+          <p class="profile__text">
+            Passionate about <strong>Generative AI</strong>, <strong>LangChain</strong>, conversational agents, and <strong>n8n</strong> automation. I love turning manual workflows into intelligent systems.
+          </p>
+          <p class="profile__text">
+            Former Computer Science professor at <strong>Universidad de Oriente</strong>, Cuba — teaching Software Engineering, Databases, and Advanced Web Programming.
+          </p>
+        </section>
+
+        <!-- EDUCATION -->
+        <section class="card reveal">
+          <h2 class="section__title">EDUCATION</h2>
+
+          <div class="item">
+            <span class="item__marker"></span>
+            <h3 class="item__title">Bachelor's degree in Computer Science</h3>
+            <div class="item__meta">
+              Universidad de Oriente <span class="sep">·</span> Cuba<br>
+              Sep 2006 <span class="sep">-</span> Jun 2012
+            </div>
+            <ul class="item__list">
+              <li>Comprehensive training in <strong>algorithms, data structures, software engineering, databases</strong>, and computer networks.</li>
+              <li>Foundation in <strong>object-oriented programming</strong> and software design patterns.</li>
+              <li>Specialized in web and desktop application development.</li>
+            </ul>
+          </div>
+
+          <div class="item">
+            <span class="item__marker"></span>
+            <h3 class="item__title">Italian Language Studies (L2)</h3>
+            <div class="item__meta">
+              CPIA 1 Firenze <span class="sep">·</span> Italy<br>
+              Sep 2019 <span class="sep">-</span> Jun 2020
+            </div>
+            <ul class="item__list">
+              <li>Official Italian language certification through the Provincial Center for Adult Education.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="card reveal" id="skills">
+          <h2 class="section__title">SKILLS</h2>
+          <div class="skills__grid" id="skills-grid">
+            <div class="skill skill--highlight">
+              <div class="skill__name">.NET Core</div>
+              <div class="skill__meta"><span>4+ years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill skill--highlight">
+              <div class="skill__name">React</div>
+              <div class="skill__meta"><span>6 years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill skill--highlight">
+              <div class="skill__name">TypeScript</div>
+              <div class="skill__meta"><span>6 years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill skill--highlight">
+              <div class="skill__name">SQL Server</div>
+              <div class="skill__meta"><span>4+ years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill">
+              <div class="skill__name">JavaScript</div>
+              <div class="skill__meta"><span>10+ years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill">
+              <div class="skill__name">PHP / Symfony</div>
+              <div class="skill__meta"><span>10+ years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill">
+              <div class="skill__name">Angular</div>
+              <div class="skill__meta"><span>7 years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill">
+              <div class="skill__name">Docker</div>
+              <div class="skill__meta"><span>5 years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill">
+              <div class="skill__name">Laravel</div>
+              <div class="skill__meta"><span>4 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill">
+              <div class="skill__name">Nest.js</div>
+              <div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+
+            <!-- Hidden skills (show more) -->
+            <div class="skill hidden">
+              <div class="skill__name">Spring Boot</div>
+              <div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">Python</div>
+              <div class="skill__meta"><span>4 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">Vue.js</div>
+              <div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">Ionic</div>
+              <div class="skill__meta"><span>4 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">Flutter</div>
+              <div class="skill__meta"><span>2 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">LangChain</div>
+              <div class="skill__meta"><span>1 year</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">n8n</div>
+              <div class="skill__meta"><span>1 year</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">Jenkins</div>
+              <div class="skill__meta"><span>4 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">Git / Gitflow</div>
+              <div class="skill__meta"><span>10+ years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">MySQL</div>
+              <div class="skill__meta"><span>10+ years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">Bootstrap</div>
+              <div class="skill__meta"><span>8 years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">SASS</div>
+              <div class="skill__meta"><span>6 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">HTML / CSS</div>
+              <div class="skill__meta"><span>13+ years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">SCRUM / XP</div>
+              <div class="skill__meta"><span>8 years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">Azure / AWS</div>
+              <div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div>
+            </div>
+            <div class="skill hidden">
+              <div class="skill__name">Clean Architecture</div>
+              <div class="skill__meta"><span>5 years</span><span class="skill__stars">★ 5</span></div>
+            </div>
+          </div>
+          <button class="skills__more" id="skills-more">SEE MORE</button>
+        </section>
+
+      </aside>
+
+      <!-- ============================================
+           RIGHT COLUMN
+           ============================================ -->
+      <div class="col-right">
+
+        <!-- EXPERIENCE -->
+        <section class="card reveal">
+          <h2 class="section__title">EXPERIENCE</h2>
+
+          <div class="item">
+            <span class="item__marker"></span>
+            <h3 class="item__title">Senior Software Architect</h3>
+            <div class="item__meta">
+              Feb 2026 <span class="sep">-</span> Present <span class="sep">|</span> Zucchetti
+            </div>
+            <ul class="item__list">
+              <li>Design and implementation of <strong>microservices and modular monolith architectures</strong> using .NET (Core/6+) and React, optimizing code maintainability and system performance.</li>
+              <li>Modeling and optimization of complex relational databases on <strong>SQL Server</strong>, ensuring data integrity and query efficiency in high-traffic scenarios.</li>
+              <li>Definition of <strong>advanced CI/CD pipelines</strong> and management of Docker-based distributed infrastructure, reducing deployment times and improving production stability.</li>
+              <li>Integration of <strong>Generative AI (LLM)</strong> solutions for internal process automation and intelligent product features.</li>
+              <li>Mentoring development teams, conducting critical code reviews and promoting engineering best practices: <strong>Clean Architecture, SOLID, Design Patterns</strong>.</li>
+            </ul>
+            <p class="item__tech-label">Technologies used</p>
+            <div class="item__tech">
+              <span>.NET</span><span>React</span><span>SQL Server</span><span>Azure</span><span>AWS</span><span>Docker</span><span>Jenkins</span><span>Git</span><span>LangChain</span>
+            </div>
+          </div>
+
+          <div class="item">
+            <span class="item__marker"></span>
+            <h3 class="item__title">Senior Developer</h3>
+            <div class="item__meta">
+              Jun 2025 <span class="sep">-</span> Jan 2026 <span class="sep">|</span> Advinser
+            </div>
+            <ul class="item__list">
+              <li>Senior full-stack development across client projects in the Tuscany region.</li>
+              <li>Architectural guidance and code review leadership.</li>
+            </ul>
+          </div>
+
+          <div class="item">
+            <span class="item__marker"></span>
+            <h3 class="item__title">Full Stack Developer</h3>
+            <div class="item__meta">
+              Jul 2023 <span class="sep">-</span> Jun 2025 <span class="sep">|</span> ETRURIA P.A. — S.P.A.
+            </div>
+            <ul class="item__list">
+              <li>Designed, developed, and maintained systems and applications for a <strong>public administration entity</strong> serving police, local authorities, and other government bodies.</li>
+              <li>Worked across the stack: HTML, CSS, JavaScript, TypeScript, Python, PHP — with Laravel, Java with Android Studio, and Nest.js.</li>
+              <li>CI/CD environments with <strong>Jira, Jenkins, Docker, DevContainers</strong> and SQL databases on Linux (Debian).</li>
+            </ul>
+            <p class="item__tech-label">Technologies used</p>
+            <div class="item__tech">
+              <span>Laravel</span><span>Nest.js</span><span>TypeScript</span><span>Python</span><span>PHP</span><span>Java</span><span>Android Studio</span><span>Docker</span><span>Jenkins</span>
+            </div>
+          </div>
+
+          <div class="item">
+            <span class="item__marker"></span>
+            <h3 class="item__title">Full Stack Developer</h3>
+            <div class="item__meta">
+              Oct 2020 <span class="sep">-</span> May 2023 <span class="sep">|</span> Peoplewalking
+            </div>
+            <ul class="item__list">
+              <li>Full-stack development with <strong>agile methodologies</strong> (SCRUM, XP) across frontend and backend technologies.</li>
+              <li>Built <strong>cross-platform applications</strong> with Angular, Ionic, Flutter, Symfony, and Spring Boot.</li>
+              <li><strong>Team leader role</strong> coordinating development workflows, code reviews, and project delivery.</li>
+            </ul>
+            <p class="item__tech-label">Technologies used</p>
+            <div class="item__tech">
+              <span>Angular</span><span>Ionic</span><span>Flutter</span><span>Symfony</span><span>Spring Boot</span><span>TypeScript</span><span>PHP</span><span>Dart</span><span>Java</span>
+            </div>
+          </div>
+
+          <div class="item">
+            <span class="item__marker"></span>
+            <h3 class="item__title">Computer Science Professor</h3>
+            <div class="item__meta">
+              Sep 2016 <span class="sep">-</span> Oct 2019 <span class="sep">|</span> Universidad de Oriente
+            </div>
+            <ul class="item__list">
+              <li>Assistant professor in the Computer Science program, teaching <strong>Software Engineering, Databases, and Advanced Web Programming</strong>.</li>
+              <li>Speaker and jury member for multiple graduation thesis projects related to education, business, and product management.</li>
+              <li>Technologies covered: HTML, CSS, JavaScript, AJAX, jQuery, Bootstrap, Angular, Symfony, Doctrine, Twig.</li>
+            </ul>
+          </div>
+
+          <div class="item">
+            <span class="item__marker"></span>
+            <h3 class="item__title">IT Specialist</h3>
+            <div class="item__meta">
+              Jan 2013 <span class="sep">-</span> Sep 2016 <span class="sep">|</span> Empresa de Astilleros de Oriente
+            </div>
+            <ul class="item__list">
+              <li>Developed web and desktop applications for <strong>statistical, economic, and research management</strong> of the company.</li>
+              <li>Worked with SCRUM methodology, PHP, Symfony, Doctrine, JavaScript, TypeScript, Bootstrap.</li>
+            </ul>
+            <p class="item__tech-label">Technologies used</p>
+            <div class="item__tech">
+              <span>PHP</span><span>Symfony</span><span>Doctrine</span><span>JavaScript</span><span>TypeScript</span><span>Bootstrap</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="card reveal">
+          <h2 class="section__title">PROJECTS</h2>
+          <div class="projects__grid">
+            <a href="https://github.com/yasmany-montiel/portafolio" target="_blank" rel="noopener" class="project">
+              <span class="project__lang">JavaScript</span>
+              <h3 class="project__name">portafolio</h3>
+              <p class="project__desc">Personal portfolio repository and frontend experiments.</p>
+              <i class="bx bx-link-external project__icon"></i>
+            </a>
+            <a href="https://github.com/yasmany-montiel/api-symfony5" target="_blank" rel="noopener" class="project">
+              <span class="project__lang">PHP · Symfony</span>
+              <h3 class="project__name">api-symfony5</h3>
+              <p class="project__desc">REST API built with Symfony 5 demonstrating clean architecture.</p>
+              <i class="bx bx-link-external project__icon"></i>
+            </a>
+            <a href="https://github.com/yasmany-montiel/react-client" target="_blank" rel="noopener" class="project">
+              <span class="project__lang">React</span>
+              <h3 class="project__name">react-client</h3>
+              <p class="project__desc">Sample React application with component patterns and state management.</p>
+              <i class="bx bx-link-external project__icon"></i>
+            </a>
+            <a href="https://github.com/yasmany-montiel/angular-study" target="_blank" rel="noopener" class="project">
+              <span class="project__lang">Angular</span>
+              <h3 class="project__name">angular-study</h3>
+              <p class="project__desc">Angular study project diving into advanced framework patterns.</p>
+              <i class="bx bx-link-external project__icon"></i>
+            </a>
+            <a href="https://github.com/yasmany-montiel/sample-heroes" target="_blank" rel="noopener" class="project">
+              <span class="project__lang">Angular · Java</span>
+              <h3 class="project__name">sample-heroes</h3>
+              <p class="project__desc">Full-stack app with Angular 14, Docker, and Java Spring Boot.</p>
+              <i class="bx bx-link-external project__icon"></i>
+            </a>
+            <a href="https://github.com/yasmany-montiel/sample-develop-test" target="_blank" rel="noopener" class="project">
+              <span class="project__lang">PHP</span>
+              <h3 class="project__name">sample-develop-test</h3>
+              <p class="project__desc">Development tests and experimentation playground.</p>
+              <i class="bx bx-link-external project__icon"></i>
+            </a>
+          </div>
+        </section>
+
+        <!-- CERTIFICATES -->
+        <section class="card reveal">
+          <h2 class="section__title">CERTIFICATES</h2>
+          <div class="certs__grid">
+            <div class="cert">
+              <h3 class="cert__title">Charming Development in Symfony 5</h3>
+              <div class="cert__meta">2021 <span class="sep">|</span> Symfony</div>
+            </div>
+            <div class="cert">
+              <h3 class="cert__title">Angular — The Complete Guide</h3>
+              <div class="cert__meta">2020 <span class="sep">|</span> Udemy</div>
+            </div>
+            <div class="cert">
+              <h3 class="cert__title">Master in CSS</h3>
+              <div class="cert__meta">2020 <span class="sep">|</span> Responsive, SASS, Grid, Bootstrap 4</div>
+            </div>
+            <div class="cert">
+              <h3 class="cert__title">SEO &amp; Web Positioning</h3>
+              <div class="cert__meta">2019 <span class="sep">|</span> For Web Developers</div>
+            </div>
+            <div class="cert">
+              <h3 class="cert__title">SCRUM &amp; XP Implementation</h3>
+              <div class="cert__meta">2018 <span class="sep">|</span> Agile Project Management</div>
+            </div>
+            <div class="cert">
+              <h3 class="cert__title">Computer Engineering Degree</h3>
+              <div class="cert__meta">2012 <span class="sep">|</span> Universidad de Oriente</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LANGUAGES -->
+        <section class="card reveal">
+          <h2 class="section__title">LANGUAGES</h2>
+          <ul class="lang__list">
+            <li><strong>Spanish</strong> — C2 (Native proficiency)</li>
+            <li><strong>Italian</strong> — C1 (Professional working proficiency)</li>
+            <li><strong>English</strong> — B2 (Professional working proficiency)</li>
+          </ul>
+        </section>
+
+        <!-- INTERESTS -->
+        <section class="card reveal">
+          <h2 class="section__title">INTERESTS</h2>
+          <div class="interests">
+            <div class="interest"><i class="bx bx-bot"></i><span>AI &amp; LLMs</span></div>
+            <div class="interest"><i class="bx bx-code-alt"></i><span>Open Source</span></div>
+            <div class="interest"><i class="bx bx-coffee"></i><span>Coffee</span></div>
+            <div class="interest"><i class="bx bx-book-open"></i><span>Read</span></div>
+            <div class="interest"><i class="bx bx-paint"></i><span>Design</span></div>
+            <div class="interest"><i class="bx bx-trip"></i><span>Travel</span></div>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="card reveal" id="contact">
+          <h2 class="section__title">CONTACT</h2>
+          <p class="profile__text" style="margin-bottom: 1.5rem;">
+            Have a project in mind or want to collaborate? Drop me a message — I usually reply within 24 hours.
+          </p>
+          <form class="form" id="contact-form" action="https://formspree.io/f/REPLACE_WITH_YOUR_FORMSPREE_ID" method="POST">
+            <div class="form__row">
+              <div class="form__field">
+                <label for="name">NAME</label>
+                <input type="text" id="name" name="name" required autocomplete="name">
+              </div>
+              <div class="form__field">
+                <label for="email">EMAIL</label>
+                <input type="email" id="email" name="email" required autocomplete="email">
+              </div>
+            </div>
+            <div class="form__field">
+              <label for="subject">SUBJECT</label>
+              <input type="text" id="subject" name="subject" autocomplete="off">
+            </div>
+            <div class="form__field">
+              <label for="message">MESSAGE</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="form__submit">
+              <i class="bx bx-send"></i> SEND
+            </button>
+            <div class="form__status" id="form-status"></div>
+          </form>
+        </section>
+
+      </div>
+    </div>
+
+    <footer class="footer">
+      Updated: <span id="updated"></span>
+    </footer>
+  </div>
+
+  <script>
+    // Footer date
+    const updated = document.getElementById('updated');
+    updated.textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('i');
+
+    function applyTheme(dark) {
+      document.body.classList.toggle('light-theme', !dark);
+      themeIcon.className = dark ? 'bx bx-sun' : 'bx bx-moon';
+    }
+
+    let isDark = !window.matchMedia('(prefers-color-scheme: light)').matches;
+    applyTheme(isDark);
+
+    themeToggle.addEventListener('click', () => {
+      isDark = !isDark;
+      applyTheme(isDark);
+    });
+
+    // Skills "show more"
+    const skillsMore = document.getElementById('skills-more');
+    const skillsGrid = document.getElementById('skills-grid');
+    skillsMore.addEventListener('click', () => {
+      const expanded = skillsGrid.classList.toggle('expanded');
+      skillsMore.textContent = expanded ? 'SEE LESS' : 'SEE MORE';
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.05 });
+    reveals.forEach(r => io.observe(r));
+
+    // Starfield (subtle, no movement, just decorative dots)
+    (function() {
+      const canvas = document.getElementById('stars');
+      const ctx = canvas.getContext('2d');
+      let w, h, stars;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = document.documentElement.scrollHeight;
+        const count = Math.floor((w * h) / 18000);
+        stars = [];
+        for (let i = 0; i < count; i++) {
+          stars.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            r: Math.random() * 1.3 + 0.2,
+            alpha: Math.random() * 0.7 + 0.3,
+            twinkleSpeed: Math.random() * 0.005 + 0.001
+          });
+        }
+        draw();
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        const color = getComputedStyle(document.body).getPropertyValue('--star-color').trim();
+        stars.forEach(s => {
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = color.replace(/[\d.]+\)$/, `${s.alpha})`);
+          ctx.fill();
+        });
+      }
+
+      function animate() {
+        stars.forEach(s => {
+          s.alpha += s.twinkleSpeed;
+          if (s.alpha > 1 || s.alpha < 0.2) s.twinkleSpeed *= -1;
+        });
+        draw();
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('resize', resize);
+      // Redraw stars after content settles
+      setTimeout(resize, 100);
+      setTimeout(() => { if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) animate(); }, 200);
+
+      // Redraw on theme change
+      const observer = new MutationObserver(draw);
+      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    })();
+
+    // Contact form
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.className = 'form__status';
+      status.textContent = 'Sending...';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          status.classList.add('success');
+          status.textContent = '✓ Message sent. I will reply soon.';
+          form.reset();
+        } else {
+          status.classList.add('error');
+          status.textContent = 'Something went wrong. Email me at yasmontiel87@gmail.com';
+        }
+      } catch {
+        status.classList.add('error');
+        status.textContent = 'Network error. Email me at yasmontiel87@gmail.com';
+      }
+    });
+  </script>
+</body>
+</html>
