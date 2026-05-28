@@ -49,7 +49,7 @@
       --accent-grad-2: rgba(168, 130, 230, 0.04);
 
       --dot-color: rgba(139, 63, 217, 0.22);
-      --scan-color: rgba(139, 63, 217, 0.06);
+      --scan-color: rgba(139, 63, 217, 0.12);
 
       --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
       --radius: 16px;
@@ -79,7 +79,7 @@
       --accent-grad-2: rgba(139, 92, 220, 0.04);
 
       --dot-color: rgba(183, 148, 246, 0.3);
-      --scan-color: rgba(183, 148, 246, 0.05);
+      --scan-color: rgba(183, 148, 246, 0.1);
     }
 
     /* =============================================
@@ -196,15 +196,15 @@
       content: '';
       position: absolute;
       top: 0; bottom: 0;
-      width: 180px;
+      width: 220px;
       pointer-events: none;
       z-index: 0;
-      background: linear-gradient(90deg, transparent, var(--scan-color), transparent);
+      background: linear-gradient(90deg, transparent, var(--scan-color), var(--scan-color), transparent);
     }
-    .page::before { animation: beam 9s linear infinite; }
-    .page::after  { animation: beam 9s linear infinite; animation-delay: 4.5s; }
+    .page::before { animation: beam 7s linear infinite; }
+    .page::after  { animation: beam 7s linear infinite; animation-delay: 3.5s; }
     @keyframes beam {
-      0%   { left: -200px; }
+      0%   { left: -240px; }
       100% { left: 100%; }
     }
 
@@ -257,7 +257,7 @@
       box-shadow: 0 8px 30px var(--accent-glow);
       filter: grayscale(0.5) contrast(1.05);
       will-change: transform;
-      animation: floaty 4s ease-in-out infinite;
+      animation: floaty 7s ease-in-out infinite;
       transition: filter 0.4s ease, box-shadow 0.4s ease;
     }
     @keyframes floaty {
@@ -293,23 +293,32 @@
       padding-bottom: 0.4rem;
       min-height: 1.7em;
     }
-    /* Typed.js default cursor styling — blinks every 1 second */
+    /* Typed.js cursor — old-style: 1s on, 1s off, sharp */
     .typed-cursor {
-      color: var(--accent);
+      color: var(--accent) !important;
       font-weight: 700;
       opacity: 1;
-      animation: typedBlink 1s steps(1) infinite;
+      animation: typedBlink 2s steps(1) infinite !important;
     }
-    @keyframes typedBlink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
+    .typed-cursor--blink { animation: typedBlink 2s steps(1) infinite !important; }
+    @keyframes typedBlink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-    /* Color wave that runs across letters indefinitely — intense */
+    /* Manual cursor for finished titles */
+    .title-cursor {
+      display: inline-block;
+      color: var(--accent);
+      font-weight: 700;
+      animation: typedBlink 2s steps(1) infinite;
+    }
+
+    /* Typewriter color sweep across letters — runs forever, one letter at a time */
     .section__title .wv {
       display: inline-block;
-      animation: colorWave 2.4s ease-in-out infinite;
+      color: var(--accent);
     }
-    @keyframes colorWave {
-      0%, 100% { color: var(--accent); text-shadow: none; transform: translateY(0); }
-      50% { color: var(--accent-light); text-shadow: 0 0 14px var(--accent-light), 0 0 6px var(--accent-glow); transform: translateY(-2px); }
+    .section__title .wv.lit {
+      color: var(--accent-light);
+      text-shadow: 0 0 14px var(--accent-light), 0 0 6px var(--accent-glow);
     }
 
     /* =============================================
@@ -355,31 +364,31 @@
       left: 5px;
       top: 0.7rem;
       bottom: -2.2rem;
-      width: 1.5px;
-      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 60%, var(--accent-light) 100%);
-      opacity: 0.4;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 70%, var(--accent-light) 100%);
+      opacity: 0.7;
     }
     .item:last-child::before { display: none; }
     .item:last-child { margin-bottom: 0; }
 
-    /* Pulsing animated marker — changes color + fading expanding ring */
+    /* Pulsing animated marker — bigger, strong color change + expanding ring */
     .item__marker {
-      position: absolute; left: 0; top: 0.4rem;
-      width: 13px; height: 13px;
-      border-radius: 3px;
+      position: absolute; left: -1px; top: 0.35rem;
+      width: 15px; height: 15px;
+      border-radius: 4px;
       transition: all 0.35s ease;
-      animation: markerColor 3s ease-in-out infinite, markerRing 2.6s ease-out infinite;
+      animation: markerColor 2.5s ease-in-out infinite, markerRing 2.5s ease-out infinite;
     }
     @keyframes markerColor {
       0%, 100% { background: var(--accent); }
       50% { background: var(--accent-light); }
     }
     @keyframes markerRing {
-      0%   { box-shadow: 0 0 0 0 var(--accent-glow); }
-      70%  { box-shadow: 0 0 0 10px transparent; }
-      100% { box-shadow: 0 0 0 0 transparent; }
+      0%   { box-shadow: 0 0 0 0 var(--accent), 0 0 10px var(--accent-glow); }
+      70%  { box-shadow: 0 0 0 12px transparent, 0 0 10px var(--accent-glow); }
+      100% { box-shadow: 0 0 0 0 transparent, 0 0 10px var(--accent-glow); }
     }
-    .item:hover .item__marker { transform: scale(1.35) rotate(45deg); }
+    .item:hover .item__marker { transform: scale(1.4) rotate(45deg); }
 
     .item__title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
     .item__meta { font-size: 0.78rem; color: var(--accent); margin-bottom: 1rem; }
@@ -814,21 +823,36 @@
     // ============================
     function setupTitle(el) {
       const text = el.dataset.title;
-      // Typed.js needs a child span to type into
       const span = document.createElement('span');
       el.appendChild(span);
       new Typed(span, {
         strings: [text],
-        typeSpeed: 55,
+        typeSpeed: 65,
         showCursor: true,
         cursorChar: '_',
         onComplete: () => {
-          // Replace typed text with per-letter wave spans, keep the cursor
-          const cursor = el.querySelector('.typed-cursor');
-          span.innerHTML = text.split('').map((c, i) =>
-            `<span class="wv" style="animation-delay:${i * 0.12}s">${c === ' ' ? '&nbsp;' : c}</span>`
+          // Remove Typed's cursor, rebuild text as individual letters
+          const tc = el.querySelector('.typed-cursor');
+          if (tc) tc.remove();
+          span.innerHTML = text.split('').map(c =>
+            `<span class="wv">${c === ' ' ? '&nbsp;' : c}</span>`
           ).join('');
-          if (cursor) el.appendChild(cursor); // keep blinking cursor at the end
+          // Add our own blinking cursor at the end
+          const cursor = document.createElement('span');
+          cursor.className = 'title-cursor';
+          cursor.textContent = '_';
+          el.appendChild(cursor);
+
+          // Infinite typewriter-style color sweep, one letter at a time
+          const letters = span.querySelectorAll('.wv');
+          let idx = 0;
+          setInterval(() => {
+            letters.forEach(l => l.classList.remove('lit'));
+            // light the current letter and a couple before it for a trailing effect
+            letters[idx] && letters[idx].classList.add('lit');
+            if (letters[idx - 1]) letters[idx - 1].classList.add('lit');
+            idx = (idx + 1) % (letters.length + 3); // small pause after the word
+          }, 150);
         }
       });
     }
