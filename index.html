@@ -19,13 +19,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Typed.js — MIT licensed typewriter library -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+
   <style>
     /* =============================================
-       THEME — Light (default, lavender) + Dark
-       Faithful to the reference purple/violet look
+       THEME — Light (default lavender) + Dark
        ============================================= */
     :root {
-      /* LIGHT theme (default) — clean lavender */
       --bg: #ece6fa;
       --bg-gradient-1: #f3eeff;
       --bg-gradient-2: #e6def7;
@@ -41,13 +42,14 @@
 
       --accent: #8b3fd9;
       --accent-bright: #7c2fd0;
-      --accent-light: #a96ee8;
+      --accent-light: #b07ef0;
       --accent-soft: rgba(139, 63, 217, 0.1);
       --accent-glow: rgba(139, 63, 217, 0.25);
       --accent-grad-1: rgba(168, 130, 230, 0.18);
       --accent-grad-2: rgba(168, 130, 230, 0.04);
 
       --dot-color: rgba(139, 63, 217, 0.22);
+      --scan-color: rgba(139, 63, 217, 0.06);
 
       --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
       --radius: 16px;
@@ -70,20 +72,20 @@
 
       --accent: #b794f6;
       --accent-bright: #c8aaff;
-      --accent-light: #a880f0;
+      --accent-light: #d4b8ff;
       --accent-soft: rgba(183, 148, 246, 0.15);
       --accent-glow: rgba(183, 148, 246, 0.4);
       --accent-grad-1: rgba(139, 92, 220, 0.22);
       --accent-grad-2: rgba(139, 92, 220, 0.04);
 
       --dot-color: rgba(183, 148, 246, 0.3);
+      --scan-color: rgba(183, 148, 246, 0.05);
     }
 
     /* =============================================
        BASE
        ============================================= */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -96,7 +98,6 @@
       color: var(--text);
       line-height: 1.65;
       font-size: 14px;
-      font-weight: 400;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       transition: background 0.5s ease, color 0.4s ease;
@@ -105,20 +106,74 @@
       overflow-x: hidden;
     }
 
-    /* Dotted starfield background */
+    /* Dotted twinkling starfield */
     #dots {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+
+    /* =============================================
+       OLD-MOVIE / CRT EFFECT (always on)
+       ============================================= */
+    .crt {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
       pointer-events: none;
+      z-index: 9999;
+    }
+    /* Static scanlines */
+    .crt::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.06) 0px,
+        rgba(0,0,0,0.06) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      animation: scanmove 10s linear infinite;
+    }
+    /* Vignette + flicker */
+    .crt::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.18) 100%);
+      animation: flicker 6s infinite;
+    }
+    body.dark-theme .crt::before { background: repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px); }
+    body.dark-theme .crt::after { background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%); }
+
+    @keyframes scanmove { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
+    @keyframes flicker {
+      0%,100% { opacity: 1; }
+      3% { opacity: 0.93; } 6% { opacity: 1; }
+      18% { opacity: 0.97; } 20% { opacity: 1; }
+      50% { opacity: 0.95; } 52% { opacity: 1; }
+      77% { opacity: 0.96; } 79% { opacity: 1; }
+    }
+
+    /* A bright horizontal bar that travels top→bottom occasionally (old TV roll) */
+    .crt-roll {
+      position: fixed;
+      left: 0; right: 0;
+      height: 90px;
+      z-index: 9998;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.05) 45%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.05) 55%, transparent);
+      animation: roll 7s linear infinite;
+    }
+    body.dark-theme .crt-roll { background: linear-gradient(180deg, transparent, rgba(183,148,246,0.06) 45%, rgba(183,148,246,0.1) 50%, rgba(183,148,246,0.06) 55%, transparent); }
+    @keyframes roll {
+      0% { top: -90px; }
+      100% { top: 100%; }
     }
 
     a { color: inherit; text-decoration: none; }
 
     /* =============================================
-       LAYOUT — single outer panel like the reference
+       LAYOUT
        ============================================= */
     .page {
       position: relative;
@@ -132,142 +187,98 @@
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       transition: background 0.5s ease, border-color 0.5s ease;
+      overflow: hidden;
+    }
+
+    /* Traveling scan beams across the whole panel (left→right) */
+    .page::before,
+    .page::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 180px;
+      pointer-events: none;
+      z-index: 0;
+      background: linear-gradient(90deg, transparent, var(--scan-color), transparent);
+    }
+    .page::before { animation: beam 9s linear infinite; }
+    .page::after  { animation: beam 9s linear infinite; animation-delay: 4.5s; }
+    @keyframes beam {
+      0%   { left: -200px; }
+      100% { left: 100%; }
     }
 
     .resume {
+      position: relative;
+      z-index: 1;
       display: grid;
       grid-template-columns: 340px 1fr;
       gap: 2.5rem;
       align-items: start;
     }
 
-    /* Divider line between columns */
-    .col-left {
-      position: relative;
-    }
+    .col-left { position: relative; }
     .col-left::after {
       content: '';
       position: absolute;
-      top: 0;
-      right: -1.25rem;
-      bottom: 0;
+      top: 0; right: -1.25rem; bottom: 0;
       width: 1px;
       background: linear-gradient(180deg, transparent, var(--card-border) 15%, var(--card-border) 85%, transparent);
     }
 
-    .col-left, .col-right {
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-    }
+    .col-left, .col-right { display: flex; flex-direction: column; gap: 2.5rem; }
 
     /* =============================================
-       HOME / PROFILE HEADER
+       HOME
        ============================================= */
-    .home {
-      text-align: center;
-      position: relative;
-    }
-
-    .home__actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
+    .home { text-align: center; position: relative; }
+    .home__actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
 
     .icon-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      border: none;
+      width: 38px; height: 38px;
+      border-radius: 10px; border: none;
       background: transparent;
       color: var(--accent);
-      font-size: 1.3rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 1.3rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
       transition: all 0.3s ease;
     }
-    .icon-btn:hover {
-      background: var(--accent-soft);
-      color: var(--accent-bright);
-      transform: translateY(-2px) scale(1.1);
-    }
+    .icon-btn:hover { background: var(--accent-soft); color: var(--accent-bright); transform: translateY(-2px) scale(1.1); }
 
-    /* Floating photo — never stops */
+    /* Floating photo — continuous, never stops */
     .home__photo-wrap {
-      width: 130px;
-      height: 130px;
+      width: 130px; height: 130px;
       margin: 0.5rem auto 1.5rem;
-      animation: float 5s ease-in-out infinite;
+      will-change: transform;
+      animation: floaty 4s ease-in-out infinite;
+    }
+    @keyframes floaty {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-14px); }
+      100% { transform: translateY(0); }
     }
     .home__photo {
-      width: 100%;
-      height: 100%;
-      border-radius: 10px;
-      object-fit: cover;
+      width: 100%; height: 100%;
+      border-radius: 10px; object-fit: cover;
       border: 3px solid var(--accent);
       box-shadow: 0 8px 30px var(--accent-glow);
       filter: grayscale(0.5) contrast(1.05);
       transition: filter 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
     }
-    .home__photo:hover {
-      filter: grayscale(0) contrast(1.1);
-      box-shadow: 0 12px 45px var(--accent-glow);
-      transform: scale(1.03);
-    }
+    .home__photo:hover { filter: grayscale(0) contrast(1.1); box-shadow: 0 12px 45px var(--accent-glow); transform: scale(1.03); }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-
-    .home__name {
-      font-size: 1.15rem;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-    }
+    .home__name { font-size: 1.15rem; font-weight: 400; letter-spacing: 0.12em; margin-bottom: 0.4rem; }
     .home__name b { font-weight: 700; color: var(--accent); }
+    .home__title { font-size: 0.78rem; letter-spacing: 0.18em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.75rem; }
 
-    .home__title {
-      font-size: 0.78rem;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 1.75rem;
-    }
-
-    .home__info {
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      font-size: 0.84rem;
-      color: var(--text-muted);
-    }
-    .home__info a, .home__info span {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      transition: color 0.25s ease, transform 0.25s ease;
-      word-break: break-word;
-    }
+    .home__info { text-align: left; display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.84rem; color: var(--text-muted); }
+    .home__info a, .home__info span { display: inline-flex; align-items: center; gap: 0.7rem; transition: color 0.25s ease, transform 0.25s ease; word-break: break-word; }
     .home__info a:hover { color: var(--accent); transform: translateX(4px); }
-    .home__info i {
-      color: var(--accent);
-      font-size: 1.15rem;
-      min-width: 20px;
-      transition: transform 0.3s ease;
-    }
+    .home__info i { color: var(--accent); font-size: 1.15rem; min-width: 20px; transition: transform 0.3s ease; }
     .home__info a:hover i { transform: scale(1.2); }
 
     /* =============================================
-       SECTION TITLE — typewriter + blinking cursor
+       SECTION TITLE — Typed.js fills .typed-target, cursor by Typed.js
        ============================================= */
     .section__title {
       font-size: 1.05rem;
@@ -276,42 +287,25 @@
       text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 1.75rem;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       border-bottom: 2px solid var(--accent);
       padding-bottom: 0.4rem;
-      min-height: 1.6em;
-      white-space: pre;
+      min-height: 1.7em;
     }
-
-    .section__title .typed { display: inline; }
-
-    /* blinking cursor */
-    .section__title .cursor {
-      display: inline-block;
-      width: 0.6em;
+    /* Typed.js default cursor styling */
+    .typed-cursor {
       color: var(--accent);
       font-weight: 400;
-      animation: blink 1s steps(1) infinite;
+      opacity: 1;
+      animation: typedBlink 0.9s infinite;
     }
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
+    @keyframes typedBlink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* letter color pop when first typed */
-    .section__title .letter {
+    /* Color wave that runs across letters once typed */
+    .section__title .wv {
       display: inline-block;
-      animation: letterPop 0.5s ease;
-    }
-    @keyframes letterPop {
-      0% { color: var(--accent-bright); transform: translateY(-2px); text-shadow: 0 0 10px var(--accent-glow); }
-      100% { color: var(--accent); transform: translateY(0); text-shadow: none; }
-    }
-
-    /* Continuous color wave once typing is done — each letter lightens one by one */
-    .section__title.wave .letter {
-      animation: colorWave 3s ease-in-out infinite;
+      animation: colorWave 2.6s ease-in-out infinite;
     }
     @keyframes colorWave {
       0%, 100% { color: var(--accent); text-shadow: none; }
@@ -319,278 +313,137 @@
     }
 
     /* =============================================
-       SOCIAL — gradient cards, slide on hover
+       SOCIAL
        ============================================= */
-    .social__list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
+    .social__list { display: flex; flex-direction: column; gap: 0.75rem; }
     .social__link {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
+      display: flex; align-items: center; gap: 0.9rem;
       padding: 0.8rem 1rem;
       background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2));
       border: 1px solid var(--card-inset-border);
       border-radius: var(--radius-sm);
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease, box-shadow 0.4s ease;
-      position: relative;
-      overflow: hidden;
+      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), border-color 0.45s ease, box-shadow 0.45s ease;
+      position: relative; overflow: hidden;
     }
     .social__link::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: var(--accent);
-      transform: scaleY(0);
-      transition: transform 0.3s ease;
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--accent); transform: scaleY(0); transition: transform 0.4s ease;
     }
-    .social__link:hover {
-      transform: translateX(8px);
-      border-color: var(--accent);
-      box-shadow: 0 6px 18px var(--accent-glow);
-    }
+    .social__link:hover { transform: translateX(8px); border-color: var(--accent); box-shadow: 0 6px 18px var(--accent-glow); }
     .social__link:hover::before { transform: scaleY(1); }
-    .social__icon {
-      font-size: 1.5rem;
-      color: var(--accent);
-      min-width: 24px;
-      transition: transform 0.3s ease;
-    }
+    .social__icon { font-size: 1.5rem; color: var(--accent); min-width: 24px; transition: transform 0.4s ease; }
     .social__link:hover .social__icon { transform: scale(1.18) rotate(-6deg); }
     .social__meta { display: flex; flex-direction: column; gap: 0.1rem; }
-    .social__label {
-      font-size: 0.66rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-    }
-    .social__handle {
-      font-size: 0.84rem;
-      color: var(--text);
-      transition: color 0.3s ease;
-    }
+    .social__label { font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-soft); }
+    .social__handle { font-size: 0.84rem; color: var(--text); transition: color 0.4s ease; }
     .social__link:hover .social__handle { color: var(--accent); }
 
     /* =============================================
        PROFILE TEXT
        ============================================= */
-    .profile__text {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.9;
-      margin-bottom: 1rem;
-    }
+    .profile__text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.9; margin-bottom: 1rem; }
     .profile__text:last-child { margin-bottom: 0; }
     .profile__text strong { color: var(--accent); font-weight: 700; }
 
     /* =============================================
-       TIMELINE ITEMS — line fades at bottom
+       TIMELINE — line solid at top marker, fading down (but still faintly visible)
        ============================================= */
-    .item-list { position: relative; }
-
-    /* Per-item connector line: solid at the marker (bottom), fading upward */
-    .item {
-      position: relative;
-      padding-left: 1.6rem;
-      margin-bottom: 2.2rem;
-    }
+    .item { position: relative; padding-left: 1.6rem; margin-bottom: 2.2rem; }
     .item::before {
       content: '';
       position: absolute;
       left: 5px;
-      top: 0.6rem;
+      top: 0.7rem;
       bottom: -2.2rem;
       width: 1.5px;
-      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 50%, var(--accent-light) 100%);
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 60%, var(--accent-light) 100%);
       opacity: 0.4;
     }
     .item:last-child::before { display: none; }
     .item:last-child { margin-bottom: 0; }
 
+    /* Pulsing animated marker (the "moving circles") */
     .item__marker {
-      position: absolute;
-      left: 0;
-      top: 0.35rem;
-      width: 12px;
-      height: 12px;
+      position: absolute; left: 0; top: 0.4rem;
+      width: 12px; height: 12px;
       background: var(--accent);
       border-radius: 3px;
       box-shadow: 0 0 10px var(--accent-glow);
       transition: all 0.35s ease;
+      animation: markerPulse 2.4s ease-in-out infinite;
     }
-    .item:hover .item__marker {
-      transform: scale(1.3) rotate(45deg);
-      box-shadow: 0 0 16px var(--accent-glow);
+    @keyframes markerPulse {
+      0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); transform: scale(1); }
+      50% { box-shadow: 0 0 0 6px transparent; transform: scale(1.12); }
     }
+    .item:hover .item__marker { transform: scale(1.35) rotate(45deg); box-shadow: 0 0 16px var(--accent-glow); }
 
-    .item__title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-    }
-    .item__meta {
-      font-size: 0.78rem;
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
+    .item__title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+    .item__meta { font-size: 0.78rem; color: var(--accent); margin-bottom: 1rem; }
     .item__meta .sep { color: var(--text-dim); margin: 0 0.5rem; }
 
     .item__list { list-style: none; padding: 0; }
-    .item__list li {
-      position: relative;
-      padding-left: 1.2rem;
-      font-size: 0.83rem;
-      color: var(--text-muted);
-      line-height: 1.75;
-      margin-bottom: 0.6rem;
-    }
-    .item__list li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.65rem;
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 1px;
-    }
+    .item__list li { position: relative; padding-left: 1.2rem; font-size: 0.83rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 0.6rem; }
+    .item__list li::before { content: ''; position: absolute; left: 0; top: 0.65rem; width: 6px; height: 6px; background: var(--accent); border-radius: 1px; }
     .item__list li strong { color: var(--accent); font-weight: 600; }
 
-    .item__tech-label {
-      font-size: 0.82rem;
-      color: var(--text-soft);
-      margin: 1.1rem 0 0.6rem;
-    }
+    .item__tech-label { font-size: 0.82rem; color: var(--text-soft); margin: 1.1rem 0 0.6rem; }
     .item__tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
     .item__tech span {
-      font-size: 0.7rem;
-      padding: 0.28rem 0.65rem;
-      background: var(--card-inset);
-      border: 1px solid var(--card-inset-border);
-      border-radius: 5px;
-      color: var(--text-muted);
-      transition: all 0.25s ease;
+      font-size: 0.7rem; padding: 0.28rem 0.65rem;
+      background: var(--card-inset); border: 1px solid var(--card-inset-border);
+      border-radius: 5px; color: var(--text-muted);
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
       cursor: default;
     }
-    .item__tech span:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px var(--accent-glow);
-    }
+    .item__tech span:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px var(--accent-glow); }
 
     /* =============================================
        SKILLS
        ============================================= */
-    .skills__grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.7rem;
-    }
+    .skills__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
     .skill {
       padding: 0.75rem 0.9rem;
       background: var(--card-inset);
       border: 1px solid var(--card-inset-border);
       border-radius: var(--radius-sm);
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
       cursor: default;
     }
-    .skill:hover {
-      border-color: var(--accent);
-      transform: translateX(5px) translateY(-2px);
-      background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2));
-      box-shadow: 0 5px 14px var(--accent-glow);
-    }
-    .skill__name {
-      font-size: 0.83rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      transition: color 0.3s ease;
-    }
+    .skill:hover { border-color: var(--accent); transform: translateX(6px) translateY(-2px); background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2)); box-shadow: 0 5px 14px var(--accent-glow); }
+    .skill__name { font-size: 0.83rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.45rem; transition: color 0.4s ease; }
     .skill:hover .skill__name { color: var(--accent-bright); }
-    .skill__name::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 1px;
-      transition: transform 0.3s ease;
-    }
+    .skill__name::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 1px; transition: transform 0.4s ease; }
     .skill:hover .skill__name::before { transform: rotate(45deg) scale(1.3); }
-    .skill__meta {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      display: flex;
-      justify-content: space-between;
-      padding-left: 0.7rem;
-    }
+    .skill__meta { font-size: 0.72rem; color: var(--text-dim); display: flex; justify-content: space-between; padding-left: 0.7rem; }
     .skill__stars { color: var(--accent); }
-    .skill--highlight {
-      background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2));
-      border-color: var(--accent);
-    }
+    .skill--highlight { background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2)); border-color: var(--accent); }
 
     .skills__more {
-      display: inline-block;
-      margin-top: 1.3rem;
-      font-size: 0.78rem;
-      color: var(--accent);
-      cursor: pointer;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.55rem 1rem;
-      border: 1px solid var(--card-inset-border);
-      border-radius: var(--radius-sm);
-      transition: all 0.3s ease;
-      background: transparent;
-      font-family: var(--font-mono);
+      display: inline-block; margin-top: 1.3rem; font-size: 0.78rem; color: var(--accent);
+      cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.55rem 1rem; border: 1px solid var(--card-inset-border);
+      border-radius: var(--radius-sm); background: transparent; font-family: var(--font-mono);
+      transition: all 0.35s ease;
     }
-    .skills__more:hover {
-      background: var(--accent-soft);
-      border-color: var(--accent);
-      transform: translateX(4px);
-      box-shadow: 0 4px 12px var(--accent-glow);
-    }
+    .skills__more:hover { background: var(--accent-soft); border-color: var(--accent); transform: translateX(4px); box-shadow: 0 4px 12px var(--accent-glow); }
     .skill.hidden { display: none; }
     .skills__grid.expanded .skill.hidden { display: block; }
 
     /* =============================================
-       CERTIFICATES — gradient cards
+       CERTIFICATES
        ============================================= */
-    .certs__grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.9rem;
-    }
+    .certs__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
     .cert {
       padding: 1.1rem 1.3rem;
       background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2));
       border: 1px solid var(--card-inset-border);
-      border-radius: var(--radius-sm);
-      border-left: 3px solid var(--accent);
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+      border-radius: var(--radius-sm); border-left: 3px solid var(--accent);
+      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), box-shadow 0.45s ease, border-color 0.45s ease;
       cursor: default;
     }
-    .cert:hover {
-      transform: translateX(5px) translateY(-2px);
-      box-shadow: 0 6px 18px var(--accent-glow);
-      border-color: var(--accent);
-    }
-    .cert__title {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.35rem;
-      transition: color 0.3s ease;
-    }
+    .cert:hover { transform: translateX(6px) translateY(-2px); box-shadow: 0 6px 18px var(--accent-glow); border-color: var(--accent); }
+    .cert__title { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; transition: color 0.4s ease; }
     .cert:hover .cert__title { color: var(--accent-bright); }
     .cert__meta { font-size: 0.74rem; color: var(--accent); }
     .cert__meta .sep { color: var(--text-dim); margin: 0 0.3rem; }
@@ -599,149 +452,60 @@
        LANGUAGES
        ============================================= */
     .lang__list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-    .lang__list li {
-      position: relative;
-      padding-left: 1.2rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      transition: transform 0.25s ease, color 0.25s ease;
-      cursor: default;
-    }
+    .lang__list li { position: relative; padding-left: 1.2rem; font-size: 0.85rem; color: var(--text-muted); transition: transform 0.4s ease, color 0.4s ease; cursor: default; }
     .lang__list li:hover { transform: translateX(6px); color: var(--text); }
-    .lang__list li::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0.55rem;
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 1px;
-      transition: transform 0.3s ease;
-    }
+    .lang__list li::before { content: ''; position: absolute; left: 0; top: 0.55rem; width: 6px; height: 6px; background: var(--accent); border-radius: 1px; transition: transform 0.4s ease; }
     .lang__list li:hover::before { transform: rotate(45deg) scale(1.3); }
     .lang__list strong { color: var(--text); font-weight: 600; }
 
     /* =============================================
-       INTERESTS — scale on hover
+       INTERESTS
        ============================================= */
     .interests { display: flex; gap: 2.5rem; flex-wrap: wrap; }
-    .interest {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-muted);
-      font-size: 0.76rem;
-      cursor: default;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;
-    }
-    .interest i {
-      font-size: 1.7rem;
-      color: var(--accent);
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease, filter 0.3s ease;
-    }
+    .interest { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.76rem; cursor: default; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), color 0.3s ease; }
+    .interest i { font-size: 1.7rem; color: var(--accent); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), color 0.3s ease, filter 0.3s ease; }
     .interest:hover { transform: translateY(-5px); color: var(--accent); }
-    .interest:hover i {
-      transform: scale(1.55);
-      color: var(--accent-bright);
-      filter: drop-shadow(0 0 14px var(--accent-glow));
-    }
+    .interest:hover i { transform: scale(1.55); color: var(--accent-bright); filter: drop-shadow(0 0 14px var(--accent-glow)); }
 
     /* =============================================
        PROJECTS
        ============================================= */
-    .projects__grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 0.9rem;
-    }
+    .projects__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.9rem; }
     .project {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      padding: 1.1rem 1.2rem;
-      background: var(--card-inset);
-      border: 1px solid var(--card-inset-border);
-      border-radius: var(--radius-sm);
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      display: flex; flex-direction: column; gap: 0.45rem;
+      padding: 1.1rem 1.2rem; background: var(--card-inset);
+      border: 1px solid var(--card-inset-border); border-radius: var(--radius-sm);
+      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
       color: inherit;
     }
-    .project:hover {
-      border-color: var(--accent);
-      transform: translateX(5px) translateY(-3px);
-      background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2));
-      box-shadow: 0 8px 22px var(--accent-glow);
-    }
-    .project__lang {
-      font-size: 0.66rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-    }
-    .project__name { font-size: 0.92rem; font-weight: 700; color: var(--text); transition: color 0.3s ease; }
+    .project:hover { border-color: var(--accent); transform: translateX(5px) translateY(-3px); background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2)); box-shadow: 0 8px 22px var(--accent-glow); }
+    .project__lang { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+    .project__name { font-size: 0.92rem; font-weight: 700; color: var(--text); transition: color 0.4s ease; }
     .project:hover .project__name { color: var(--accent-bright); }
     .project__desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.55; flex-grow: 1; }
-    .project__icon {
-      align-self: flex-end;
-      color: var(--text-dim);
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-    }
+    .project__icon { align-self: flex-end; color: var(--text-dim); font-size: 1.1rem; transition: all 0.4s ease; }
     .project:hover .project__icon { color: var(--accent); transform: translate(4px, -4px) scale(1.2); }
 
     /* =============================================
-       CONTACT FORM
+       CONTACT
        ============================================= */
     .form { display: flex; flex-direction: column; gap: 1rem; }
     .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form__field label {
-      display: block;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--text-soft);
-      margin-bottom: 0.45rem;
-    }
+    .form__field label { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-soft); margin-bottom: 0.45rem; }
     .form__field input, .form__field textarea {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      background: var(--card-inset);
-      border: 1px solid var(--card-inset-border);
-      border-radius: var(--radius-sm);
-      color: var(--text);
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      transition: all 0.3s ease;
+      width: 100%; padding: 0.8rem 1rem; background: var(--card-inset);
+      border: 1px solid var(--card-inset-border); border-radius: var(--radius-sm);
+      color: var(--text); font-family: var(--font-mono); font-size: 0.85rem; transition: all 0.3s ease;
     }
-    .form__field input:focus, .form__field textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-soft);
-      transform: translateY(-1px);
-    }
+    .form__field input:focus, .form__field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); transform: translateY(-1px); }
     .form__field textarea { resize: vertical; min-height: 120px; }
     .form__submit {
-      align-self: flex-start;
-      padding: 0.8rem 1.6rem;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+      align-self: flex-start; padding: 0.8rem 1.6rem; background: var(--accent); color: #fff;
+      border: none; border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem;
     }
-    .form__submit:hover {
-      background: var(--accent-bright);
-      transform: translateY(-2px) translateX(2px);
-      box-shadow: 0 8px 22px var(--accent-glow);
-    }
+    .form__submit:hover { background: var(--accent-bright); transform: translateY(-2px) translateX(2px); box-shadow: 0 8px 22px var(--accent-glow); }
     .form__status { font-size: 0.82rem; margin-top: 0.5rem; min-height: 1.3rem; }
     .form__status.success { color: var(--accent); }
     .form__status.error { color: #e0468a; }
@@ -749,15 +513,7 @@
     /* =============================================
        FOOTER
        ============================================= */
-    .footer {
-      text-align: center;
-      margin-top: 2.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--card-border);
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      letter-spacing: 0.1em;
-    }
+    .footer { text-align: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.1em; }
 
     /* =============================================
        REVEAL
@@ -780,39 +536,32 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
       .home__photo-wrap { animation: none; }
-      .section__title .cursor { animation: none; opacity: 1; }
+      .crt, .crt-roll, .page::before, .page::after { display: none; }
     }
   </style>
 </head>
 <body>
 
   <canvas id="dots"></canvas>
+  <div class="crt-roll"></div>
+  <div class="crt"></div>
 
   <div class="page">
     <div class="resume">
 
-      <!-- ============================================
-           LEFT COLUMN
-           ============================================ -->
+      <!-- LEFT COLUMN -->
       <aside class="col-left">
 
-        <!-- HOME -->
         <section class="home">
           <div class="home__actions">
-            <a class="icon-btn" href="cv-yasmany-montiel.pdf" download title="Download CV" aria-label="Download CV">
-              <i class="bx bx-download"></i>
-            </a>
-            <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
-              <i class="bx bx-moon"></i>
-            </button>
+            <a class="icon-btn" href="cv-yasmany-montiel.pdf" download title="Download CV" aria-label="Download CV"><i class="bx bx-download"></i></a>
+            <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme"><i class="bx bx-moon"></i></button>
           </div>
-
           <div class="home__photo-wrap">
             <img src="https://avatars.githubusercontent.com/u/63186744?v=4" alt="Yasmany Montiel" class="home__photo">
           </div>
           <h1 class="home__name">YASMANY MONTIEL <b>RIVERA</b></h1>
           <p class="home__title">Senior Software Architect</p>
-
           <div class="home__info">
             <span><i class="bx bx-map"></i> Colle di Val d'Elsa, Tuscany, Italy</span>
             <a href="mailto:yasmontiel87@gmail.com"><i class="bx bx-envelope"></i> yasmontiel87@gmail.com</a>
@@ -821,54 +570,34 @@
           </div>
         </section>
 
-        <!-- SOCIAL -->
         <section class="reveal">
-          <h2 class="section__title" data-text="SOCIAL"></h2>
+          <h2 class="section__title" data-title="SOCIAL"></h2>
           <div class="social__list">
             <a href="https://www.linkedin.com/in/yasmany-montiel-rivera/" target="_blank" rel="noopener" class="social__link">
               <i class="bx bxl-linkedin-square social__icon"></i>
-              <div class="social__meta">
-                <span class="social__label">LINKEDIN</span>
-                <span class="social__handle">@yasmany-montiel-rivera</span>
-              </div>
+              <div class="social__meta"><span class="social__label">LINKEDIN</span><span class="social__handle">@yasmany-montiel-rivera</span></div>
             </a>
             <a href="https://github.com/yasmany-montiel" target="_blank" rel="noopener" class="social__link">
               <i class="bx bxl-github social__icon"></i>
-              <div class="social__meta">
-                <span class="social__label">GITHUB</span>
-                <span class="social__handle">@yasmany-montiel</span>
-              </div>
+              <div class="social__meta"><span class="social__label">GITHUB</span><span class="social__handle">@yasmany-montiel</span></div>
             </a>
             <a href="https://twitter.com/rivera_yasmany" target="_blank" rel="noopener" class="social__link">
               <i class="bx bxl-twitter social__icon"></i>
-              <div class="social__meta">
-                <span class="social__label">TWITTER</span>
-                <span class="social__handle">@rivera_yasmany</span>
-              </div>
+              <div class="social__meta"><span class="social__label">TWITTER</span><span class="social__handle">@rivera_yasmany</span></div>
             </a>
           </div>
         </section>
 
-        <!-- PROFILE -->
         <section class="reveal">
-          <h2 class="section__title" data-text="PROFILE"></h2>
-          <p class="profile__text">
-            Senior <strong>Software Architect</strong> at <strong>Zucchetti</strong> with over a decade of full-stack experience. I lead the definition and evolution of complex software ecosystems, ensuring scalability, security, and high performance for enterprise solutions.
-          </p>
-          <p class="profile__text">
-            Proficient in <strong>.NET</strong>, <strong>React</strong>, <strong>SQL Server</strong>, microservices, modular monolith architecture, and advanced <strong>CI/CD</strong> pipelines. Deep expertise in <strong>Clean Architecture</strong>, <strong>SOLID</strong>, and <strong>Design Patterns</strong>.
-          </p>
-          <p class="profile__text">
-            Passionate about <strong>Generative AI</strong>, <strong>LangChain</strong>, conversational agents, and <strong>n8n</strong> automation. I love turning manual workflows into intelligent systems.
-          </p>
-          <p class="profile__text">
-            Former Computer Science professor at <strong>Universidad de Oriente</strong>, Cuba.
-          </p>
+          <h2 class="section__title" data-title="PROFILE"></h2>
+          <p class="profile__text">Senior <strong>Software Architect</strong> at <strong>Zucchetti</strong> with over a decade of full-stack experience. I lead the definition and evolution of complex software ecosystems, ensuring scalability, security, and high performance for enterprise solutions.</p>
+          <p class="profile__text">Proficient in <strong>.NET</strong>, <strong>React</strong>, <strong>SQL Server</strong>, microservices, modular monolith architecture, and advanced <strong>CI/CD</strong> pipelines. Deep expertise in <strong>Clean Architecture</strong>, <strong>SOLID</strong>, and <strong>Design Patterns</strong>.</p>
+          <p class="profile__text">Passionate about <strong>Generative AI</strong>, <strong>LangChain</strong>, conversational agents, and <strong>n8n</strong> automation. I love turning manual workflows into intelligent systems.</p>
+          <p class="profile__text">Former Computer Science professor at <strong>Universidad de Oriente</strong>, Cuba.</p>
         </section>
 
-        <!-- EDUCATION -->
         <section class="reveal">
-          <h2 class="section__title" data-text="EDUCATION"></h2>
+          <h2 class="section__title" data-title="EDUCATION"></h2>
           <div class="item-list">
             <div class="item">
               <span class="item__marker"></span>
@@ -884,16 +613,13 @@
               <span class="item__marker"></span>
               <h3 class="item__title">Italian Language Studies (L2)</h3>
               <div class="item__meta">CPIA 1 Firenze <span class="sep">·</span> Italy<br>Sep 2019 <span class="sep">-</span> Jun 2020</div>
-              <ul class="item__list">
-                <li>Official Italian language certification through the Provincial Center for Adult Education.</li>
-              </ul>
+              <ul class="item__list"><li>Official Italian language certification through the Provincial Center for Adult Education.</li></ul>
             </div>
           </div>
         </section>
 
-        <!-- SKILLS -->
         <section class="reveal" id="skills">
-          <h2 class="section__title" data-text="SKILLS"></h2>
+          <h2 class="section__title" data-title="SKILLS"></h2>
           <div class="skills__grid" id="skills-grid">
             <div class="skill skill--highlight"><div class="skill__name">.NET Core</div><div class="skill__meta"><span>4+ years</span><span class="skill__stars">★ 5</span></div></div>
             <div class="skill skill--highlight"><div class="skill__name">React</div><div class="skill__meta"><span>6 years</span><span class="skill__stars">★ 5</span></div></div>
@@ -927,14 +653,11 @@
 
       </aside>
 
-      <!-- ============================================
-           RIGHT COLUMN
-           ============================================ -->
+      <!-- RIGHT COLUMN -->
       <div class="col-right">
 
-        <!-- EXPERIENCE -->
         <section class="reveal">
-          <h2 class="section__title" data-text="EXPERIENCE"></h2>
+          <h2 class="section__title" data-title="EXPERIENCE"></h2>
           <div class="item-list">
             <div class="item">
               <span class="item__marker"></span>
@@ -954,10 +677,7 @@
               <span class="item__marker"></span>
               <h3 class="item__title">Senior Developer</h3>
               <div class="item__meta">Jun 2025 <span class="sep">-</span> Jan 2026 <span class="sep">|</span> Advinser</div>
-              <ul class="item__list">
-                <li>Senior full-stack development across client projects in the Tuscany region.</li>
-                <li>Architectural guidance and code review leadership.</li>
-              </ul>
+              <ul class="item__list"><li>Senior full-stack development across client projects in the Tuscany region.</li><li>Architectural guidance and code review leadership.</li></ul>
             </div>
             <div class="item">
               <span class="item__marker"></span>
@@ -1007,46 +727,20 @@
           </div>
         </section>
 
-        <!-- PROJECTS -->
         <section class="reveal">
-          <h2 class="section__title" data-text="PROJECTS"></h2>
+          <h2 class="section__title" data-title="PROJECTS"></h2>
           <div class="projects__grid">
-            <a href="https://github.com/yasmany-montiel/portafolio" target="_blank" rel="noopener" class="project">
-              <span class="project__lang">JavaScript</span><h3 class="project__name">portafolio</h3>
-              <p class="project__desc">Personal portfolio repository and frontend experiments.</p>
-              <i class="bx bx-link-external project__icon"></i>
-            </a>
-            <a href="https://github.com/yasmany-montiel/api-symfony5" target="_blank" rel="noopener" class="project">
-              <span class="project__lang">PHP · Symfony</span><h3 class="project__name">api-symfony5</h3>
-              <p class="project__desc">REST API built with Symfony 5 demonstrating clean architecture.</p>
-              <i class="bx bx-link-external project__icon"></i>
-            </a>
-            <a href="https://github.com/yasmany-montiel/react-client" target="_blank" rel="noopener" class="project">
-              <span class="project__lang">React</span><h3 class="project__name">react-client</h3>
-              <p class="project__desc">Sample React application with component patterns and state management.</p>
-              <i class="bx bx-link-external project__icon"></i>
-            </a>
-            <a href="https://github.com/yasmany-montiel/angular-study" target="_blank" rel="noopener" class="project">
-              <span class="project__lang">Angular</span><h3 class="project__name">angular-study</h3>
-              <p class="project__desc">Angular study project diving into advanced framework patterns.</p>
-              <i class="bx bx-link-external project__icon"></i>
-            </a>
-            <a href="https://github.com/yasmany-montiel/sample-heroes" target="_blank" rel="noopener" class="project">
-              <span class="project__lang">Angular · Java</span><h3 class="project__name">sample-heroes</h3>
-              <p class="project__desc">Full-stack app with Angular 14, Docker, and Java Spring Boot.</p>
-              <i class="bx bx-link-external project__icon"></i>
-            </a>
-            <a href="https://github.com/yasmany-montiel/sample-develop-test" target="_blank" rel="noopener" class="project">
-              <span class="project__lang">PHP</span><h3 class="project__name">sample-develop-test</h3>
-              <p class="project__desc">Development tests and experimentation playground.</p>
-              <i class="bx bx-link-external project__icon"></i>
-            </a>
+            <a href="https://github.com/yasmany-montiel/portafolio" target="_blank" rel="noopener" class="project"><span class="project__lang">JavaScript</span><h3 class="project__name">portafolio</h3><p class="project__desc">Personal portfolio repository and frontend experiments.</p><i class="bx bx-link-external project__icon"></i></a>
+            <a href="https://github.com/yasmany-montiel/api-symfony5" target="_blank" rel="noopener" class="project"><span class="project__lang">PHP · Symfony</span><h3 class="project__name">api-symfony5</h3><p class="project__desc">REST API built with Symfony 5 demonstrating clean architecture.</p><i class="bx bx-link-external project__icon"></i></a>
+            <a href="https://github.com/yasmany-montiel/react-client" target="_blank" rel="noopener" class="project"><span class="project__lang">React</span><h3 class="project__name">react-client</h3><p class="project__desc">Sample React application with component patterns and state management.</p><i class="bx bx-link-external project__icon"></i></a>
+            <a href="https://github.com/yasmany-montiel/angular-study" target="_blank" rel="noopener" class="project"><span class="project__lang">Angular</span><h3 class="project__name">angular-study</h3><p class="project__desc">Angular study project diving into advanced framework patterns.</p><i class="bx bx-link-external project__icon"></i></a>
+            <a href="https://github.com/yasmany-montiel/sample-heroes" target="_blank" rel="noopener" class="project"><span class="project__lang">Angular · Java</span><h3 class="project__name">sample-heroes</h3><p class="project__desc">Full-stack app with Angular 14, Docker, and Java Spring Boot.</p><i class="bx bx-link-external project__icon"></i></a>
+            <a href="https://github.com/yasmany-montiel/sample-develop-test" target="_blank" rel="noopener" class="project"><span class="project__lang">PHP</span><h3 class="project__name">sample-develop-test</h3><p class="project__desc">Development tests and experimentation playground.</p><i class="bx bx-link-external project__icon"></i></a>
           </div>
         </section>
 
-        <!-- CERTIFICATES -->
         <section class="reveal">
-          <h2 class="section__title" data-text="CERTIFICATES"></h2>
+          <h2 class="section__title" data-title="CERTIFICATES"></h2>
           <div class="certs__grid">
             <div class="cert"><h3 class="cert__title">Charming Development in Symfony 5</h3><div class="cert__meta">2021 <span class="sep">|</span> Symfony</div></div>
             <div class="cert"><h3 class="cert__title">Angular — The Complete Guide</h3><div class="cert__meta">2020 <span class="sep">|</span> Udemy</div></div>
@@ -1057,9 +751,8 @@
           </div>
         </section>
 
-        <!-- LANGUAGES -->
         <section class="reveal">
-          <h2 class="section__title" data-text="LANGUAGES"></h2>
+          <h2 class="section__title" data-title="LANGUAGES"></h2>
           <ul class="lang__list">
             <li><strong>Spanish</strong> — C2 (Native proficiency)</li>
             <li><strong>Italian</strong> — C1 (Professional working proficiency)</li>
@@ -1067,9 +760,8 @@
           </ul>
         </section>
 
-        <!-- INTERESTS -->
         <section class="reveal">
-          <h2 class="section__title" data-text="INTERESTS"></h2>
+          <h2 class="section__title" data-title="INTERESTS"></h2>
           <div class="interests">
             <div class="interest"><i class="bx bx-bot"></i><span>AI &amp; LLMs</span></div>
             <div class="interest"><i class="bx bx-code-alt"></i><span>Open Source</span></div>
@@ -1080,12 +772,9 @@
           </div>
         </section>
 
-        <!-- CONTACT -->
         <section class="reveal" id="contact">
-          <h2 class="section__title" data-text="CONTACT"></h2>
-          <p class="profile__text" style="margin-bottom: 1.5rem;">
-            Have a project in mind or want to collaborate? Drop me a message — I usually reply within 24 hours.
-          </p>
+          <h2 class="section__title" data-title="CONTACT"></h2>
+          <p class="profile__text" style="margin-bottom: 1.5rem;">Have a project in mind or want to collaborate? Drop me a message — I usually reply within 24 hours.</p>
           <form class="form" id="contact-form" action="https://formspree.io/f/REPLACE_WITH_YOUR_FORMSPREE_ID" method="POST">
             <div class="form__row">
               <div class="form__field"><label for="name">NAME</label><input type="text" id="name" name="name" required autocomplete="name"></div>
@@ -1109,53 +798,47 @@
     document.getElementById('updated').textContent =
       new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-    // Theme toggle (light is default)
+    // Theme toggle (light default)
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = themeToggle.querySelector('i');
-    function applyTheme(dark) {
-      document.body.classList.toggle('dark-theme', dark);
-      themeIcon.className = dark ? 'bx bx-sun' : 'bx bx-moon';
-    }
+    function applyTheme(dark) { document.body.classList.toggle('dark-theme', dark); themeIcon.className = dark ? 'bx bx-sun' : 'bx bx-moon'; }
     let isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     applyTheme(isDark);
     themeToggle.addEventListener('click', () => { isDark = !isDark; applyTheme(isDark); });
 
     // ============================
-    // TYPEWRITER section titles — types out when scrolled into view
+    // SECTION TITLES — Typed.js typewriter, then color wave
     // ============================
-    function typeTitle(el) {
-      const text = el.dataset.text;
-      el.innerHTML = '<span class="typed"></span><span class="cursor">_</span>';
-      const typed = el.querySelector('.typed');
-      let i = 0;
-      function step() {
-        if (i < text.length) {
-          const span = document.createElement('span');
-          span.className = 'letter';
-          span.textContent = text[i];
-          typed.appendChild(span);
-          i++;
-          setTimeout(step, 60 + Math.random() * 40);
-        } else {
-          // Typing done — start the continuous color wave with staggered delays
-          el.classList.add('wave');
-          el.querySelectorAll('.letter').forEach((letter, idx) => {
-            letter.style.animationDelay = (idx * 0.12) + 's';
-          });
+    function setupTitle(el) {
+      const text = el.dataset.title;
+      // Typed.js needs a child span to type into
+      const span = document.createElement('span');
+      el.appendChild(span);
+      new Typed(span, {
+        strings: [text],
+        typeSpeed: 55,
+        showCursor: true,
+        cursorChar: '_',
+        onComplete: () => {
+          // Replace typed text with per-letter wave spans, keep the cursor
+          const cursor = el.querySelector('.typed-cursor');
+          span.innerHTML = text.split('').map((c, i) =>
+            `<span class="wv" style="animation-delay:${i * 0.12}s">${c === ' ' ? '&nbsp;' : c}</span>`
+          ).join('');
+          if (cursor) el.appendChild(cursor); // keep blinking cursor at the end
         }
-      }
-      step();
+      });
     }
 
     const titleIO = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting && !e.target.dataset.done) {
           e.target.dataset.done = '1';
-          typeTitle(e.target);
+          setupTitle(e.target);
           titleIO.unobserve(e.target);
         }
       });
-    }, { threshold: 0.4 });
+    }, { threshold: 0.3 });
     document.querySelectorAll('.section__title').forEach(t => titleIO.observe(t));
 
     // Skills show more
@@ -1173,9 +856,7 @@
     }, { threshold: 0.05 });
     reveals.forEach(r => io.observe(r));
 
-    // ============================
-    // Subtle dotted starfield (twinkle)
-    // ============================
+    // Twinkling dotted starfield
     (function () {
       const canvas = document.getElementById('dots');
       const ctx = canvas.getContext('2d');
@@ -1186,12 +867,7 @@
         const count = Math.floor((w * h) / 16000);
         stars = [];
         for (let i = 0; i < count; i++) {
-          stars.push({
-            x: Math.random() * w, y: Math.random() * h,
-            r: Math.random() * 1.4 + 0.3,
-            a: Math.random() * 0.6 + 0.2,
-            s: (Math.random() * 0.004 + 0.001) * (Math.random() > 0.5 ? 1 : -1)
-          });
+          stars.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.4+0.3, a: Math.random()*0.6+0.2, s: (Math.random()*0.004+0.001)*(Math.random()>0.5?1:-1) });
         }
       }
       function draw() {
@@ -1201,7 +877,7 @@
           st.a += st.s;
           if (st.a > 0.8 || st.a < 0.15) st.s *= -1;
           ctx.beginPath();
-          ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+          ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
           ctx.fillStyle = base.replace(/[\d.]+\)$/, `${st.a})`);
           ctx.fill();
         });
@@ -1209,8 +885,7 @@
       }
       window.addEventListener('resize', resize);
       resize();
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) draw();
-      else draw();
+      draw();
     })();
 
     // Contact form
