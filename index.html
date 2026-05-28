@@ -13,23 +13,18 @@
 
   <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/63186744?v=4">
 
-  <!-- Boxicons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
-  <!-- Mono font: JetBrains Mono for the whole UI (terminal/code aesthetic) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* =============================================
-       THEME — Dark (default) + Light
-       Purple/Violet palette inspired by the reference
+       THEME — Dark (default) + Light, purple palette
        ============================================= */
     :root {
-      /* DARK theme (default) */
       --bg: #0a0a16;
-      --bg-stars: #0a0a16;
       --card: #14142b;
       --card-hover: #1a1a36;
       --card-inset: #1d1d3d;
@@ -41,15 +36,14 @@
       --text-soft: #7a76b0;
       --text-dim: #5a5688;
 
-      /* Purple accent system */
       --accent: #b794f6;
       --accent-bright: #c4a8ff;
       --accent-dim: #8b5fdc;
       --accent-soft: rgba(183, 148, 246, 0.15);
       --accent-glow: rgba(183, 148, 246, 0.35);
 
-      --star-color: rgba(183, 148, 246, 0.4);
-      --shadow-card: 0 0 0 1px var(--border), 0 4px 12px rgba(0, 0, 0, 0.2);
+      --rain-color: rgba(183, 148, 246, 0.45);
+      --rain-color-head: rgba(220, 200, 255, 0.95);
 
       --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
       --radius: 14px;
@@ -58,7 +52,6 @@
 
     body.light-theme {
       --bg: #f5f0ff;
-      --bg-stars: #f5f0ff;
       --card: #ffffff;
       --card-hover: #faf7ff;
       --card-inset: #f5f0ff;
@@ -76,8 +69,8 @@
       --accent-soft: rgba(124, 58, 237, 0.1);
       --accent-glow: rgba(124, 58, 237, 0.2);
 
-      --star-color: rgba(124, 58, 237, 0.25);
-      --shadow-card: 0 0 0 1px var(--border), 0 4px 12px rgba(124, 58, 237, 0.06);
+      --rain-color: rgba(124, 58, 237, 0.3);
+      --rain-color-head: rgba(124, 58, 237, 0.85);
     }
 
     /* =============================================
@@ -102,14 +95,80 @@
       overflow-x: hidden;
     }
 
-    /* Starfield background */
-    #stars {
+    /* =============================================
+       BINARY RAIN BACKGROUND
+       ============================================= */
+    #binary-rain {
       position: fixed;
       top: 0; left: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
       pointer-events: none;
+    }
+
+    /* =============================================
+       OLD MOVIE EFFECT — scanlines, flicker, grain
+       ============================================= */
+    .crt-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: overlay;
+      opacity: 0.5;
+    }
+
+    /* Scanlines: horizontal lines that move down slowly */
+    .crt-overlay::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15) 0px,
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      animation: scanlines 8s linear infinite;
+    }
+
+    /* Subtle vignette + flicker */
+    .crt-overlay::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.35) 100%);
+      animation: flicker 7s infinite;
+    }
+
+    body.light-theme .crt-overlay {
+      opacity: 0.25;
+      mix-blend-mode: multiply;
+    }
+
+    @keyframes scanlines {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 100px; }
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      4% { opacity: 0.92; }
+      6% { opacity: 1; }
+      19% { opacity: 0.96; }
+      20% { opacity: 1; }
+      52% { opacity: 0.95; }
+      54% { opacity: 1; }
+      77% { opacity: 0.94; }
+      79% { opacity: 1; }
     }
 
     a { color: inherit; text-decoration: none; }
@@ -119,7 +178,7 @@
        ============================================= */
     .container {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       max-width: 1200px;
       margin: 0 auto;
       padding: 3rem 2rem;
@@ -147,10 +206,9 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 2rem 1.75rem;
-      transition: background 0.4s ease, border-color 0.4s ease;
+      transition: background 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
     }
 
-    /* Floating action buttons inside home card */
     .card-actions {
       position: absolute;
       top: 1.5rem;
@@ -174,12 +232,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
 
     .icon-btn:hover {
       background: var(--accent-soft);
       color: var(--accent-bright);
+      transform: translateY(-2px) scale(1.08);
     }
 
     /* =============================================
@@ -190,15 +249,31 @@
       padding-top: 4rem;
     }
 
-    .home__photo {
+    /* Photo with floating animation */
+    .home__photo-wrap {
       width: 130px;
       height: 130px;
       margin: 0 auto 1.5rem;
+      animation: float 4.5s ease-in-out infinite;
+    }
+    .home__photo {
+      width: 100%;
+      height: 100%;
       border-radius: 6px;
       object-fit: cover;
       border: 2px solid var(--accent);
       box-shadow: 0 0 0 4px var(--card), 0 0 30px var(--accent-glow);
       filter: grayscale(0.4) contrast(1.05);
+      transition: filter 0.3s ease, box-shadow 0.3s ease;
+    }
+    .home__photo:hover {
+      filter: grayscale(0) contrast(1.1);
+      box-shadow: 0 0 0 4px var(--card), 0 0 50px var(--accent-glow);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
     .home__name {
@@ -234,18 +309,25 @@
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      transition: color 0.2s;
+      transition: color 0.25s ease, transform 0.25s ease;
       word-break: break-all;
     }
-    .home__info a:hover { color: var(--accent); }
+    .home__info a:hover {
+      color: var(--accent);
+      transform: translateX(4px);
+    }
     .home__info i {
       color: var(--accent);
       font-size: 1.05rem;
       min-width: 18px;
+      transition: transform 0.3s ease;
+    }
+    .home__info a:hover i {
+      transform: scale(1.2);
     }
 
     /* =============================================
-       SECTION TITLE (underscore terminal style)
+       SECTION TITLE — terminal cursor effect
        ============================================= */
     .section__title {
       font-size: 0.82rem;
@@ -258,11 +340,23 @@
       border-bottom: 1.5px solid var(--accent);
       padding-bottom: 0.3rem;
       padding-right: 0.4rem;
+      position: relative;
     }
+
+    /* Each letter inside the title can flicker color */
+    .section__title .letter {
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+    .section__title .letter.lit {
+      color: var(--accent-bright);
+      text-shadow: 0 0 8px var(--accent-glow);
+    }
+
     .section__title::after {
       content: '_';
       color: var(--accent);
-      animation: blink 1.2s steps(1) infinite;
+      animation: blink 1s steps(1) infinite;
       margin-left: 2px;
     }
     @keyframes blink {
@@ -271,7 +365,7 @@
     }
 
     /* =============================================
-       SOCIAL LINKS
+       SOCIAL LINKS — slide right on hover
        ============================================= */
     .social__list {
       display: flex;
@@ -286,16 +380,38 @@
       background: var(--card-inset);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .social__link::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: center;
+      transition: transform 0.3s ease;
     }
     .social__link:hover {
       border-color: var(--accent);
-      transform: translateX(2px);
+      transform: translateX(6px);
+      background: var(--accent-soft);
+    }
+    .social__link:hover::before {
+      transform: scaleY(1);
     }
     .social__icon {
       font-size: 1.4rem;
       color: var(--accent);
       min-width: 22px;
+      transition: transform 0.3s ease;
+    }
+    .social__link:hover .social__icon {
+      transform: scale(1.15) rotate(-5deg);
     }
     .social__meta {
       display: flex;
@@ -311,6 +427,7 @@
     .social__handle {
       font-size: 0.85rem;
       color: var(--text);
+      transition: color 0.3s ease;
     }
     .social__link:hover .social__handle { color: var(--accent); }
 
@@ -331,7 +448,27 @@
 
     /* =============================================
        EXPERIENCE / EDUCATION ITEMS
+       With vertical line that fades at the bottom
        ============================================= */
+    .item-list {
+      position: relative;
+    }
+
+    /* The fading vertical line */
+    .item-list::before {
+      content: '';
+      position: absolute;
+      left: 4.5px;
+      top: 10px;
+      bottom: 0;
+      width: 1.5px;
+      background: linear-gradient(180deg,
+        var(--accent) 0%,
+        var(--accent-dim) 60%,
+        transparent 100%);
+      opacity: 0.5;
+    }
+
     .item {
       position: relative;
       padding-left: 1.4rem;
@@ -348,6 +485,11 @@
       background: var(--accent);
       border-radius: 2px;
       box-shadow: 0 0 8px var(--accent-glow);
+      transition: all 0.3s ease;
+    }
+    .item:hover .item__marker {
+      transform: scale(1.3) rotate(45deg);
+      box-shadow: 0 0 14px var(--accent-glow);
     }
 
     .item__title {
@@ -414,10 +556,18 @@
       border: 1px solid var(--border);
       border-radius: 4px;
       color: var(--text-muted);
+      transition: all 0.25s ease;
+      cursor: default;
+    }
+    .item__tech span:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px var(--accent-glow);
     }
 
     /* =============================================
-       SKILLS (grid of cards)
+       SKILLS
        ============================================= */
     .skills__grid {
       display: grid;
@@ -429,12 +579,15 @@
       background: var(--card-inset);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       position: relative;
+      cursor: default;
     }
     .skill:hover {
       border-color: var(--accent);
-      transform: translateY(-1px);
+      transform: translateX(4px) translateY(-2px);
+      background: var(--accent-soft);
+      box-shadow: 0 4px 12px var(--accent-glow);
     }
     .skill__name {
       font-size: 0.83rem;
@@ -444,13 +597,19 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
+      transition: color 0.3s ease;
     }
+    .skill:hover .skill__name { color: var(--accent-bright); }
     .skill__name::before {
       content: '';
       width: 5px;
       height: 5px;
       background: var(--accent);
       border-radius: 1px;
+      transition: transform 0.3s ease;
+    }
+    .skill:hover .skill__name::before {
+      transform: rotate(45deg) scale(1.3);
     }
     .skill__meta {
       font-size: 0.72rem;
@@ -459,9 +618,7 @@
       justify-content: space-between;
       padding-left: 0.65rem;
     }
-    .skill__stars {
-      color: var(--accent);
-    }
+    .skill__stars { color: var(--accent); }
     .skill--highlight { background: var(--accent-soft); border-color: var(--accent); }
 
     .skills__more {
@@ -475,13 +632,15 @@
       padding: 0.5rem 0.9rem;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      transition: all 0.2s;
+      transition: all 0.3s ease;
       background: transparent;
       font-family: var(--font-mono);
     }
     .skills__more:hover {
       background: var(--accent-soft);
       border-color: var(--accent);
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px var(--accent-glow);
     }
 
     .skill.hidden { display: none; }
@@ -500,25 +659,28 @@
       background: var(--card-inset);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      transition: all 0.2s;
+      transition: all 0.3s ease;
+      cursor: default;
     }
     .cert:hover {
       border-color: var(--accent);
-      transform: translateY(-2px);
+      transform: translateX(4px) translateY(-2px);
+      background: var(--accent-soft);
+      box-shadow: 0 6px 16px var(--accent-glow);
     }
     .cert__title {
       font-size: 0.88rem;
       font-weight: 600;
       color: var(--text);
       margin-bottom: 0.35rem;
+      transition: color 0.3s ease;
     }
+    .cert:hover .cert__title { color: var(--accent-bright); }
     .cert__meta {
       font-size: 0.74rem;
       color: var(--accent);
     }
     .cert__meta .sep { color: var(--text-dim); margin: 0 0.3rem; }
-    .cert__meta a { color: var(--accent); }
-    .cert__meta a i { font-size: 0.85rem; vertical-align: middle; }
 
     /* =============================================
        LANGUAGES
@@ -534,6 +696,12 @@
       padding-left: 1.1rem;
       font-size: 0.85rem;
       color: var(--text-muted);
+      transition: transform 0.25s ease, color 0.25s ease;
+      cursor: default;
+    }
+    .lang__list li:hover {
+      transform: translateX(6px);
+      color: var(--text);
     }
     .lang__list li::before {
       content: '';
@@ -544,11 +712,13 @@
       height: 5px;
       background: var(--accent);
       border-radius: 1px;
+      transition: transform 0.3s ease;
     }
+    .lang__list li:hover::before { transform: rotate(45deg) scale(1.3); }
     .lang__list strong { color: var(--text); font-weight: 600; }
 
     /* =============================================
-       INTERESTS
+       INTERESTS — scale on hover
        ============================================= */
     .interests {
       display: flex;
@@ -562,10 +732,22 @@
       gap: 0.4rem;
       color: var(--text-muted);
       font-size: 0.75rem;
+      cursor: default;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;
     }
     .interest i {
       font-size: 1.6rem;
       color: var(--accent);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease, filter 0.3s ease;
+    }
+    .interest:hover {
+      transform: translateY(-4px);
+      color: var(--accent);
+    }
+    .interest:hover i {
+      transform: scale(1.5);
+      color: var(--accent-bright);
+      filter: drop-shadow(0 0 12px var(--accent-glow));
     }
 
     /* =============================================
@@ -584,12 +766,14 @@
       background: var(--card-inset);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      transition: all 0.2s;
+      transition: all 0.3s ease;
       color: inherit;
     }
     .project:hover {
       border-color: var(--accent);
-      transform: translateY(-2px);
+      transform: translateX(4px) translateY(-3px);
+      background: var(--accent-soft);
+      box-shadow: 0 8px 20px var(--accent-glow);
     }
     .project__lang {
       font-size: 0.66rem;
@@ -601,7 +785,9 @@
       font-size: 0.92rem;
       font-weight: 700;
       color: var(--text);
+      transition: color 0.3s ease;
     }
+    .project:hover .project__name { color: var(--accent-bright); }
     .project__desc {
       font-size: 0.78rem;
       color: var(--text-muted);
@@ -612,11 +798,11 @@
       align-self: flex-end;
       color: var(--text-dim);
       font-size: 1.05rem;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
     }
     .project:hover .project__icon {
       color: var(--accent);
-      transform: translate(3px, -3px);
+      transform: translate(4px, -4px) scale(1.2);
     }
 
     /* =============================================
@@ -650,13 +836,14 @@
       color: var(--text);
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
     }
     .form__field input:focus,
     .form__field textarea:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px var(--accent-soft);
+      transform: translateY(-1px);
     }
     .form__field textarea {
       resize: vertical;
@@ -675,15 +862,15 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
     }
     .form__submit:hover {
       background: var(--accent-bright);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 15px var(--accent-glow);
+      transform: translateY(-2px) translateX(2px);
+      box-shadow: 0 8px 20px var(--accent-glow);
     }
     .form__status {
       font-size: 0.82rem;
@@ -706,12 +893,12 @@
     }
 
     /* =============================================
-       REVEAL ANIMATIONS
+       REVEAL
        ============================================= */
     .reveal {
       opacity: 0;
       transform: translateY(15px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition: opacity 0.7s ease, transform 0.7s ease;
     }
     .reveal.visible {
       opacity: 1;
@@ -741,13 +928,19 @@
         transition-duration: 0.01ms !important;
       }
       .section__title::after { animation: none; opacity: 1; }
+      .home__photo-wrap { animation: none; }
+      .crt-overlay { display: none; }
+      #binary-rain { opacity: 0.15; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Starfield background -->
-  <canvas id="stars"></canvas>
+  <!-- Binary rain background -->
+  <canvas id="binary-rain"></canvas>
+
+  <!-- Old movie CRT overlay (scanlines + flicker) -->
+  <div class="crt-overlay"></div>
 
   <div class="container">
     <div class="resume">
@@ -768,7 +961,9 @@
             </button>
           </div>
 
-          <img src="https://avatars.githubusercontent.com/u/63186744?v=4" alt="Yasmany Montiel" class="home__photo">
+          <div class="home__photo-wrap">
+            <img src="https://avatars.githubusercontent.com/u/63186744?v=4" alt="Yasmany Montiel" class="home__photo">
+          </div>
           <h1 class="home__name">YASMANY MONTIEL <b>RIVERA</b></h1>
           <p class="home__title">Senior Software Architect</p>
 
@@ -782,7 +977,7 @@
 
         <!-- SOCIAL -->
         <section class="card reveal">
-          <h2 class="section__title">SOCIAL</h2>
+          <h2 class="section__title" data-text="SOCIAL">SOCIAL</h2>
           <div class="social__list">
             <a href="https://www.linkedin.com/in/yasmany-montiel-rivera/" target="_blank" rel="noopener" class="social__link">
               <i class="bx bxl-linkedin-square social__icon"></i>
@@ -810,7 +1005,7 @@
 
         <!-- PROFILE -->
         <section class="card reveal">
-          <h2 class="section__title">PROFILE</h2>
+          <h2 class="section__title" data-text="PROFILE">PROFILE</h2>
           <p class="profile__text">
             Senior <strong>Software Architect</strong> at <strong>Zucchetti</strong> with over a decade of full-stack experience. I lead the definition and evolution of complex software ecosystems, ensuring scalability, security, and high performance for enterprise solutions.
           </p>
@@ -827,38 +1022,40 @@
 
         <!-- EDUCATION -->
         <section class="card reveal">
-          <h2 class="section__title">EDUCATION</h2>
+          <h2 class="section__title" data-text="EDUCATION">EDUCATION</h2>
+          <div class="item-list">
 
-          <div class="item">
-            <span class="item__marker"></span>
-            <h3 class="item__title">Bachelor's degree in Computer Science</h3>
-            <div class="item__meta">
-              Universidad de Oriente <span class="sep">·</span> Cuba<br>
-              Sep 2006 <span class="sep">-</span> Jun 2012
+            <div class="item">
+              <span class="item__marker"></span>
+              <h3 class="item__title">Bachelor's degree in Computer Science</h3>
+              <div class="item__meta">
+                Universidad de Oriente <span class="sep">·</span> Cuba<br>
+                Sep 2006 <span class="sep">-</span> Jun 2012
+              </div>
+              <ul class="item__list">
+                <li>Comprehensive training in <strong>algorithms, data structures, software engineering, databases</strong>, and computer networks.</li>
+                <li>Foundation in <strong>object-oriented programming</strong> and software design patterns.</li>
+                <li>Specialized in web and desktop application development.</li>
+              </ul>
             </div>
-            <ul class="item__list">
-              <li>Comprehensive training in <strong>algorithms, data structures, software engineering, databases</strong>, and computer networks.</li>
-              <li>Foundation in <strong>object-oriented programming</strong> and software design patterns.</li>
-              <li>Specialized in web and desktop application development.</li>
-            </ul>
-          </div>
 
-          <div class="item">
-            <span class="item__marker"></span>
-            <h3 class="item__title">Italian Language Studies (L2)</h3>
-            <div class="item__meta">
-              CPIA 1 Firenze <span class="sep">·</span> Italy<br>
-              Sep 2019 <span class="sep">-</span> Jun 2020
+            <div class="item">
+              <span class="item__marker"></span>
+              <h3 class="item__title">Italian Language Studies (L2)</h3>
+              <div class="item__meta">
+                CPIA 1 Firenze <span class="sep">·</span> Italy<br>
+                Sep 2019 <span class="sep">-</span> Jun 2020
+              </div>
+              <ul class="item__list">
+                <li>Official Italian language certification through the Provincial Center for Adult Education.</li>
+              </ul>
             </div>
-            <ul class="item__list">
-              <li>Official Italian language certification through the Provincial Center for Adult Education.</li>
-            </ul>
           </div>
         </section>
 
         <!-- SKILLS -->
         <section class="card reveal" id="skills">
-          <h2 class="section__title">SKILLS</h2>
+          <h2 class="section__title" data-text="SKILLS">SKILLS</h2>
           <div class="skills__grid" id="skills-grid">
             <div class="skill skill--highlight">
               <div class="skill__name">.NET Core</div>
@@ -901,7 +1098,6 @@
               <div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div>
             </div>
 
-            <!-- Hidden skills (show more) -->
             <div class="skill hidden">
               <div class="skill__name">Spring Boot</div>
               <div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div>
@@ -979,106 +1175,108 @@
 
         <!-- EXPERIENCE -->
         <section class="card reveal">
-          <h2 class="section__title">EXPERIENCE</h2>
+          <h2 class="section__title" data-text="EXPERIENCE">EXPERIENCE</h2>
+          <div class="item-list">
 
-          <div class="item">
-            <span class="item__marker"></span>
-            <h3 class="item__title">Senior Software Architect</h3>
-            <div class="item__meta">
-              Feb 2026 <span class="sep">-</span> Present <span class="sep">|</span> Zucchetti
+            <div class="item">
+              <span class="item__marker"></span>
+              <h3 class="item__title">Senior Software Architect</h3>
+              <div class="item__meta">
+                Feb 2026 <span class="sep">-</span> Present <span class="sep">|</span> Zucchetti
+              </div>
+              <ul class="item__list">
+                <li>Design and implementation of <strong>microservices and modular monolith architectures</strong> using .NET (Core/6+) and React, optimizing code maintainability and system performance.</li>
+                <li>Modeling and optimization of complex relational databases on <strong>SQL Server</strong>, ensuring data integrity and query efficiency in high-traffic scenarios.</li>
+                <li>Definition of <strong>advanced CI/CD pipelines</strong> and management of Docker-based distributed infrastructure, reducing deployment times and improving production stability.</li>
+                <li>Integration of <strong>Generative AI (LLM)</strong> solutions for internal process automation and intelligent product features.</li>
+                <li>Mentoring development teams, conducting critical code reviews and promoting engineering best practices: <strong>Clean Architecture, SOLID, Design Patterns</strong>.</li>
+              </ul>
+              <p class="item__tech-label">Technologies used</p>
+              <div class="item__tech">
+                <span>.NET</span><span>React</span><span>SQL Server</span><span>Azure</span><span>AWS</span><span>Docker</span><span>Jenkins</span><span>Git</span><span>LangChain</span>
+              </div>
             </div>
-            <ul class="item__list">
-              <li>Design and implementation of <strong>microservices and modular monolith architectures</strong> using .NET (Core/6+) and React, optimizing code maintainability and system performance.</li>
-              <li>Modeling and optimization of complex relational databases on <strong>SQL Server</strong>, ensuring data integrity and query efficiency in high-traffic scenarios.</li>
-              <li>Definition of <strong>advanced CI/CD pipelines</strong> and management of Docker-based distributed infrastructure, reducing deployment times and improving production stability.</li>
-              <li>Integration of <strong>Generative AI (LLM)</strong> solutions for internal process automation and intelligent product features.</li>
-              <li>Mentoring development teams, conducting critical code reviews and promoting engineering best practices: <strong>Clean Architecture, SOLID, Design Patterns</strong>.</li>
-            </ul>
-            <p class="item__tech-label">Technologies used</p>
-            <div class="item__tech">
-              <span>.NET</span><span>React</span><span>SQL Server</span><span>Azure</span><span>AWS</span><span>Docker</span><span>Jenkins</span><span>Git</span><span>LangChain</span>
-            </div>
-          </div>
 
-          <div class="item">
-            <span class="item__marker"></span>
-            <h3 class="item__title">Senior Developer</h3>
-            <div class="item__meta">
-              Jun 2025 <span class="sep">-</span> Jan 2026 <span class="sep">|</span> Advinser
+            <div class="item">
+              <span class="item__marker"></span>
+              <h3 class="item__title">Senior Developer</h3>
+              <div class="item__meta">
+                Jun 2025 <span class="sep">-</span> Jan 2026 <span class="sep">|</span> Advinser
+              </div>
+              <ul class="item__list">
+                <li>Senior full-stack development across client projects in the Tuscany region.</li>
+                <li>Architectural guidance and code review leadership.</li>
+              </ul>
             </div>
-            <ul class="item__list">
-              <li>Senior full-stack development across client projects in the Tuscany region.</li>
-              <li>Architectural guidance and code review leadership.</li>
-            </ul>
-          </div>
 
-          <div class="item">
-            <span class="item__marker"></span>
-            <h3 class="item__title">Full Stack Developer</h3>
-            <div class="item__meta">
-              Jul 2023 <span class="sep">-</span> Jun 2025 <span class="sep">|</span> ETRURIA P.A. — S.P.A.
+            <div class="item">
+              <span class="item__marker"></span>
+              <h3 class="item__title">Full Stack Developer</h3>
+              <div class="item__meta">
+                Jul 2023 <span class="sep">-</span> Jun 2025 <span class="sep">|</span> ETRURIA P.A. — S.P.A.
+              </div>
+              <ul class="item__list">
+                <li>Designed, developed, and maintained systems and applications for a <strong>public administration entity</strong> serving police, local authorities, and other government bodies.</li>
+                <li>Worked across the stack: HTML, CSS, JavaScript, TypeScript, Python, PHP — with Laravel, Java with Android Studio, and Nest.js.</li>
+                <li>CI/CD environments with <strong>Jira, Jenkins, Docker, DevContainers</strong> and SQL databases on Linux (Debian).</li>
+              </ul>
+              <p class="item__tech-label">Technologies used</p>
+              <div class="item__tech">
+                <span>Laravel</span><span>Nest.js</span><span>TypeScript</span><span>Python</span><span>PHP</span><span>Java</span><span>Android Studio</span><span>Docker</span><span>Jenkins</span>
+              </div>
             </div>
-            <ul class="item__list">
-              <li>Designed, developed, and maintained systems and applications for a <strong>public administration entity</strong> serving police, local authorities, and other government bodies.</li>
-              <li>Worked across the stack: HTML, CSS, JavaScript, TypeScript, Python, PHP — with Laravel, Java with Android Studio, and Nest.js.</li>
-              <li>CI/CD environments with <strong>Jira, Jenkins, Docker, DevContainers</strong> and SQL databases on Linux (Debian).</li>
-            </ul>
-            <p class="item__tech-label">Technologies used</p>
-            <div class="item__tech">
-              <span>Laravel</span><span>Nest.js</span><span>TypeScript</span><span>Python</span><span>PHP</span><span>Java</span><span>Android Studio</span><span>Docker</span><span>Jenkins</span>
-            </div>
-          </div>
 
-          <div class="item">
-            <span class="item__marker"></span>
-            <h3 class="item__title">Full Stack Developer</h3>
-            <div class="item__meta">
-              Oct 2020 <span class="sep">-</span> May 2023 <span class="sep">|</span> Peoplewalking
+            <div class="item">
+              <span class="item__marker"></span>
+              <h3 class="item__title">Full Stack Developer</h3>
+              <div class="item__meta">
+                Oct 2020 <span class="sep">-</span> May 2023 <span class="sep">|</span> Peoplewalking
+              </div>
+              <ul class="item__list">
+                <li>Full-stack development with <strong>agile methodologies</strong> (SCRUM, XP) across frontend and backend technologies.</li>
+                <li>Built <strong>cross-platform applications</strong> with Angular, Ionic, Flutter, Symfony, and Spring Boot.</li>
+                <li><strong>Team leader role</strong> coordinating development workflows, code reviews, and project delivery.</li>
+              </ul>
+              <p class="item__tech-label">Technologies used</p>
+              <div class="item__tech">
+                <span>Angular</span><span>Ionic</span><span>Flutter</span><span>Symfony</span><span>Spring Boot</span><span>TypeScript</span><span>PHP</span><span>Dart</span><span>Java</span>
+              </div>
             </div>
-            <ul class="item__list">
-              <li>Full-stack development with <strong>agile methodologies</strong> (SCRUM, XP) across frontend and backend technologies.</li>
-              <li>Built <strong>cross-platform applications</strong> with Angular, Ionic, Flutter, Symfony, and Spring Boot.</li>
-              <li><strong>Team leader role</strong> coordinating development workflows, code reviews, and project delivery.</li>
-            </ul>
-            <p class="item__tech-label">Technologies used</p>
-            <div class="item__tech">
-              <span>Angular</span><span>Ionic</span><span>Flutter</span><span>Symfony</span><span>Spring Boot</span><span>TypeScript</span><span>PHP</span><span>Dart</span><span>Java</span>
-            </div>
-          </div>
 
-          <div class="item">
-            <span class="item__marker"></span>
-            <h3 class="item__title">Computer Science Professor</h3>
-            <div class="item__meta">
-              Sep 2016 <span class="sep">-</span> Oct 2019 <span class="sep">|</span> Universidad de Oriente
+            <div class="item">
+              <span class="item__marker"></span>
+              <h3 class="item__title">Computer Science Professor</h3>
+              <div class="item__meta">
+                Sep 2016 <span class="sep">-</span> Oct 2019 <span class="sep">|</span> Universidad de Oriente
+              </div>
+              <ul class="item__list">
+                <li>Assistant professor in the Computer Science program, teaching <strong>Software Engineering, Databases, and Advanced Web Programming</strong>.</li>
+                <li>Speaker and jury member for multiple graduation thesis projects related to education, business, and product management.</li>
+                <li>Technologies covered: HTML, CSS, JavaScript, AJAX, jQuery, Bootstrap, Angular, Symfony, Doctrine, Twig.</li>
+              </ul>
             </div>
-            <ul class="item__list">
-              <li>Assistant professor in the Computer Science program, teaching <strong>Software Engineering, Databases, and Advanced Web Programming</strong>.</li>
-              <li>Speaker and jury member for multiple graduation thesis projects related to education, business, and product management.</li>
-              <li>Technologies covered: HTML, CSS, JavaScript, AJAX, jQuery, Bootstrap, Angular, Symfony, Doctrine, Twig.</li>
-            </ul>
-          </div>
 
-          <div class="item">
-            <span class="item__marker"></span>
-            <h3 class="item__title">IT Specialist</h3>
-            <div class="item__meta">
-              Jan 2013 <span class="sep">-</span> Sep 2016 <span class="sep">|</span> Empresa de Astilleros de Oriente
-            </div>
-            <ul class="item__list">
-              <li>Developed web and desktop applications for <strong>statistical, economic, and research management</strong> of the company.</li>
-              <li>Worked with SCRUM methodology, PHP, Symfony, Doctrine, JavaScript, TypeScript, Bootstrap.</li>
-            </ul>
-            <p class="item__tech-label">Technologies used</p>
-            <div class="item__tech">
-              <span>PHP</span><span>Symfony</span><span>Doctrine</span><span>JavaScript</span><span>TypeScript</span><span>Bootstrap</span>
+            <div class="item">
+              <span class="item__marker"></span>
+              <h3 class="item__title">IT Specialist</h3>
+              <div class="item__meta">
+                Jan 2013 <span class="sep">-</span> Sep 2016 <span class="sep">|</span> Empresa de Astilleros de Oriente
+              </div>
+              <ul class="item__list">
+                <li>Developed web and desktop applications for <strong>statistical, economic, and research management</strong> of the company.</li>
+                <li>Worked with SCRUM methodology, PHP, Symfony, Doctrine, JavaScript, TypeScript, Bootstrap.</li>
+              </ul>
+              <p class="item__tech-label">Technologies used</p>
+              <div class="item__tech">
+                <span>PHP</span><span>Symfony</span><span>Doctrine</span><span>JavaScript</span><span>TypeScript</span><span>Bootstrap</span>
+              </div>
             </div>
           </div>
         </section>
 
         <!-- PROJECTS -->
         <section class="card reveal">
-          <h2 class="section__title">PROJECTS</h2>
+          <h2 class="section__title" data-text="PROJECTS">PROJECTS</h2>
           <div class="projects__grid">
             <a href="https://github.com/yasmany-montiel/portafolio" target="_blank" rel="noopener" class="project">
               <span class="project__lang">JavaScript</span>
@@ -1121,7 +1319,7 @@
 
         <!-- CERTIFICATES -->
         <section class="card reveal">
-          <h2 class="section__title">CERTIFICATES</h2>
+          <h2 class="section__title" data-text="CERTIFICATES">CERTIFICATES</h2>
           <div class="certs__grid">
             <div class="cert">
               <h3 class="cert__title">Charming Development in Symfony 5</h3>
@@ -1152,7 +1350,7 @@
 
         <!-- LANGUAGES -->
         <section class="card reveal">
-          <h2 class="section__title">LANGUAGES</h2>
+          <h2 class="section__title" data-text="LANGUAGES">LANGUAGES</h2>
           <ul class="lang__list">
             <li><strong>Spanish</strong> — C2 (Native proficiency)</li>
             <li><strong>Italian</strong> — C1 (Professional working proficiency)</li>
@@ -1162,7 +1360,7 @@
 
         <!-- INTERESTS -->
         <section class="card reveal">
-          <h2 class="section__title">INTERESTS</h2>
+          <h2 class="section__title" data-text="INTERESTS">INTERESTS</h2>
           <div class="interests">
             <div class="interest"><i class="bx bx-bot"></i><span>AI &amp; LLMs</span></div>
             <div class="interest"><i class="bx bx-code-alt"></i><span>Open Source</span></div>
@@ -1175,7 +1373,7 @@
 
         <!-- CONTACT -->
         <section class="card reveal" id="contact">
-          <h2 class="section__title">CONTACT</h2>
+          <h2 class="section__title" data-text="CONTACT">CONTACT</h2>
           <p class="profile__text" style="margin-bottom: 1.5rem;">
             Have a project in mind or want to collaborate? Drop me a message — I usually reply within 24 hours.
           </p>
@@ -1214,11 +1412,15 @@
   </div>
 
   <script>
+    // ============================
     // Footer date
-    const updated = document.getElementById('updated');
-    updated.textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    // ============================
+    document.getElementById('updated').textContent =
+      new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
+    // ============================
     // Theme toggle
+    // ============================
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = themeToggle.querySelector('i');
 
@@ -1235,7 +1437,33 @@
       applyTheme(isDark);
     });
 
+    // ============================
+    // Wrap each letter of section titles in a span — for the "lit" effect
+    // ============================
+    document.querySelectorAll('.section__title').forEach(title => {
+      const text = title.dataset.text || title.textContent;
+      title.innerHTML = text.split('').map(c =>
+        c === ' ' ? ' ' : `<span class="letter">${c}</span>`
+      ).join('');
+    });
+
+    // Randomly light up letters in titles (cursor sweep effect)
+    function flickerLetters() {
+      const allLetters = document.querySelectorAll('.section__title .letter');
+      if (allLetters.length === 0) return;
+      // Pick 1-2 random letters to light up briefly
+      const count = Math.floor(Math.random() * 2) + 1;
+      for (let i = 0; i < count; i++) {
+        const letter = allLetters[Math.floor(Math.random() * allLetters.length)];
+        letter.classList.add('lit');
+        setTimeout(() => letter.classList.remove('lit'), 400 + Math.random() * 300);
+      }
+    }
+    setInterval(flickerLetters, 700);
+
+    // ============================
     // Skills "show more"
+    // ============================
     const skillsMore = document.getElementById('skills-more');
     const skillsGrid = document.getElementById('skills-grid');
     skillsMore.addEventListener('click', () => {
@@ -1243,7 +1471,9 @@
       skillsMore.textContent = expanded ? 'SEE LESS' : 'SEE MORE';
     });
 
+    // ============================
     // Reveal on scroll
+    // ============================
     const reveals = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
@@ -1255,60 +1485,113 @@
     }, { threshold: 0.05 });
     reveals.forEach(r => io.observe(r));
 
-    // Starfield (subtle, no movement, just decorative dots)
-    (function() {
-      const canvas = document.getElementById('stars');
+    // ============================
+    // BINARY RAIN — Matrix-style falling 0s and 1s
+    // ============================
+    (function () {
+      const canvas = document.getElementById('binary-rain');
       const ctx = canvas.getContext('2d');
-      let w, h, stars;
+      const fontSize = 14;
+      let columns = [];
+      let w, h;
 
       function resize() {
         w = canvas.width = window.innerWidth;
-        h = canvas.height = document.documentElement.scrollHeight;
-        const count = Math.floor((w * h) / 18000);
-        stars = [];
-        for (let i = 0; i < count; i++) {
-          stars.push({
-            x: Math.random() * w,
+        h = canvas.height = window.innerHeight;
+        const colCount = Math.floor(w / fontSize);
+        columns = [];
+        for (let i = 0; i < colCount; i++) {
+          columns.push({
             y: Math.random() * h,
-            r: Math.random() * 1.3 + 0.2,
-            alpha: Math.random() * 0.7 + 0.3,
-            twinkleSpeed: Math.random() * 0.005 + 0.001
+            speed: 0.5 + Math.random() * 1.2,
+            chars: [],
+            trailLength: 8 + Math.floor(Math.random() * 18)
           });
         }
-        draw();
+      }
+
+      function getColors() {
+        const styles = getComputedStyle(document.body);
+        return {
+          bg: styles.getPropertyValue('--bg').trim(),
+          trail: styles.getPropertyValue('--rain-color').trim(),
+          head: styles.getPropertyValue('--rain-color-head').trim(),
+          isDark: !document.body.classList.contains('light-theme')
+        };
       }
 
       function draw() {
-        ctx.clearRect(0, 0, w, h);
-        const color = getComputedStyle(document.body).getPropertyValue('--star-color').trim();
-        stars.forEach(s => {
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = color.replace(/[\d.]+\)$/, `${s.alpha})`);
-          ctx.fill();
-        });
-      }
+        const colors = getColors();
 
-      function animate() {
-        stars.forEach(s => {
-          s.alpha += s.twinkleSpeed;
-          if (s.alpha > 1 || s.alpha < 0.2) s.twinkleSpeed *= -1;
+        // Soft fade — leaves trails behind chars
+        ctx.fillStyle = colors.isDark
+          ? 'rgba(10, 10, 22, 0.08)'
+          : 'rgba(245, 240, 255, 0.10)';
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
+        ctx.textAlign = 'center';
+
+        columns.forEach((col, i) => {
+          const x = i * fontSize + fontSize / 2;
+
+          // Randomly add new char at top of trail
+          if (Math.random() > 0.5) {
+            col.chars.unshift(Math.random() > 0.5 ? '1' : '0');
+            if (col.chars.length > col.trailLength) col.chars.pop();
+          }
+
+          // Draw the trail
+          col.chars.forEach((ch, idx) => {
+            const yPos = col.y - idx * fontSize;
+            if (yPos < -fontSize || yPos > h + fontSize) return;
+            const alpha = 1 - (idx / col.trailLength);
+            if (idx === 0) {
+              ctx.fillStyle = colors.head;
+            } else {
+              const baseColor = colors.trail;
+              // Adjust alpha in the rgba string
+              ctx.fillStyle = baseColor.replace(/[\d.]+\)$/, `${alpha * 0.7})`);
+            }
+            ctx.fillText(ch, x, yPos);
+          });
+
+          col.y += col.speed;
+
+          // Reset column when it falls off screen
+          if (col.y - col.chars.length * fontSize > h) {
+            if (Math.random() > 0.97) {
+              col.y = -Math.random() * 200;
+              col.chars = [];
+              col.speed = 0.5 + Math.random() * 1.2;
+            }
+          }
         });
-        draw();
-        requestAnimationFrame(animate);
+
+        requestAnimationFrame(draw);
       }
 
       window.addEventListener('resize', resize);
-      // Redraw stars after content settles
-      setTimeout(resize, 100);
-      setTimeout(() => { if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) animate(); }, 200);
+      resize();
 
-      // Redraw on theme change
-      const observer = new MutationObserver(draw);
-      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        draw();
+      } else {
+        // Static fallback for reduced-motion users
+        ctx.fillStyle = getColors().trail;
+        ctx.font = `${fontSize}px monospace`;
+        for (let i = 0; i < columns.length; i++) {
+          for (let j = 0; j < 5; j++) {
+            ctx.fillText(Math.random() > 0.5 ? '1' : '0',
+              i * fontSize + fontSize/2, Math.random() * h);
+          }
+        }
+      }
     })();
 
+    // ============================
     // Contact form
+    // ============================
     const form = document.getElementById('contact-form');
     const status = document.getElementById('form-status');
     form.addEventListener('submit', async (e) => {
