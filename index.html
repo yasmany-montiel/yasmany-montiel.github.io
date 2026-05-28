@@ -249,13 +249,6 @@
     .home__photo-wrap {
       width: 130px; height: 130px;
       margin: 0.5rem auto 1.5rem;
-      will-change: transform;
-      animation: floaty 4s ease-in-out infinite;
-    }
-    @keyframes floaty {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-14px); }
-      100% { transform: translateY(0); }
     }
     .home__photo {
       width: 100%; height: 100%;
@@ -263,9 +256,16 @@
       border: 3px solid var(--accent);
       box-shadow: 0 8px 30px var(--accent-glow);
       filter: grayscale(0.5) contrast(1.05);
-      transition: filter 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+      will-change: transform;
+      animation: floaty 4s ease-in-out infinite;
+      transition: filter 0.4s ease, box-shadow 0.4s ease;
     }
-    .home__photo:hover { filter: grayscale(0) contrast(1.1); box-shadow: 0 12px 45px var(--accent-glow); transform: scale(1.03); }
+    @keyframes floaty {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-16px); }
+      100% { transform: translateY(0); }
+    }
+    .home__photo:hover { filter: grayscale(0) contrast(1.1); box-shadow: 0 12px 45px var(--accent-glow); }
 
     .home__name { font-size: 1.15rem; font-weight: 400; letter-spacing: 0.12em; margin-bottom: 0.4rem; }
     .home__name b { font-weight: 700; color: var(--accent); }
@@ -293,23 +293,23 @@
       padding-bottom: 0.4rem;
       min-height: 1.7em;
     }
-    /* Typed.js default cursor styling */
+    /* Typed.js default cursor styling — blinks every 1 second */
     .typed-cursor {
       color: var(--accent);
-      font-weight: 400;
+      font-weight: 700;
       opacity: 1;
-      animation: typedBlink 0.9s infinite;
+      animation: typedBlink 1s steps(1) infinite;
     }
-    @keyframes typedBlink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes typedBlink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
 
-    /* Color wave that runs across letters once typed */
+    /* Color wave that runs across letters indefinitely — intense */
     .section__title .wv {
       display: inline-block;
-      animation: colorWave 2.6s ease-in-out infinite;
+      animation: colorWave 2.4s ease-in-out infinite;
     }
     @keyframes colorWave {
-      0%, 100% { color: var(--accent); text-shadow: none; }
-      50% { color: var(--accent-light); text-shadow: 0 0 8px var(--accent-glow); }
+      0%, 100% { color: var(--accent); text-shadow: none; transform: translateY(0); }
+      50% { color: var(--accent-light); text-shadow: 0 0 14px var(--accent-light), 0 0 6px var(--accent-glow); transform: translateY(-2px); }
     }
 
     /* =============================================
@@ -362,21 +362,24 @@
     .item:last-child::before { display: none; }
     .item:last-child { margin-bottom: 0; }
 
-    /* Pulsing animated marker (the "moving circles") */
+    /* Pulsing animated marker — changes color + fading expanding ring */
     .item__marker {
       position: absolute; left: 0; top: 0.4rem;
-      width: 12px; height: 12px;
-      background: var(--accent);
+      width: 13px; height: 13px;
       border-radius: 3px;
-      box-shadow: 0 0 10px var(--accent-glow);
       transition: all 0.35s ease;
-      animation: markerPulse 2.4s ease-in-out infinite;
+      animation: markerColor 3s ease-in-out infinite, markerRing 2.6s ease-out infinite;
     }
-    @keyframes markerPulse {
-      0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); transform: scale(1); }
-      50% { box-shadow: 0 0 0 6px transparent; transform: scale(1.12); }
+    @keyframes markerColor {
+      0%, 100% { background: var(--accent); }
+      50% { background: var(--accent-light); }
     }
-    .item:hover .item__marker { transform: scale(1.35) rotate(45deg); box-shadow: 0 0 16px var(--accent-glow); }
+    @keyframes markerRing {
+      0%   { box-shadow: 0 0 0 0 var(--accent-glow); }
+      70%  { box-shadow: 0 0 0 10px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+    .item:hover .item__marker { transform: scale(1.35) rotate(45deg); }
 
     .item__title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
     .item__meta { font-size: 0.78rem; color: var(--accent); margin-bottom: 1rem; }
@@ -560,7 +563,7 @@
           <div class="home__photo-wrap">
             <img src="https://avatars.githubusercontent.com/u/63186744?v=4" alt="Yasmany Montiel" class="home__photo">
           </div>
-          <h1 class="home__name">YASMANY MONTIEL <b>RIVERA</b></h1>
+          <h1 class="home__name">MONTIEL RIVERA <b>YASMANY</b></h1>
           <p class="home__title">Senior Software Architect</p>
           <div class="home__info">
             <span><i class="bx bx-map"></i> Colle di Val d'Elsa, Tuscany, Italy</span>
