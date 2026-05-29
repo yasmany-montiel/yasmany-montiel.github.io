@@ -1,933 +1,460 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yasmany Montiel Rivera — Senior Software Architect</title>
-  <meta name="description" content="Senior Software Architect at Zucchetti. .NET, React, SQL Server, DevOps & Cloud Architecture, AI & Automation Expert.">
-  <meta name="author" content="Yasmany Montiel Rivera">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Yasmany Montiel Rivera — Senior Software Architect</title>
+<meta name="description" content="Yasmany Montiel Rivera · Senior Software Architect · .NET, React, SQL Server · DevOps & Cloud · AI & Automation" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  /* ===================== THEME TOKENS ===================== */
+  :root {
+    --bg: #f3ecff;
+    --bg-2: #e9dcff;
+    --panel: rgba(255, 255, 255, 0.72);
+    --panel-border: rgba(122, 57, 196, 0.18);
+    --ink: #2a2140;
+    --ink-soft: #5b4d77;
+    --muted: #8478a0;
+    --accent: #7209b7;
+    --accent-2: #b5179e;
+    --accent-3: #4361ee;
+    --pink: #f72585;
+    --cyan: #4cc9f0;
+    --chip-bg: rgba(122, 57, 196, 0.08);
+    --chip-border: rgba(122, 57, 196, 0.25);
+    --shadow: 0 20px 50px rgba(60, 20, 110, 0.12);
+    --grad: linear-gradient(-225deg, #4361ee 0%, #7209b7 30%, #b5179e 62%, #f72585 100%);
+  }
+  [data-theme="dark"] {
+    --bg: #14101f;
+    --bg-2: #1d1630;
+    --panel: rgba(30, 22, 50, 0.66);
+    --panel-border: rgba(160, 110, 240, 0.22);
+    --ink: #efe9ff;
+    --ink-soft: #c5b8e6;
+    --muted: #9286b8;
+    --accent: #b06eff;
+    --accent-2: #ff5fc8;
+    --accent-3: #6f86ff;
+    --pink: #ff4d97;
+    --cyan: #6fe0ff;
+    --chip-bg: rgba(176, 110, 255, 0.12);
+    --chip-border: rgba(176, 110, 255, 0.32);
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    --grad: linear-gradient(-225deg, #6f86ff 0%, #b06eff 30%, #ff5fc8 62%, #ff4d97 100%);
+  }
 
-  <meta property="og:title" content="Yasmany Montiel Rivera — Senior Software Architect">
-  <meta property="og:description" content=".NET · React · SQL Server · AI & Automation Expert">
-  <meta property="og:image" content="https://avatars.githubusercontent.com/u/63186744?v=4">
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    color: var(--ink);
+    background: radial-gradient(circle at 20% 10%, var(--bg-2) 0%, var(--bg) 55%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background .6s ease, color .4s ease;
+    line-height: 1.6;
+  }
 
-  <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/63186744?v=4">
+  /* ===================== BACKGROUND FX ===================== */
+  .geometric-background, .particles {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    overflow: hidden; z-index: 0; pointer-events: none;
+  }
+  .shape { position: absolute; opacity: .18; transform-origin: center; }
+  .square    { width: 40px; height: 40px; background: var(--pink);  animation: rotate 20s infinite linear; }
+  .circle    { width: 60px; height: 60px; border-radius: 50%; background: var(--cyan); animation: pulse 15s infinite alternate; }
+  .triangle  { width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 50px solid var(--accent); animation: float 12s infinite ease-in-out; }
+  .rectangle { width: 80px; height: 30px; background: var(--accent-3); animation: slide 18s infinite linear; }
+  .particle  { position: absolute; width: 2px; height: 2px; background: var(--accent); opacity: .5; border-radius: 50%; animation: sparkle 8s infinite linear; }
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+  @keyframes rotate { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+  @keyframes pulse  { 0%{transform:scale(1);opacity:.08} 50%{transform:scale(1.5);opacity:.28} 100%{transform:scale(1);opacity:.08} }
+  @keyframes float  { 0%{transform:translateY(0) translateX(0) rotate(0)} 50%{transform:translateY(-20px) translateX(20px) rotate(180deg)} 100%{transform:translateY(0) translateX(0) rotate(360deg)} }
+  @keyframes slide  { 0%{transform:translateX(-100px) rotate(0)} 50%{transform:translateX(100px) rotate(180deg)} 100%{transform:translateX(-100px) rotate(360deg)} }
+  @keyframes sparkle{ 0%{opacity:0} 50%{opacity:.8} 100%{opacity:0} }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  .gradient-overlay {
+    position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
+    background: radial-gradient(circle at center, transparent 0%, var(--bg) 88%);
+    animation: pulse-overlay 10s infinite alternate;
+  }
+  @keyframes pulse-overlay { 0%{opacity:.7} 100%{opacity:1} }
 
-  <!-- Typed.js — MIT licensed typewriter library -->
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+  /* ===================== LAYOUT ===================== */
+  .wrap {
+    position: relative; z-index: 5;
+    max-width: 1280px; margin: 0 auto; padding: 32px 22px 70px;
+    display: grid; grid-template-columns: 340px 1fr; gap: 26px;
+  }
+  @media (max-width: 920px) { .wrap { grid-template-columns: 1fr; } }
 
-  <style>
-    /* =============================================
-       THEME — Light (default lavender) + Dark
-       ============================================= */
-    :root {
-      --bg: #ece6fa;
-      --bg-gradient-1: #f3eeff;
-      --bg-gradient-2: #e6def7;
-      --card: rgba(255, 255, 255, 0.55);
-      --card-border: rgba(168, 130, 230, 0.25);
-      --card-inset: rgba(255, 255, 255, 0.5);
-      --card-inset-border: rgba(168, 130, 230, 0.22);
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
 
-      --text: #2a1f4a;
-      --text-muted: #5a4d7a;
-      --text-soft: #8478a8;
-      --text-dim: #a99dc7;
+  /* ===================== SIDEBAR ===================== */
+  .sidebar { padding: 26px; align-self: start; position: sticky; top: 24px; }
+  @media (max-width: 920px) { .sidebar { position: static; } }
 
-      --accent: #8b3fd9;
-      --accent-bright: #7c2fd0;
-      --accent-light: #b07ef0;
-      --accent-soft: rgba(139, 63, 217, 0.1);
-      --accent-glow: rgba(139, 63, 217, 0.25);
-      --accent-grad-1: rgba(168, 130, 230, 0.18);
-      --accent-grad-2: rgba(168, 130, 230, 0.04);
+  .topbar { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .icon-btn {
+    width: 40px; height: 40px; border-radius: 11px; border: 1px solid var(--panel-border);
+    background: var(--chip-bg); color: var(--accent); cursor: pointer; font-size: 16px;
+    display: grid; place-items: center; transition: .25s; text-decoration: none;
+  }
+  .icon-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
 
-      --dot-color: rgba(139, 63, 217, 0.22);
-      --scan-color: rgba(139, 63, 217, 0.12);
+  .photo-frame {
+    width: 168px; height: 168px; margin: 6px auto 18px; border-radius: 18px; padding: 6px;
+    background: var(--grad); background-size: 200% auto;
+    animation: textclip 4s linear infinite, floaty 4.2s ease-in-out infinite;
+    box-shadow: 0 14px 36px rgba(114, 9, 183, .35);
+  }
+  .photo-frame img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 13px;
+    background: #d9ccf2; display: block;
+  }
+  @keyframes floaty { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-12px); } }
 
-      --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
-      --radius: 16px;
-      --radius-sm: 10px;
-    }
+  .name { text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; margin: 0; }
+  .role-sub { text-align: center; color: var(--accent-2); font-family: 'JetBrains Mono', monospace; font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; margin: 6px 0 18px; }
 
-    body.dark-theme {
-      --bg: #0e0a1c;
-      --bg-gradient-1: #14102a;
-      --bg-gradient-2: #0a0716;
-      --card: rgba(28, 22, 52, 0.65);
-      --card-border: rgba(139, 92, 220, 0.25);
-      --card-inset: rgba(40, 32, 70, 0.5);
-      --card-inset-border: rgba(139, 92, 220, 0.2);
+  .contact { list-style: none; padding: 0; margin: 0 0 8px; }
+  .contact li { display: flex; align-items: center; gap: 11px; padding: 7px 0; color: var(--ink-soft); font-size: .92rem; }
+  .contact li i { color: var(--accent); width: 18px; text-align: center; }
+  .contact a { color: inherit; text-decoration: none; word-break: break-all; }
+  .contact a:hover { color: var(--accent); }
 
-      --text: #ece8ff;
-      --text-muted: #b3aad8;
-      --text-soft: #8479b0;
-      --text-dim: #5e5588;
+  .block-title {
+    font-family: 'JetBrains Mono', monospace; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 3px; font-size: .95rem; margin: 24px 0 14px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--panel-border);
+  }
 
-      --accent: #b794f6;
-      --accent-bright: #c8aaff;
-      --accent-light: #d4b8ff;
-      --accent-soft: rgba(183, 148, 246, 0.15);
-      --accent-glow: rgba(183, 148, 246, 0.4);
-      --accent-grad-1: rgba(139, 92, 220, 0.22);
-      --accent-grad-2: rgba(139, 92, 220, 0.04);
+  .social { display: grid; gap: 10px; }
+  .social a {
+    display: flex; align-items: center; gap: 13px; padding: 12px 14px; border-radius: 13px;
+    text-decoration: none; color: var(--ink); border: 1px solid var(--panel-border);
+    background: var(--chip-bg); transition: .25s; position: relative;
+  }
+  .social a:hover { transform: translateX(5px); border-color: var(--accent); background: var(--accent); color: #fff; }
+  .social a:hover .s-ico, .social a:hover small { color: #fff; }
+  .s-ico { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: var(--grad); color: #fff; font-size: 15px; flex: 0 0 auto; }
+  .social .s-meta { display: flex; flex-direction: column; line-height: 1.25; }
+  .social .s-meta strong { font-size: .72rem; letter-spacing: 1.5px; text-transform: uppercase; }
+  .social .s-meta small { color: var(--muted); font-size: .82rem; }
+  .social .chev { margin-left: auto; color: var(--muted); }
 
-      --dot-color: rgba(183, 148, 246, 0.3);
-      --scan-color: rgba(183, 148, 246, 0.1);
-    }
+  .lang-row { display: flex; justify-content: space-between; align-items: center; margin: 9px 0; font-size: .9rem; }
+  .lang-row span:last-child { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: .76rem; }
+  .bar { height: 6px; border-radius: 4px; background: var(--chip-bg); overflow: hidden; margin-top: 3px; }
+  .bar i { display: block; height: 100%; background: var(--grad); border-radius: 4px; }
 
-    /* =============================================
-       BASE
-       ============================================= */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+  .cert-list { list-style: none; padding: 0; margin: 0; }
+  .cert-list li { display: flex; gap: 10px; padding: 7px 0; font-size: .87rem; color: var(--ink-soft); }
+  .cert-list li i { color: var(--accent-2); margin-top: 4px; }
 
-    body {
-      font-family: var(--font-mono);
-      background:
-        radial-gradient(ellipse at top left, var(--bg-gradient-1), transparent 60%),
-        radial-gradient(ellipse at bottom right, var(--bg-gradient-2), transparent 60%),
-        var(--bg);
-      background-attachment: fixed;
-      color: var(--text);
-      line-height: 1.65;
-      font-size: 14px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      transition: background 0.5s ease, color 0.4s ease;
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-    }
+  /* ===================== MAIN ===================== */
+  .main { display: grid; gap: 22px; }
+  .panel { padding: 30px 32px; }
+  @media (max-width: 540px) { .panel { padding: 22px; } }
 
-    /* Dotted twinkling starfield */
-    #dots {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 0; pointer-events: none;
-    }
+  /* animated gradient + blinking cursor title */
+  .animate-character {
+    text-transform: uppercase; font-family: 'JetBrains Mono', monospace; font-weight: 800;
+    letter-spacing: 4px; font-size: 1.4rem; display: inline-block; margin: 0 0 22px;
+    background-image: var(--grad); background-size: 200% auto; color: #fff;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 2.4s linear infinite;
+  }
+  .animate-character::after {
+    content: "_"; -webkit-text-fill-color: var(--accent-2); color: var(--accent-2);
+    animation: cursor 1s infinite; margin-left: 2px;
+  }
+  @keyframes textclip { to { background-position: 200% center; } }
+  @keyframes cursor { 0%{opacity:0} 40%{opacity:0} 50%{opacity:1} 90%{opacity:1} 100%{opacity:0} }
 
-    /* =============================================
-       OLD-MOVIE / CRT EFFECT (always on)
-       ============================================= */
-    .crt {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 9999;
-    }
-    /* Static scanlines */
-    .crt::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(0,0,0,0.06) 0px,
-        rgba(0,0,0,0.06) 1px,
-        transparent 1px,
-        transparent 3px
-      );
-      animation: scanmove 10s linear infinite;
-    }
-    /* Vignette + flicker */
-    .crt::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.18) 100%);
-      animation: flicker 6s infinite;
-    }
-    body.dark-theme .crt::before { background: repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px); }
-    body.dark-theme .crt::after { background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%); }
+  .profile-text { color: var(--ink-soft); font-size: 1rem; }
+  .profile-text b { color: var(--accent); }
 
-    @keyframes scanmove { 0% { background-position: 0 0; } 100% { background-position: 0 100px; } }
-    @keyframes flicker {
-      0%,100% { opacity: 1; }
-      3% { opacity: 0.93; } 6% { opacity: 1; }
-      18% { opacity: 0.97; } 20% { opacity: 1; }
-      50% { opacity: 0.95; } 52% { opacity: 1; }
-      77% { opacity: 0.96; } 79% { opacity: 1; }
-    }
+  /* timeline */
+  .timeline { position: relative; padding-left: 26px; }
+  .timeline::before { content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--accent), transparent); }
+  .job { position: relative; margin-bottom: 30px; }
+  .job:last-child { margin-bottom: 0; }
+  .job::before { content: ""; position: absolute; left: -26px; top: 5px; width: 13px; height: 13px; border-radius: 50%; background: var(--grad); box-shadow: 0 0 0 4px var(--bg); }
+  .job h3 { margin: 0; font-size: 1.12rem; font-weight: 800; }
+  .job .meta { color: var(--accent-2); font-family: 'JetBrains Mono', monospace; font-size: .8rem; margin: 4px 0 10px; }
+  .job .meta .at { color: var(--muted); }
+  .job p { margin: 0 0 12px; color: var(--ink-soft); font-size: .94rem; }
 
-    /* A bright horizontal bar that travels top→bottom occasionally (old TV roll) */
-    .crt-roll {
-      position: fixed;
-      left: 0; right: 0;
-      height: 90px;
-      z-index: 9998;
-      pointer-events: none;
-      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.05) 45%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.05) 55%, transparent);
-      animation: roll 7s linear infinite;
-    }
-    body.dark-theme .crt-roll { background: linear-gradient(180deg, transparent, rgba(183,148,246,0.06) 45%, rgba(183,148,246,0.1) 50%, rgba(183,148,246,0.06) 55%, transparent); }
-    @keyframes roll {
-      0% { top: -90px; }
-      100% { top: 100%; }
-    }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: 'JetBrains Mono', monospace; font-size: .73rem; padding: 5px 11px; border-radius: 8px;
+    background: var(--chip-bg); border: 1px solid var(--chip-border); color: var(--ink-soft);
+    transition: .2s; cursor: default;
+  }
+  .chip:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-2px); }
+  .tech-label { font-size: .76rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin: 4px 0 8px; font-family: 'JetBrains Mono', monospace; }
 
-    a { color: inherit; text-decoration: none; }
+  .edu { display: grid; gap: 16px; }
+  .edu-item { padding-left: 16px; border-left: 3px solid var(--accent); }
+  .edu-item h4 { margin: 0; font-size: 1rem; }
+  .edu-item span { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: .8rem; }
 
-    /* =============================================
-       LAYOUT
-       ============================================= */
-    .page {
-      position: relative;
-      z-index: 1;
-      max-width: 1280px;
-      margin: 2.5rem auto;
-      padding: 2rem;
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: background 0.5s ease, border-color 0.5s ease;
-      overflow: hidden;
-    }
+  .footer { text-align: center; color: var(--muted); font-size: .82rem; padding: 18px; }
+  .footer .animate-character { font-size: .95rem; letter-spacing: 2px; }
 
-    /* Traveling scan beams across the whole panel (left→right) */
-    .page::before,
-    .page::after {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      width: 220px;
-      pointer-events: none;
-      z-index: 0;
-      background: linear-gradient(90deg, transparent, var(--scan-color), var(--scan-color), transparent);
-    }
-    .page::before { animation: beam 7s linear infinite; }
-    .page::after  { animation: beam 7s linear infinite; animation-delay: 3.5s; }
-    @keyframes beam {
-      0%   { left: -240px; }
-      100% { left: 100%; }
-    }
-
-    .resume {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 2.5rem;
-      align-items: start;
-    }
-
-    .col-left { position: relative; }
-    .col-left::after {
-      content: '';
-      position: absolute;
-      top: 0; right: -1.25rem; bottom: 0;
-      width: 1px;
-      background: linear-gradient(180deg, transparent, var(--card-border) 15%, var(--card-border) 85%, transparent);
-    }
-
-    .col-left, .col-right { display: flex; flex-direction: column; gap: 2.5rem; }
-
-    /* =============================================
-       HOME
-       ============================================= */
-    .home { text-align: center; position: relative; }
-    .home__actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-
-    .icon-btn {
-      width: 38px; height: 38px;
-      border-radius: 10px; border: none;
-      background: transparent;
-      color: var(--accent);
-      font-size: 1.3rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s ease;
-    }
-    .icon-btn:hover { background: var(--accent-soft); color: var(--accent-bright); transform: translateY(-2px) scale(1.1); }
-
-    /* Floating photo — continuous, never stops */
-    .home__photo-wrap {
-      width: 130px; height: 130px;
-      margin: 0.5rem auto 1.5rem;
-    }
-    .home__photo {
-      width: 100%; height: 100%;
-      border-radius: 10px; object-fit: cover;
-      border: 3px solid var(--accent);
-      box-shadow: 0 8px 30px var(--accent-glow);
-      filter: grayscale(0.5) contrast(1.05);
-      will-change: transform;
-      animation: floaty 7s ease-in-out infinite;
-      transition: filter 0.4s ease, box-shadow 0.4s ease;
-    }
-    @keyframes floaty {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-16px); }
-      100% { transform: translateY(0); }
-    }
-    .home__photo:hover { filter: grayscale(0) contrast(1.1); box-shadow: 0 12px 45px var(--accent-glow); }
-
-    .home__name { font-size: 1.15rem; font-weight: 400; letter-spacing: 0.12em; margin-bottom: 0.4rem; }
-    .home__name b { font-weight: 700; color: var(--accent); }
-    .home__title { font-size: 0.78rem; letter-spacing: 0.18em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.75rem; }
-
-    .home__info { text-align: left; display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.84rem; color: var(--text-muted); }
-    .home__info a, .home__info span { display: inline-flex; align-items: center; gap: 0.7rem; transition: color 0.25s ease, transform 0.25s ease; word-break: break-word; }
-    .home__info a:hover { color: var(--accent); transform: translateX(4px); }
-    .home__info i { color: var(--accent); font-size: 1.15rem; min-width: 20px; transition: transform 0.3s ease; }
-    .home__info a:hover i { transform: scale(1.2); }
-
-    /* =============================================
-       SECTION TITLE — Typed.js fills .typed-target, cursor by Typed.js
-       ============================================= */
-    .section__title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.75rem;
-      display: flex;
-      align-items: center;
-      border-bottom: 2px solid var(--accent);
-      padding-bottom: 0.4rem;
-      min-height: 1.7em;
-    }
-    /* Typed.js cursor — old-style: 1s on, 1s off, sharp */
-    .typed-cursor {
-      color: var(--accent) !important;
-      font-weight: 700;
-      opacity: 1;
-      animation: typedBlink 2s steps(1) infinite !important;
-    }
-    .typed-cursor--blink { animation: typedBlink 2s steps(1) infinite !important; }
-    @keyframes typedBlink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-
-    /* Manual cursor for finished titles */
-    .title-cursor {
-      display: inline-block;
-      color: var(--accent);
-      font-weight: 700;
-      animation: typedBlink 2s steps(1) infinite;
-    }
-
-    /* Typewriter color sweep across letters — runs forever, one letter at a time */
-    .section__title .wv {
-      display: inline-block;
-      color: var(--accent);
-    }
-    .section__title .wv.lit {
-      color: var(--accent-light);
-      text-shadow: 0 0 14px var(--accent-light), 0 0 6px var(--accent-glow);
-    }
-
-    /* =============================================
-       SOCIAL
-       ============================================= */
-    .social__list { display: flex; flex-direction: column; gap: 0.75rem; }
-    .social__link {
-      display: flex; align-items: center; gap: 0.9rem;
-      padding: 0.8rem 1rem;
-      background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2));
-      border: 1px solid var(--card-inset-border);
-      border-radius: var(--radius-sm);
-      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), border-color 0.45s ease, box-shadow 0.45s ease;
-      position: relative; overflow: hidden;
-    }
-    .social__link::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-      background: var(--accent); transform: scaleY(0); transition: transform 0.4s ease;
-    }
-    .social__link:hover { transform: translateX(8px); border-color: var(--accent); box-shadow: 0 6px 18px var(--accent-glow); }
-    .social__link:hover::before { transform: scaleY(1); }
-    .social__icon { font-size: 1.5rem; color: var(--accent); min-width: 24px; transition: transform 0.4s ease; }
-    .social__link:hover .social__icon { transform: scale(1.18) rotate(-6deg); }
-    .social__meta { display: flex; flex-direction: column; gap: 0.1rem; }
-    .social__label { font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-soft); }
-    .social__handle { font-size: 0.84rem; color: var(--text); transition: color 0.4s ease; }
-    .social__link:hover .social__handle { color: var(--accent); }
-
-    /* =============================================
-       PROFILE TEXT
-       ============================================= */
-    .profile__text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.9; margin-bottom: 1rem; }
-    .profile__text:last-child { margin-bottom: 0; }
-    .profile__text strong { color: var(--accent); font-weight: 700; }
-
-    /* =============================================
-       TIMELINE — line solid at top marker, fading down (but still faintly visible)
-       ============================================= */
-    .item { position: relative; padding-left: 1.6rem; margin-bottom: 2.2rem; }
-    .item::before {
-      content: '';
-      position: absolute;
-      left: 5px;
-      top: 0.7rem;
-      bottom: -2.2rem;
-      width: 2px;
-      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 70%, var(--accent-light) 100%);
-      opacity: 0.7;
-    }
-    .item:last-child::before { display: none; }
-    .item:last-child { margin-bottom: 0; }
-
-    /* Pulsing animated marker — bigger, strong color change + expanding ring */
-    .item__marker {
-      position: absolute; left: -1px; top: 0.35rem;
-      width: 15px; height: 15px;
-      border-radius: 4px;
-      transition: all 0.35s ease;
-      animation: markerColor 2.5s ease-in-out infinite, markerRing 2.5s ease-out infinite;
-    }
-    @keyframes markerColor {
-      0%, 100% { background: var(--accent); }
-      50% { background: var(--accent-light); }
-    }
-    @keyframes markerRing {
-      0%   { box-shadow: 0 0 0 0 var(--accent), 0 0 10px var(--accent-glow); }
-      70%  { box-shadow: 0 0 0 12px transparent, 0 0 10px var(--accent-glow); }
-      100% { box-shadow: 0 0 0 0 transparent, 0 0 10px var(--accent-glow); }
-    }
-    .item:hover .item__marker { transform: scale(1.4) rotate(45deg); }
-
-    .item__title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
-    .item__meta { font-size: 0.78rem; color: var(--accent); margin-bottom: 1rem; }
-    .item__meta .sep { color: var(--text-dim); margin: 0 0.5rem; }
-
-    .item__list { list-style: none; padding: 0; }
-    .item__list li { position: relative; padding-left: 1.2rem; font-size: 0.83rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 0.6rem; }
-    .item__list li::before { content: ''; position: absolute; left: 0; top: 0.65rem; width: 6px; height: 6px; background: var(--accent); border-radius: 1px; }
-    .item__list li strong { color: var(--accent); font-weight: 600; }
-
-    .item__tech-label { font-size: 0.82rem; color: var(--text-soft); margin: 1.1rem 0 0.6rem; }
-    .item__tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .item__tech span {
-      font-size: 0.7rem; padding: 0.28rem 0.65rem;
-      background: var(--card-inset); border: 1px solid var(--card-inset-border);
-      border-radius: 5px; color: var(--text-muted);
-      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
-      cursor: default;
-    }
-    .item__tech span:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px var(--accent-glow); }
-
-    /* =============================================
-       SKILLS
-       ============================================= */
-    .skills__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
-    .skill {
-      padding: 0.75rem 0.9rem;
-      background: var(--card-inset);
-      border: 1px solid var(--card-inset-border);
-      border-radius: var(--radius-sm);
-      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
-      cursor: default;
-    }
-    .skill:hover { border-color: var(--accent); transform: translateX(6px) translateY(-2px); background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2)); box-shadow: 0 5px 14px var(--accent-glow); }
-    .skill__name { font-size: 0.83rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.45rem; transition: color 0.4s ease; }
-    .skill:hover .skill__name { color: var(--accent-bright); }
-    .skill__name::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 1px; transition: transform 0.4s ease; }
-    .skill:hover .skill__name::before { transform: rotate(45deg) scale(1.3); }
-    .skill__meta { font-size: 0.72rem; color: var(--text-dim); display: flex; justify-content: space-between; padding-left: 0.7rem; }
-    .skill__stars { color: var(--accent); }
-    .skill--highlight { background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2)); border-color: var(--accent); }
-
-    .skills__more {
-      display: inline-block; margin-top: 1.3rem; font-size: 0.78rem; color: var(--accent);
-      cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 0.55rem 1rem; border: 1px solid var(--card-inset-border);
-      border-radius: var(--radius-sm); background: transparent; font-family: var(--font-mono);
-      transition: all 0.35s ease;
-    }
-    .skills__more:hover { background: var(--accent-soft); border-color: var(--accent); transform: translateX(4px); box-shadow: 0 4px 12px var(--accent-glow); }
-    .skill.hidden { display: none; }
-    .skills__grid.expanded .skill.hidden { display: block; }
-
-    /* =============================================
-       CERTIFICATES
-       ============================================= */
-    .certs__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
-    .cert {
-      padding: 1.1rem 1.3rem;
-      background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2));
-      border: 1px solid var(--card-inset-border);
-      border-radius: var(--radius-sm); border-left: 3px solid var(--accent);
-      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), box-shadow 0.45s ease, border-color 0.45s ease;
-      cursor: default;
-    }
-    .cert:hover { transform: translateX(6px) translateY(-2px); box-shadow: 0 6px 18px var(--accent-glow); border-color: var(--accent); }
-    .cert__title { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; transition: color 0.4s ease; }
-    .cert:hover .cert__title { color: var(--accent-bright); }
-    .cert__meta { font-size: 0.74rem; color: var(--accent); }
-    .cert__meta .sep { color: var(--text-dim); margin: 0 0.3rem; }
-
-    /* =============================================
-       LANGUAGES
-       ============================================= */
-    .lang__list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-    .lang__list li { position: relative; padding-left: 1.2rem; font-size: 0.85rem; color: var(--text-muted); transition: transform 0.4s ease, color 0.4s ease; cursor: default; }
-    .lang__list li:hover { transform: translateX(6px); color: var(--text); }
-    .lang__list li::before { content: ''; position: absolute; left: 0; top: 0.55rem; width: 6px; height: 6px; background: var(--accent); border-radius: 1px; transition: transform 0.4s ease; }
-    .lang__list li:hover::before { transform: rotate(45deg) scale(1.3); }
-    .lang__list strong { color: var(--text); font-weight: 600; }
-
-    /* =============================================
-       INTERESTS
-       ============================================= */
-    .interests { display: flex; gap: 2.5rem; flex-wrap: wrap; }
-    .interest { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.76rem; cursor: default; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), color 0.3s ease; }
-    .interest i { font-size: 1.7rem; color: var(--accent); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), color 0.3s ease, filter 0.3s ease; }
-    .interest:hover { transform: translateY(-5px); color: var(--accent); }
-    .interest:hover i { transform: scale(1.55); color: var(--accent-bright); filter: drop-shadow(0 0 14px var(--accent-glow)); }
-
-    /* =============================================
-       PROJECTS
-       ============================================= */
-    .projects__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.9rem; }
-    .project {
-      display: flex; flex-direction: column; gap: 0.45rem;
-      padding: 1.1rem 1.2rem; background: var(--card-inset);
-      border: 1px solid var(--card-inset-border); border-radius: var(--radius-sm);
-      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
-      color: inherit;
-    }
-    .project:hover { border-color: var(--accent); transform: translateX(5px) translateY(-3px); background: linear-gradient(90deg, var(--accent-grad-1), var(--accent-grad-2)); box-shadow: 0 8px 22px var(--accent-glow); }
-    .project__lang { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
-    .project__name { font-size: 0.92rem; font-weight: 700; color: var(--text); transition: color 0.4s ease; }
-    .project:hover .project__name { color: var(--accent-bright); }
-    .project__desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.55; flex-grow: 1; }
-    .project__icon { align-self: flex-end; color: var(--text-dim); font-size: 1.1rem; transition: all 0.4s ease; }
-    .project:hover .project__icon { color: var(--accent); transform: translate(4px, -4px) scale(1.2); }
-
-    /* =============================================
-       CONTACT
-       ============================================= */
-    .form { display: flex; flex-direction: column; gap: 1rem; }
-    .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form__field label { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-soft); margin-bottom: 0.45rem; }
-    .form__field input, .form__field textarea {
-      width: 100%; padding: 0.8rem 1rem; background: var(--card-inset);
-      border: 1px solid var(--card-inset-border); border-radius: var(--radius-sm);
-      color: var(--text); font-family: var(--font-mono); font-size: 0.85rem; transition: all 0.3s ease;
-    }
-    .form__field input:focus, .form__field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); transform: translateY(-1px); }
-    .form__field textarea { resize: vertical; min-height: 120px; }
-    .form__submit {
-      align-self: flex-start; padding: 0.8rem 1.6rem; background: var(--accent); color: #fff;
-      border: none; border-radius: var(--radius-sm); font-family: var(--font-mono);
-      font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-      cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem;
-    }
-    .form__submit:hover { background: var(--accent-bright); transform: translateY(-2px) translateX(2px); box-shadow: 0 8px 22px var(--accent-glow); }
-    .form__status { font-size: 0.82rem; margin-top: 0.5rem; min-height: 1.3rem; }
-    .form__status.success { color: var(--accent); }
-    .form__status.error { color: #e0468a; }
-
-    /* =============================================
-       FOOTER
-       ============================================= */
-    .footer { text-align: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.1em; }
-
-    /* =============================================
-       REVEAL
-       ============================================= */
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* =============================================
-       RESPONSIVE
-       ============================================= */
-    @media (max-width: 980px) {
-      .resume { grid-template-columns: 1fr; }
-      .col-left::after { display: none; }
-      .page { margin: 1rem; padding: 1.5rem; }
-    }
-    @media (max-width: 560px) {
-      .skills__grid, .certs__grid, .form__row { grid-template-columns: 1fr; }
-      .interests { gap: 1.5rem; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-      .home__photo-wrap { animation: none; }
-      .crt, .crt-roll, .page::before, .page::after { display: none; }
-    }
-  </style>
+  ::selection { background: var(--accent); color: #fff; }
+</style>
 </head>
 <body>
+  <div class="geometric-background" id="geometric-background"></div>
+  <div class="particles" id="particles"></div>
+  <div class="gradient-overlay"></div>
 
-  <canvas id="dots"></canvas>
-  <div class="crt-roll"></div>
-  <div class="crt"></div>
-
-  <div class="page">
-    <div class="resume">
-
-      <!-- LEFT COLUMN -->
-      <aside class="col-left">
-
-        <section class="home">
-          <div class="home__actions">
-            <a class="icon-btn" href="cv-yasmany-montiel.pdf" download title="Download CV" aria-label="Download CV"><i class="bx bx-download"></i></a>
-            <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme"><i class="bx bx-moon"></i></button>
-          </div>
-          <div class="home__photo-wrap">
-            <img src="https://avatars.githubusercontent.com/u/63186744?v=4" alt="Yasmany Montiel" class="home__photo">
-          </div>
-          <h1 class="home__name">MONTIEL RIVERA <b>YASMANY</b></h1>
-          <p class="home__title">Senior Software Architect</p>
-          <div class="home__info">
-            <span><i class="bx bx-map"></i> Colle di Val d'Elsa, Tuscany, Italy</span>
-            <a href="mailto:yasmontiel87@gmail.com"><i class="bx bx-envelope"></i> yasmontiel87@gmail.com</a>
-            <a href="tel:+393926354390"><i class="bx bx-phone"></i> +39 392 635 4390</a>
-            <span><i class="bx bx-buildings"></i> Zucchetti</span>
-          </div>
-        </section>
-
-        <section class="reveal">
-          <h2 class="section__title" data-title="SOCIAL"></h2>
-          <div class="social__list">
-            <a href="https://www.linkedin.com/in/yasmany-montiel-rivera/" target="_blank" rel="noopener" class="social__link">
-              <i class="bx bxl-linkedin-square social__icon"></i>
-              <div class="social__meta"><span class="social__label">LINKEDIN</span><span class="social__handle">@yasmany-montiel-rivera</span></div>
-            </a>
-            <a href="https://github.com/yasmany-montiel" target="_blank" rel="noopener" class="social__link">
-              <i class="bx bxl-github social__icon"></i>
-              <div class="social__meta"><span class="social__label">GITHUB</span><span class="social__handle">@yasmany-montiel</span></div>
-            </a>
-            <a href="https://twitter.com/rivera_yasmany" target="_blank" rel="noopener" class="social__link">
-              <i class="bx bxl-twitter social__icon"></i>
-              <div class="social__meta"><span class="social__label">TWITTER</span><span class="social__handle">@rivera_yasmany</span></div>
-            </a>
-          </div>
-        </section>
-
-        <section class="reveal">
-          <h2 class="section__title" data-title="PROFILE"></h2>
-          <p class="profile__text">Senior <strong>Software Architect</strong> at <strong>Zucchetti</strong> with over a decade of full-stack experience. I lead the definition and evolution of complex software ecosystems, ensuring scalability, security, and high performance for enterprise solutions.</p>
-          <p class="profile__text">Proficient in <strong>.NET</strong>, <strong>React</strong>, <strong>SQL Server</strong>, microservices, modular monolith architecture, and advanced <strong>CI/CD</strong> pipelines. Deep expertise in <strong>Clean Architecture</strong>, <strong>SOLID</strong>, and <strong>Design Patterns</strong>.</p>
-          <p class="profile__text">Passionate about <strong>Generative AI</strong>, <strong>LangChain</strong>, conversational agents, and <strong>n8n</strong> automation. I love turning manual workflows into intelligent systems.</p>
-          <p class="profile__text">Former Computer Science professor at <strong>Universidad de Oriente</strong>, Cuba.</p>
-        </section>
-
-        <section class="reveal">
-          <h2 class="section__title" data-title="EDUCATION"></h2>
-          <div class="item-list">
-            <div class="item">
-              <span class="item__marker"></span>
-              <h3 class="item__title">Bachelor's degree in Computer Science</h3>
-              <div class="item__meta">Universidad de Oriente <span class="sep">·</span> Cuba<br>Sep 2006 <span class="sep">-</span> Jun 2012</div>
-              <ul class="item__list">
-                <li>Comprehensive training in <strong>algorithms, data structures, software engineering, databases</strong>, and computer networks.</li>
-                <li>Foundation in <strong>object-oriented programming</strong> and software design patterns.</li>
-                <li>Specialized in web and desktop application development.</li>
-              </ul>
-            </div>
-            <div class="item">
-              <span class="item__marker"></span>
-              <h3 class="item__title">Italian Language Studies (L2)</h3>
-              <div class="item__meta">CPIA 1 Firenze <span class="sep">·</span> Italy<br>Sep 2019 <span class="sep">-</span> Jun 2020</div>
-              <ul class="item__list"><li>Official Italian language certification through the Provincial Center for Adult Education.</li></ul>
-            </div>
-          </div>
-        </section>
-
-        <section class="reveal" id="skills">
-          <h2 class="section__title" data-title="SKILLS"></h2>
-          <div class="skills__grid" id="skills-grid">
-            <div class="skill skill--highlight"><div class="skill__name">.NET Core</div><div class="skill__meta"><span>4+ years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill skill--highlight"><div class="skill__name">React</div><div class="skill__meta"><span>6 years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill skill--highlight"><div class="skill__name">TypeScript</div><div class="skill__meta"><span>6 years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill skill--highlight"><div class="skill__name">SQL Server</div><div class="skill__meta"><span>4+ years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill"><div class="skill__name">JavaScript</div><div class="skill__meta"><span>10+ years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill"><div class="skill__name">PHP / Symfony</div><div class="skill__meta"><span>10+ years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill"><div class="skill__name">Angular</div><div class="skill__meta"><span>7 years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill"><div class="skill__name">Docker</div><div class="skill__meta"><span>5 years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill"><div class="skill__name">Laravel</div><div class="skill__meta"><span>4 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill"><div class="skill__name">Nest.js</div><div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Spring Boot</div><div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Python</div><div class="skill__meta"><span>4 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Vue.js</div><div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Ionic</div><div class="skill__meta"><span>4 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Flutter</div><div class="skill__meta"><span>2 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">LangChain</div><div class="skill__meta"><span>1 year</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">n8n</div><div class="skill__meta"><span>1 year</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Jenkins</div><div class="skill__meta"><span>4 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Git / Gitflow</div><div class="skill__meta"><span>10+ years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill hidden"><div class="skill__name">MySQL</div><div class="skill__meta"><span>10+ years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Bootstrap</div><div class="skill__meta"><span>8 years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill hidden"><div class="skill__name">SASS</div><div class="skill__meta"><span>6 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">HTML / CSS</div><div class="skill__meta"><span>13+ years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill hidden"><div class="skill__name">SCRUM / XP</div><div class="skill__meta"><span>8 years</span><span class="skill__stars">★ 5</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Azure / AWS</div><div class="skill__meta"><span>3 years</span><span class="skill__stars">★ 4</span></div></div>
-            <div class="skill hidden"><div class="skill__name">Clean Architecture</div><div class="skill__meta"><span>5 years</span><span class="skill__stars">★ 5</span></div></div>
-          </div>
-          <button class="skills__more" id="skills-more">SEE MORE</button>
-        </section>
-
-      </aside>
-
-      <!-- RIGHT COLUMN -->
-      <div class="col-right">
-
-        <section class="reveal">
-          <h2 class="section__title" data-title="EXPERIENCE"></h2>
-          <div class="item-list">
-            <div class="item">
-              <span class="item__marker"></span>
-              <h3 class="item__title">Senior Software Architect</h3>
-              <div class="item__meta">Feb 2026 <span class="sep">-</span> Present <span class="sep">|</span> Zucchetti</div>
-              <ul class="item__list">
-                <li>Design and implementation of <strong>microservices and modular monolith architectures</strong> using .NET (Core/6+) and React, optimizing code maintainability and system performance.</li>
-                <li>Modeling and optimization of complex relational databases on <strong>SQL Server</strong>, ensuring data integrity and query efficiency in high-traffic scenarios.</li>
-                <li>Definition of <strong>advanced CI/CD pipelines</strong> and management of Docker-based distributed infrastructure.</li>
-                <li>Integration of <strong>Generative AI (LLM)</strong> solutions for internal process automation and intelligent product features.</li>
-                <li>Mentoring development teams, conducting critical code reviews and promoting best practices: <strong>Clean Architecture, SOLID, Design Patterns</strong>.</li>
-              </ul>
-              <p class="item__tech-label">Technologies used</p>
-              <div class="item__tech"><span>.NET</span><span>React</span><span>SQL Server</span><span>Azure</span><span>AWS</span><span>Docker</span><span>Jenkins</span><span>Git</span><span>LangChain</span></div>
-            </div>
-            <div class="item">
-              <span class="item__marker"></span>
-              <h3 class="item__title">Senior Developer</h3>
-              <div class="item__meta">Jun 2025 <span class="sep">-</span> Jan 2026 <span class="sep">|</span> Advinser</div>
-              <ul class="item__list"><li>Senior full-stack development across client projects in the Tuscany region.</li><li>Architectural guidance and code review leadership.</li></ul>
-            </div>
-            <div class="item">
-              <span class="item__marker"></span>
-              <h3 class="item__title">Full Stack Developer</h3>
-              <div class="item__meta">Jul 2023 <span class="sep">-</span> Jun 2025 <span class="sep">|</span> ETRURIA P.A. — S.P.A.</div>
-              <ul class="item__list">
-                <li>Designed, developed, and maintained systems for a <strong>public administration entity</strong> serving police, local authorities, and other government bodies.</li>
-                <li>Worked across the stack: HTML, CSS, JavaScript, TypeScript, Python, PHP — with Laravel, Java with Android Studio, and Nest.js.</li>
-                <li>CI/CD environments with <strong>Jira, Jenkins, Docker, DevContainers</strong> and SQL databases on Linux (Debian).</li>
-              </ul>
-              <p class="item__tech-label">Technologies used</p>
-              <div class="item__tech"><span>Laravel</span><span>Nest.js</span><span>TypeScript</span><span>Python</span><span>PHP</span><span>Java</span><span>Android Studio</span><span>Docker</span><span>Jenkins</span></div>
-            </div>
-            <div class="item">
-              <span class="item__marker"></span>
-              <h3 class="item__title">Full Stack Developer</h3>
-              <div class="item__meta">Oct 2020 <span class="sep">-</span> May 2023 <span class="sep">|</span> Peoplewalking</div>
-              <ul class="item__list">
-                <li>Full-stack development with <strong>agile methodologies</strong> (SCRUM, XP) across frontend and backend technologies.</li>
-                <li>Built <strong>cross-platform applications</strong> with Angular, Ionic, Flutter, Symfony, and Spring Boot.</li>
-                <li><strong>Team leader role</strong> coordinating development workflows, code reviews, and project delivery.</li>
-              </ul>
-              <p class="item__tech-label">Technologies used</p>
-              <div class="item__tech"><span>Angular</span><span>Ionic</span><span>Flutter</span><span>Symfony</span><span>Spring Boot</span><span>TypeScript</span><span>PHP</span><span>Dart</span><span>Java</span></div>
-            </div>
-            <div class="item">
-              <span class="item__marker"></span>
-              <h3 class="item__title">Computer Science Professor</h3>
-              <div class="item__meta">Sep 2016 <span class="sep">-</span> Oct 2019 <span class="sep">|</span> Universidad de Oriente</div>
-              <ul class="item__list">
-                <li>Assistant professor teaching <strong>Software Engineering, Databases, and Advanced Web Programming</strong>.</li>
-                <li>Speaker and jury member for multiple graduation thesis projects.</li>
-                <li>Technologies covered: HTML, CSS, JavaScript, AJAX, jQuery, Bootstrap, Angular, Symfony, Doctrine, Twig.</li>
-              </ul>
-            </div>
-            <div class="item">
-              <span class="item__marker"></span>
-              <h3 class="item__title">IT Specialist</h3>
-              <div class="item__meta">Jan 2013 <span class="sep">-</span> Sep 2016 <span class="sep">|</span> Empresa de Astilleros de Oriente</div>
-              <ul class="item__list">
-                <li>Developed web and desktop applications for <strong>statistical, economic, and research management</strong>.</li>
-                <li>Worked with SCRUM methodology, PHP, Symfony, Doctrine, JavaScript, TypeScript, Bootstrap.</li>
-              </ul>
-              <p class="item__tech-label">Technologies used</p>
-              <div class="item__tech"><span>PHP</span><span>Symfony</span><span>Doctrine</span><span>JavaScript</span><span>TypeScript</span><span>Bootstrap</span></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="reveal">
-          <h2 class="section__title" data-title="PROJECTS"></h2>
-          <div class="projects__grid">
-            <a href="https://github.com/yasmany-montiel/portafolio" target="_blank" rel="noopener" class="project"><span class="project__lang">JavaScript</span><h3 class="project__name">portafolio</h3><p class="project__desc">Personal portfolio repository and frontend experiments.</p><i class="bx bx-link-external project__icon"></i></a>
-            <a href="https://github.com/yasmany-montiel/api-symfony5" target="_blank" rel="noopener" class="project"><span class="project__lang">PHP · Symfony</span><h3 class="project__name">api-symfony5</h3><p class="project__desc">REST API built with Symfony 5 demonstrating clean architecture.</p><i class="bx bx-link-external project__icon"></i></a>
-            <a href="https://github.com/yasmany-montiel/react-client" target="_blank" rel="noopener" class="project"><span class="project__lang">React</span><h3 class="project__name">react-client</h3><p class="project__desc">Sample React application with component patterns and state management.</p><i class="bx bx-link-external project__icon"></i></a>
-            <a href="https://github.com/yasmany-montiel/angular-study" target="_blank" rel="noopener" class="project"><span class="project__lang">Angular</span><h3 class="project__name">angular-study</h3><p class="project__desc">Angular study project diving into advanced framework patterns.</p><i class="bx bx-link-external project__icon"></i></a>
-            <a href="https://github.com/yasmany-montiel/sample-heroes" target="_blank" rel="noopener" class="project"><span class="project__lang">Angular · Java</span><h3 class="project__name">sample-heroes</h3><p class="project__desc">Full-stack app with Angular 14, Docker, and Java Spring Boot.</p><i class="bx bx-link-external project__icon"></i></a>
-            <a href="https://github.com/yasmany-montiel/sample-develop-test" target="_blank" rel="noopener" class="project"><span class="project__lang">PHP</span><h3 class="project__name">sample-develop-test</h3><p class="project__desc">Development tests and experimentation playground.</p><i class="bx bx-link-external project__icon"></i></a>
-          </div>
-        </section>
-
-        <section class="reveal">
-          <h2 class="section__title" data-title="CERTIFICATES"></h2>
-          <div class="certs__grid">
-            <div class="cert"><h3 class="cert__title">Charming Development in Symfony 5</h3><div class="cert__meta">2021 <span class="sep">|</span> Symfony</div></div>
-            <div class="cert"><h3 class="cert__title">Angular — The Complete Guide</h3><div class="cert__meta">2020 <span class="sep">|</span> Udemy</div></div>
-            <div class="cert"><h3 class="cert__title">Master in CSS</h3><div class="cert__meta">2020 <span class="sep">|</span> Responsive, SASS, Grid, Bootstrap 4</div></div>
-            <div class="cert"><h3 class="cert__title">SEO &amp; Web Positioning</h3><div class="cert__meta">2019 <span class="sep">|</span> For Web Developers</div></div>
-            <div class="cert"><h3 class="cert__title">SCRUM &amp; XP Implementation</h3><div class="cert__meta">2018 <span class="sep">|</span> Agile Project Management</div></div>
-            <div class="cert"><h3 class="cert__title">Computer Engineering Degree</h3><div class="cert__meta">2012 <span class="sep">|</span> Universidad de Oriente</div></div>
-          </div>
-        </section>
-
-        <section class="reveal">
-          <h2 class="section__title" data-title="LANGUAGES"></h2>
-          <ul class="lang__list">
-            <li><strong>Spanish</strong> — C2 (Native proficiency)</li>
-            <li><strong>Italian</strong> — C1 (Professional working proficiency)</li>
-            <li><strong>English</strong> — B2 (Professional working proficiency)</li>
-          </ul>
-        </section>
-
-        <section class="reveal">
-          <h2 class="section__title" data-title="INTERESTS"></h2>
-          <div class="interests">
-            <div class="interest"><i class="bx bx-bot"></i><span>AI &amp; LLMs</span></div>
-            <div class="interest"><i class="bx bx-code-alt"></i><span>Open Source</span></div>
-            <div class="interest"><i class="bx bx-coffee"></i><span>Coffee</span></div>
-            <div class="interest"><i class="bx bx-book-open"></i><span>Read</span></div>
-            <div class="interest"><i class="bx bx-paint"></i><span>Design</span></div>
-            <div class="interest"><i class="bx bx-trip"></i><span>Travel</span></div>
-          </div>
-        </section>
-
-        <section class="reveal" id="contact">
-          <h2 class="section__title" data-title="CONTACT"></h2>
-          <p class="profile__text" style="margin-bottom: 1.5rem;">Have a project in mind or want to collaborate? Drop me a message — I usually reply within 24 hours.</p>
-          <form class="form" id="contact-form" action="https://formspree.io/f/REPLACE_WITH_YOUR_FORMSPREE_ID" method="POST">
-            <div class="form__row">
-              <div class="form__field"><label for="name">NAME</label><input type="text" id="name" name="name" required autocomplete="name"></div>
-              <div class="form__field"><label for="email">EMAIL</label><input type="email" id="email" name="email" required autocomplete="email"></div>
-            </div>
-            <div class="form__field"><label for="subject">SUBJECT</label><input type="text" id="subject" name="subject" autocomplete="off"></div>
-            <div class="form__field"><label for="message">MESSAGE</label><textarea id="message" name="message" required></textarea></div>
-            <button type="submit" class="form__submit"><i class="bx bx-send"></i> SEND</button>
-            <div class="form__status" id="form-status"></div>
-          </form>
-        </section>
-
+  <div class="wrap">
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="card sidebar">
+      <div class="topbar">
+        <a class="icon-btn" href="Yasmany-Montiel-CV.pdf" download title="Descargar CV"><i class="fa-solid fa-download"></i></a>
+        <button class="icon-btn" id="themeToggle" title="Cambiar tema"><i class="fa-solid fa-moon"></i></button>
       </div>
-    </div>
 
-    <footer class="footer">Updated: <span id="updated"></span></footer>
+      <div class="photo-frame">
+        <img src="https://avatars.githubusercontent.com/u/63186744?v=4" alt="Yasmany Montiel Rivera"
+             onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22&gt;&lt;rect width=%22200%22 height=%22200%22 fill=%22%23cdbcef%22/&gt;&lt;text x=%22100%22 y=%22118%22 font-size=%2272%22 text-anchor=%22middle%22 fill=%22%237209b7%22 font-family=%22monospace%22&gt;YM&lt;/text&gt;&lt;/svg&gt;'">
+      </div>
+
+      <h1 class="name">Yasmany Montiel</h1>
+      <p class="role-sub">Senior Software Architect</p>
+
+      <ul class="contact">
+        <li><i class="fa-solid fa-location-dot"></i> Colle di Val d'Elsa, Toscana, Italia</li>
+        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:yasmontiel87@gmail.com">yasmontiel87@gmail.com</a></li>
+        <li><i class="fa-solid fa-phone"></i> <a href="tel:+393926354390">+39 392 635 4390</a></li>
+      </ul>
+
+      <h2 class="block-title">Social</h2>
+      <nav class="social">
+        <a href="https://www.linkedin.com/in/yasmanymontiel-rivera" target="_blank" rel="noopener">
+          <span class="s-ico"><i class="fa-brands fa-linkedin-in"></i></span>
+          <span class="s-meta"><strong>LinkedIn</strong><small>yasmanymontiel-rivera</small></span>
+          <i class="fa-solid fa-chevron-right chev"></i>
+        </a>
+        <a href="https://github.com/yasmany-montiel" target="_blank" rel="noopener">
+          <span class="s-ico"><i class="fa-brands fa-github"></i></span>
+          <span class="s-meta"><strong>GitHub</strong><small>yasmany-montiel</small></span>
+          <i class="fa-solid fa-chevron-right chev"></i>
+        </a>
+        <a href="mailto:yasmontiel87@gmail.com">
+          <span class="s-ico"><i class="fa-solid fa-envelope"></i></span>
+          <span class="s-meta"><strong>Email</strong><small>yasmontiel87@gmail.com</small></span>
+          <i class="fa-solid fa-chevron-right chev"></i>
+        </a>
+      </nav>
+
+      <h2 class="block-title">Idiomas</h2>
+      <div class="lang-row"><span>Español</span><span>Nativo</span></div>
+      <div class="bar"><i style="width:100%"></i></div>
+      <div class="lang-row"><span>Italiano</span><span>Profesional</span></div>
+      <div class="bar"><i style="width:80%"></i></div>
+      <div class="lang-row"><span>Inglés</span><span>Profesional</span></div>
+      <div class="bar"><i style="width:75%"></i></div>
+
+      <h2 class="block-title">Certificaciones</h2>
+      <ul class="cert-list">
+        <li><i class="fa-solid fa-certificate"></i> SCRUM y XP en empresa o proyecto</li>
+        <li><i class="fa-solid fa-certificate"></i> Master en CSS: Responsive, SASS, Flexbox, Grid y Bootstrap 4</li>
+        <li><i class="fa-solid fa-certificate"></i> Angular — The Complete Guide (2020)</li>
+        <li><i class="fa-solid fa-certificate"></i> SEO y Posicionamiento web para Devs</li>
+        <li><i class="fa-solid fa-certificate"></i> Charming Development in Symfony 5</li>
+      </ul>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="main">
+      <section class="card panel">
+        <h2 class="animate-character">Perfil</h2>
+        <p class="profile-text">
+          Desarrollador <b>Full Stack</b> e <b>arquitecto de software</b> con metodologías ágiles (SCRUM, XP).
+          Trabajo con <b>.NET</b>, <b>React</b>, <b>SQL Server</b>, JavaScript, TypeScript, PHP y frameworks como
+          Angular, Vue.js, Ionic, Symfony, Laravel y Nest.js. Experiencia en entornos <b>CI/CD</b>
+          (Git, Jira, Jenkins, Docker, DevContainers) sobre macOS, Windows y Linux. Ingeniero informático
+          por la Universidad de Oriente (Cuba). Apasionado de la <b>IA generativa</b> y la automatización de
+          flujos con LLMs open-source, LangChain, agentes conversacionales y n8n.
+        </p>
+      </section>
+
+      <section class="card panel">
+        <h2 class="animate-character">Experiencia</h2>
+        <div class="timeline">
+
+          <div class="job">
+            <h3>Senior Software Architect</h3>
+            <div class="meta">Feb 2026 — Presente <span class="at">@ Zucchetti · Colle di Val d'Elsa, IT</span></div>
+            <p>Definición y evolución de ecosistemas software complejos garantizando escalabilidad, seguridad y alto rendimiento. Diseño de arquitecturas de microservicios y monolito modular, pipelines CI/CD avanzadas, e integración de IA generativa (LLM) para automatización de procesos. Liderazgo técnico, code reviews y promoción de Clean Architecture, SOLID y Design Patterns.</p>
+            <p class="tech-label">Tecnologías</p>
+            <div class="chips">
+              <span class="chip">.NET</span><span class="chip">React</span><span class="chip">SQL Server</span>
+              <span class="chip">Azure / AWS</span><span class="chip">Docker</span><span class="chip">Jenkins</span>
+              <span class="chip">Git</span><span class="chip">LangChain</span>
+            </div>
+          </div>
+
+          <div class="job">
+            <h3>Senior Developer</h3>
+            <div class="meta">Jun 2025 — Ene 2026 <span class="at">@ Advinser · Toscana, IT</span></div>
+            <p>Desarrollo senior de soluciones a medida con foco en calidad de código, rendimiento y buenas prácticas de ingeniería.</p>
+          </div>
+
+          <div class="job">
+            <h3>Full Stack Developer</h3>
+            <div class="meta">Jul 2023 — Jun 2025 <span class="at">@ ETRURIA P.A. S.P.A. · Empoli, Firenze, IT</span></div>
+            <p>Diseño, desarrollo y mantenimiento de sistemas y aplicaciones para la administración pública (servicios a policía y entes locales). Entornos CI/CD y bases de datos SQL sobre Linux (Debian).</p>
+            <p class="tech-label">Tecnologías</p>
+            <div class="chips">
+              <span class="chip">PHP / Laravel</span><span class="chip">Python</span><span class="chip">TypeScript</span>
+              <span class="chip">Nest.js</span><span class="chip">Java / Android</span><span class="chip">Docker</span>
+              <span class="chip">Jenkins</span><span class="chip">Jira</span>
+            </div>
+          </div>
+
+          <div class="job">
+            <h3>Full Stack Developer</h3>
+            <div class="meta">Oct 2020 — May 2023 <span class="at">@ Peoplewalking · Barcelona, ES</span></div>
+            <p>Desarrollo full stack y liderazgo de equipo en aplicaciones multiplataforma con metodologías ágiles.</p>
+            <p class="tech-label">Tecnologías</p>
+            <div class="chips">
+              <span class="chip">Angular</span><span class="chip">Ionic</span><span class="chip">Flutter</span>
+              <span class="chip">Spring Boot</span><span class="chip">Symfony</span><span class="chip">Dart</span>
+              <span class="chip">Bootstrap</span><span class="chip">Git / Gitflow</span>
+            </div>
+          </div>
+
+          <div class="job">
+            <h3>Full-Stack Web Developer (Remoto)</h3>
+            <div class="meta">Oct 2019 — Jul 2023 <span class="at">@ Freelance / Online</span></div>
+            <p>Aplicaciones multiplataforma front-end & back-end con SCRUM y XP. JavaScript, TypeScript, PHP, Bootstrap, Angular, Ionic, Symfony.</p>
+          </div>
+
+          <div class="job">
+            <h3>Profesor de Programación</h3>
+            <div class="meta">Sep 2016 — Oct 2019 <span class="at">@ Universidad de Oriente · Santiago de Cuba</span></div>
+            <p>Profesor asistente impartiendo Ingeniería del Software, Bases de Datos y Programación Web Avanzada. Tribunal y tutor de tesis de grado.</p>
+          </div>
+
+          <div class="job">
+            <h3>Especialista Informático</h3>
+            <div class="meta">Ene 2013 — Sep 2016 <span class="at">@ Astilleros de Oriente · Santiago de Cuba</span></div>
+            <p>Desarrollo de aplicaciones web y desktop para la gestión estadística, económica e investigativa de la empresa.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="card panel">
+        <h2 class="animate-character">Stack</h2>
+        <div class="chips">
+          <span class="chip">Python</span><span class="chip">.NET</span><span class="chip">React</span>
+          <span class="chip">SQL Server</span><span class="chip">JavaScript</span><span class="chip">TypeScript</span>
+          <span class="chip">PHP</span><span class="chip">Angular</span><span class="chip">Vue.js</span>
+          <span class="chip">Ionic</span><span class="chip">Symfony</span><span class="chip">Laravel</span>
+          <span class="chip">Nest.js</span><span class="chip">Spring Boot</span><span class="chip">Flutter</span>
+          <span class="chip">Docker</span><span class="chip">Jenkins</span><span class="chip">Git</span>
+          <span class="chip">LangChain</span><span class="chip">n8n</span><span class="chip">CI/CD</span>
+        </div>
+      </section>
+
+      <section class="card panel">
+        <h2 class="animate-character">Formación</h2>
+        <div class="edu">
+          <div class="edu-item">
+            <h4>Licenciatura en Ciencias de la Computación</h4>
+            <span>Universidad de Oriente, Cuba · 2006 — 2012</span>
+          </div>
+          <div class="edu-item">
+            <h4>Italiano L2 — Escuela Secundaria 1º Grado</h4>
+            <span>CPIA 1 Firenze · 2019 — 2020</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <h2 class="animate-character">Yasmany Montiel</h2>
+        <p>© 2026 · Construido con código y café.</p>
+      </div>
+    </main>
   </div>
 
-  <script>
-    // Footer date
-    document.getElementById('updated').textContent =
-      new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-
-    // Theme toggle (light default)
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = themeToggle.querySelector('i');
-    function applyTheme(dark) { document.body.classList.toggle('dark-theme', dark); themeIcon.className = dark ? 'bx bx-sun' : 'bx bx-moon'; }
-    let isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(isDark);
-    themeToggle.addEventListener('click', () => { isDark = !isDark; applyTheme(isDark); });
-
-    // ============================
-    // SECTION TITLES — Typed.js typewriter, then color wave
-    // ============================
-    function setupTitle(el) {
-      const text = el.dataset.title;
-      const span = document.createElement('span');
-      el.appendChild(span);
-      new Typed(span, {
-        strings: [text],
-        typeSpeed: 65,
-        showCursor: true,
-        cursorChar: '_',
-        onComplete: () => {
-          // Remove Typed's cursor, rebuild text as individual letters
-          const tc = el.querySelector('.typed-cursor');
-          if (tc) tc.remove();
-          span.innerHTML = text.split('').map(c =>
-            `<span class="wv">${c === ' ' ? '&nbsp;' : c}</span>`
-          ).join('');
-          // Add our own blinking cursor at the end
-          const cursor = document.createElement('span');
-          cursor.className = 'title-cursor';
-          cursor.textContent = '_';
-          el.appendChild(cursor);
-
-          // Infinite typewriter-style color sweep, one letter at a time
-          const letters = span.querySelectorAll('.wv');
-          let idx = 0;
-          setInterval(() => {
-            letters.forEach(l => l.classList.remove('lit'));
-            // light the current letter and a couple before it for a trailing effect
-            letters[idx] && letters[idx].classList.add('lit');
-            if (letters[idx - 1]) letters[idx - 1].classList.add('lit');
-            idx = (idx + 1) % (letters.length + 3); // small pause after the word
-          }, 150);
-        }
-      });
+<script>
+  /* ===== geometric shapes ===== */
+  function createShapes() {
+    const bg = document.getElementById('geometric-background');
+    const types = ['square','circle','triangle','rectangle'];
+    for (let i = 0; i < 40; i++) {
+      const s = document.createElement('div');
+      s.className = 'shape ' + types[Math.floor(Math.random()*types.length)];
+      s.style.left = Math.random()*100 + '%';
+      s.style.top = Math.random()*100 + '%';
+      s.style.animationDelay = Math.random()*10 + 's';
+      s.style.animationDuration = (Math.random()*10 + 10) + 's';
+      bg.appendChild(s);
     }
-
-    const titleIO = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting && !e.target.dataset.done) {
-          e.target.dataset.done = '1';
-          setupTitle(e.target);
-          titleIO.unobserve(e.target);
-        }
+  }
+  /* ===== particles ===== */
+  function createParticles() {
+    const c = document.getElementById('particles');
+    for (let i = 0; i < 100; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random()*100 + '%';
+      p.style.top = Math.random()*100 + '%';
+      p.style.animationDelay = Math.random()*8 + 's';
+      p.style.animationDuration = (Math.random()*4 + 4) + 's';
+      c.appendChild(p);
+    }
+  }
+  /* ===== subtle mouse parallax ===== */
+  function addMouseInteraction() {
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      document.querySelectorAll('.shape').forEach(shape => {
+        const speed = 0.05;
+        shape.style.left = (parseFloat(shape.style.left) + (x - 0.5) * speed) + '%';
+        shape.style.top  = (parseFloat(shape.style.top)  + (y - 0.5) * speed) + '%';
       });
-    }, { threshold: 0.3 });
-    document.querySelectorAll('.section__title').forEach(t => titleIO.observe(t));
-
-    // Skills show more
-    const skillsMore = document.getElementById('skills-more');
-    const skillsGrid = document.getElementById('skills-grid');
-    skillsMore.addEventListener('click', () => {
-      const expanded = skillsGrid.classList.toggle('expanded');
-      skillsMore.textContent = expanded ? 'SEE LESS' : 'SEE MORE';
     });
-
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-    }, { threshold: 0.05 });
-    reveals.forEach(r => io.observe(r));
-
-    // Twinkling dotted starfield
-    (function () {
-      const canvas = document.getElementById('dots');
-      const ctx = canvas.getContext('2d');
-      let w, h, stars;
-      function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-        const count = Math.floor((w * h) / 16000);
-        stars = [];
-        for (let i = 0; i < count; i++) {
-          stars.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.4+0.3, a: Math.random()*0.6+0.2, s: (Math.random()*0.004+0.001)*(Math.random()>0.5?1:-1) });
-        }
-      }
-      function draw() {
-        ctx.clearRect(0, 0, w, h);
-        const base = getComputedStyle(document.body).getPropertyValue('--dot-color').trim();
-        stars.forEach(st => {
-          st.a += st.s;
-          if (st.a > 0.8 || st.a < 0.15) st.s *= -1;
-          ctx.beginPath();
-          ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
-          ctx.fillStyle = base.replace(/[\d.]+\)$/, `${st.a})`);
-          ctx.fill();
-        });
-        requestAnimationFrame(draw);
-      }
-      window.addEventListener('resize', resize);
-      resize();
-      draw();
-    })();
-
-    // Contact form
-    const form = document.getElementById('contact-form');
-    const status = document.getElementById('form-status');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      status.className = 'form__status';
-      status.textContent = 'Sending...';
-      try {
-        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
-        if (res.ok) { status.classList.add('success'); status.textContent = '✓ Message sent. I will reply soon.'; form.reset(); }
-        else { status.classList.add('error'); status.textContent = 'Something went wrong. Email me at yasmontiel87@gmail.com'; }
-      } catch { status.classList.add('error'); status.textContent = 'Network error. Email me at yasmontiel87@gmail.com'; }
+  }
+  /* ===== theme toggle ===== */
+  function setupTheme() {
+    const btn = document.getElementById('themeToggle');
+    const icon = btn.querySelector('i');
+    btn.addEventListener('click', () => {
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+      icon.className = dark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
     });
-  </script>
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    createShapes();
+    createParticles();
+    addMouseInteraction();
+    setupTheme();
+  });
+</script>
 </body>
 </html>
