@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Yasmany Montiel Rivera — Senior Software Architect</title>
+<title>Yasmany</title>
 <meta name="description" content="Yasmany Montiel Rivera · Senior Software Architect · .NET, React, SQL Server · DevOps & Cloud · AI & Automation" />
+<link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/63186744?v=4" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -65,7 +66,7 @@
     position: fixed; inset: 0; width: 100%; height: 100%;
     overflow: hidden; z-index: 0; pointer-events: none;
   }
-  .shape { position: absolute; opacity: .18; transform-origin: center; }
+  .shape { position: absolute; opacity: .225; transform-origin: center; }
   .square    { width: 40px; height: 40px; background: var(--pink);  animation: rotate 20s infinite linear; }
   .circle    { width: 60px; height: 60px; border-radius: 50%; background: var(--cyan); animation: pulse 15s infinite alternate; }
   .triangle  { width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 50px solid var(--accent); animation: float 12s infinite ease-in-out; }
@@ -73,7 +74,7 @@
   .particle  { position: absolute; width: 2px; height: 2px; background: var(--accent); opacity: .5; border-radius: 50%; animation: sparkle 8s infinite linear; }
 
   @keyframes rotate { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
-  @keyframes pulse  { 0%{transform:scale(1);opacity:.08} 50%{transform:scale(1.5);opacity:.28} 100%{transform:scale(1);opacity:.08} }
+  @keyframes pulse  { 0%{transform:scale(1);opacity:.10} 50%{transform:scale(1.5);opacity:.35} 100%{transform:scale(1);opacity:.10} }
   @keyframes float  { 0%{transform:translateY(0) translateX(0) rotate(0)} 50%{transform:translateY(-20px) translateX(20px) rotate(180deg)} 100%{transform:translateY(0) translateX(0) rotate(360deg)} }
   @keyframes slide  { 0%{transform:translateX(-100px) rotate(0)} 50%{transform:translateX(100px) rotate(180deg)} 100%{transform:translateX(-100px) rotate(360deg)} }
   @keyframes sparkle{ 0%{opacity:0} 50%{opacity:.8} 100%{opacity:0} }
@@ -103,8 +104,7 @@
   }
 
   /* ===================== SIDEBAR ===================== */
-  .sidebar { padding: 26px; align-self: start; position: sticky; top: 24px; }
-  @media (max-width: 920px) { .sidebar { position: static; } }
+  .sidebar { padding: 26px; align-self: start; }
 
   .topbar { display: flex; justify-content: space-between; margin-bottom: 8px; }
   .icon-btn {
@@ -126,7 +126,8 @@
   }
   @keyframes floaty { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-12px); } }
 
-  .name { text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; margin: 0; }
+  .name { text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 400; font-size: 1.35rem; letter-spacing: 1px; margin: 0; text-transform: uppercase; }
+  .name b { font-weight: 800; color: var(--accent); }
   .role-sub { text-align: center; color: var(--accent-2); font-family: 'JetBrains Mono', monospace; font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; margin: 6px 0 18px; }
 
   .contact { list-style: none; padding: 0; margin: 0 0 8px; }
@@ -135,12 +136,24 @@
   .contact a { color: inherit; text-decoration: none; word-break: break-all; }
   .contact a:hover { color: var(--accent); }
 
-  .block-title {
-    font-family: 'JetBrains Mono', monospace; font-weight: 800; text-transform: uppercase;
-    letter-spacing: 3px; font-size: .95rem; margin: 24px 0 14px; padding-bottom: 8px;
-    border-bottom: 1px solid var(--panel-border);
+  /* gradient + cursor section titles */
+  .animate-character {
+    text-transform: uppercase; font-family: 'JetBrains Mono', monospace; font-weight: 800;
+    letter-spacing: 4px; font-size: 1.4rem; display: inline-block; margin: 0 0 22px;
+    background-image: var(--grad); background-size: 200% auto; color: #fff;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 2.4s linear infinite;
   }
+  .animate-character::after {
+    content: "_"; -webkit-text-fill-color: var(--accent-2); color: var(--accent-2);
+    animation: cursor 1s infinite; margin-left: 2px;
+  }
+  .animate-character.sm { font-size: 1rem; letter-spacing: 2.5px; margin: 26px 0 14px; }
+  @keyframes textclip { to { background-position: 200% center; } }
+  @keyframes cursor { 0%{opacity:0} 40%{opacity:0} 50%{opacity:1} 90%{opacity:1} 100%{opacity:0} }
 
+  /* social */
   .social { display: grid; gap: 10px; }
   .social a {
     display: flex; align-items: center; gap: 13px; padding: 12px 14px; border-radius: 13px;
@@ -155,49 +168,51 @@
   .social .s-meta small { color: var(--muted); font-size: .82rem; }
   .social .chev { margin-left: auto; color: var(--muted); }
 
-  .lang-row { display: flex; justify-content: space-between; align-items: center; margin: 9px 0; font-size: .9rem; }
-  .lang-row span:last-child { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: .76rem; }
-  .bar { height: 6px; border-radius: 4px; background: var(--chip-bg); overflow: hidden; margin-top: 3px; }
-  .bar i { display: block; height: 100%; background: var(--grad); border-radius: 4px; }
+  /* profile in sidebar */
+  .profile-side { color: var(--ink-soft); font-size: .87rem; line-height: 1.75; }
+  .profile-side b { color: var(--accent); }
 
-  .cert-list { list-style: none; padding: 0; margin: 0; }
-  .cert-list li { display: flex; gap: 10px; padding: 7px 0; font-size: .87rem; color: var(--ink-soft); }
-  .cert-list li i { color: var(--accent-2); margin-top: 4px; }
+  /* education */
+  .edu { display: grid; gap: 16px; }
+  .edu-item { padding-left: 14px; border-left: 3px solid var(--accent); }
+  .edu-item h4 { margin: 0 0 2px; font-size: .92rem; }
+  .edu-item span { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: .74rem; }
+
+  /* skills grid */
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .skill { padding: 9px 11px; border-radius: 10px; background: var(--chip-bg); border: 1px solid var(--chip-border); transition: .3s; cursor: default; }
+  .skill.hl { border-left: 3px solid var(--accent); }
+  .skill .sk-name { font-size: .8rem; font-weight: 700; color: var(--ink); }
+  .skill .sk-meta { display: flex; justify-content: space-between; margin-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: .66rem; color: var(--muted); }
+  .skill .sk-stars { color: var(--accent); }
+  .skill:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 5px 14px rgba(114,9,183,.18); }
+  .skill.hidden { display: none; }
+  .skills-grid.expanded .skill.hidden { display: block; }
+  .see-more {
+    margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: .72rem; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--accent); background: transparent; cursor: pointer;
+    border: 1px solid var(--chip-border); border-radius: 10px; padding: 8px 14px; transition: .3s;
+  }
+  .see-more:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
   /* ===================== MAIN ===================== */
   .main { display: grid; gap: 22px; }
   .panel { padding: 30px 32px; }
   @media (max-width: 540px) { .panel { padding: 22px; } }
 
-  /* animated gradient + blinking cursor title */
-  .animate-character {
-    text-transform: uppercase; font-family: 'JetBrains Mono', monospace; font-weight: 800;
-    letter-spacing: 4px; font-size: 1.4rem; display: inline-block; margin: 0 0 22px;
-    background-image: var(--grad); background-size: 200% auto; color: #fff;
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: textclip 2.4s linear infinite;
-  }
-  .animate-character::after {
-    content: "_"; -webkit-text-fill-color: var(--accent-2); color: var(--accent-2);
-    animation: cursor 1s infinite; margin-left: 2px;
-  }
-  @keyframes textclip { to { background-position: 200% center; } }
-  @keyframes cursor { 0%{opacity:0} 40%{opacity:0} 50%{opacity:1} 90%{opacity:1} 100%{opacity:0} }
-
-  .profile-text { color: var(--ink-soft); font-size: 1rem; }
-  .profile-text b { color: var(--accent); }
-
-  /* timeline */
+  /* experience timeline */
   .timeline { position: relative; padding-left: 26px; }
   .timeline::before { content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--accent), transparent); }
   .job { position: relative; margin-bottom: 30px; }
   .job:last-child { margin-bottom: 0; }
   .job::before { content: ""; position: absolute; left: -26px; top: 5px; width: 13px; height: 13px; border-radius: 50%; background: var(--grad); box-shadow: 0 0 0 4px var(--bg); }
   .job h3 { margin: 0; font-size: 1.12rem; font-weight: 800; }
-  .job .meta { color: var(--accent-2); font-family: 'JetBrains Mono', monospace; font-size: .8rem; margin: 4px 0 10px; }
+  .job .meta { color: var(--accent-2); font-family: 'JetBrains Mono', monospace; font-size: .8rem; margin: 4px 0 12px; }
   .job .meta .at { color: var(--muted); }
-  .job p { margin: 0 0 12px; color: var(--ink-soft); font-size: .94rem; }
+  .job ul { margin: 0 0 12px; padding: 0; list-style: none; }
+  .job ul li { position: relative; padding-left: 18px; color: var(--ink-soft); font-size: .9rem; margin-bottom: 7px; }
+  .job ul li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 2px; background: var(--accent); }
+  .job ul li strong { color: var(--accent); font-weight: 600; }
 
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip {
@@ -208,10 +223,29 @@
   .chip:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-2px); }
   .tech-label { font-size: .76rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin: 4px 0 8px; font-family: 'JetBrains Mono', monospace; }
 
-  .edu { display: grid; gap: 16px; }
-  .edu-item { padding-left: 16px; border-left: 3px solid var(--accent); }
-  .edu-item h4 { margin: 0; font-size: 1rem; }
-  .edu-item span { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: .8rem; }
+  /* certificates grid (main) */
+  .cert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 540px) { .cert-grid { grid-template-columns: 1fr; } }
+  .cert-card {
+    padding: 15px 17px; border-radius: 12px; background: var(--chip-bg);
+    border: 1px solid var(--chip-border); border-left: 3px solid var(--accent); transition: .3s;
+  }
+  .cert-card:hover { transform: translateX(5px) translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow); }
+  .cert-card h4 { margin: 0 0 5px; font-size: .92rem; font-weight: 700; }
+  .cert-card span { color: var(--accent-2); font-family: 'JetBrains Mono', monospace; font-size: .73rem; }
+
+  /* languages (main) */
+  .lang-row { display: flex; justify-content: space-between; align-items: center; margin: 12px 0 4px; font-size: .92rem; }
+  .lang-row span:last-child { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: .76rem; }
+  .bar { height: 7px; border-radius: 4px; background: var(--chip-bg); overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--grad); border-radius: 4px; }
+
+  /* interests (main) */
+  .interests { display: flex; flex-wrap: wrap; gap: 2.4rem; }
+  .interest { display: flex; flex-direction: column; align-items: center; gap: 9px; color: var(--ink-soft); font-size: .8rem; cursor: default; transition: .3s; }
+  .interest i { font-size: 1.8rem; color: var(--accent); transition: .3s; }
+  .interest:hover { color: var(--accent); transform: translateY(-5px); }
+  .interest:hover i { color: var(--accent-2); transform: scale(1.25); }
 
   .footer { text-align: center; color: var(--muted); font-size: .82rem; padding: 18px; }
   .footer .animate-character { font-size: .95rem; letter-spacing: 2px; }
@@ -225,11 +259,11 @@
   <div class="gradient-overlay"></div>
 
   <div class="wrap">
-    <!-- ============ SIDEBAR ============ -->
+    <!-- ============ LEFT COLUMN ============ -->
     <aside class="card sidebar">
       <div class="topbar">
-        <a class="icon-btn" href="Yasmany-Montiel-CV.pdf" download title="Descargar CV"><i class="fa-solid fa-download"></i></a>
-        <button class="icon-btn" id="themeToggle" title="Cambiar tema"><i class="fa-solid fa-moon"></i></button>
+        <a class="icon-btn" href="Yasmany-Montiel-CV.pdf" download title="Download CV"><i class="fa-solid fa-download"></i></a>
+        <button class="icon-btn" id="themeToggle" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
       </div>
 
       <div class="photo-frame">
@@ -237,16 +271,16 @@
              onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22&gt;&lt;rect width=%22200%22 height=%22200%22 fill=%22%23cdbcef%22/&gt;&lt;text x=%22100%22 y=%22118%22 font-size=%2272%22 text-anchor=%22middle%22 fill=%22%237209b7%22 font-family=%22monospace%22&gt;YM&lt;/text&gt;&lt;/svg&gt;'">
       </div>
 
-      <h1 class="name">Yasmany Montiel</h1>
+      <h1 class="name">Montiel Rivera <b>Yasmany</b></h1>
       <p class="role-sub">Senior Software Architect</p>
 
       <ul class="contact">
-        <li><i class="fa-solid fa-location-dot"></i> Colle di Val d'Elsa, Toscana, Italia</li>
+        <li><i class="fa-solid fa-location-dot"></i> Colle di Val d'Elsa, Tuscany, Italy</li>
         <li><i class="fa-solid fa-envelope"></i> <a href="mailto:yasmontiel87@gmail.com">yasmontiel87@gmail.com</a></li>
         <li><i class="fa-solid fa-phone"></i> <a href="tel:+393926354390">+39 392 635 4390</a></li>
       </ul>
 
-      <h2 class="block-title">Social</h2>
+      <h2 class="animate-character sm">Social</h2>
       <nav class="social">
         <a href="https://www.linkedin.com/in/yasmanymontiel-rivera" target="_blank" rel="noopener">
           <span class="s-ico"><i class="fa-brands fa-linkedin-in"></i></span>
@@ -265,47 +299,73 @@
         </a>
       </nav>
 
-      <h2 class="block-title">Idiomas</h2>
-      <div class="lang-row"><span>Español</span><span>Nativo</span></div>
-      <div class="bar"><i style="width:100%"></i></div>
-      <div class="lang-row"><span>Italiano</span><span>Profesional</span></div>
-      <div class="bar"><i style="width:80%"></i></div>
-      <div class="lang-row"><span>Inglés</span><span>Profesional</span></div>
-      <div class="bar"><i style="width:75%"></i></div>
+      <h2 class="animate-character sm">Profile</h2>
+      <p class="profile-side">
+        <b>Full Stack</b> developer and <b>software architect</b> working with agile methodologies (SCRUM, XP).
+        I work with <b>.NET</b>, <b>React</b>, <b>SQL Server</b>, JavaScript, TypeScript, PHP and frameworks like
+        Angular, Vue.js, Ionic, Symfony, Laravel and Nest.js. Experienced in <b>CI/CD</b> environments
+        (Git, Jira, Jenkins, Docker, DevContainers) across macOS, Windows and Linux. Computer engineer from
+        Universidad de Oriente (Cuba). Passionate about <b>generative AI</b> and workflow automation with
+        open-source LLMs, LangChain, conversational agents and n8n.
+      </p>
 
-      <h2 class="block-title">Certificaciones</h2>
-      <ul class="cert-list">
-        <li><i class="fa-solid fa-certificate"></i> SCRUM y XP en empresa o proyecto</li>
-        <li><i class="fa-solid fa-certificate"></i> Master en CSS: Responsive, SASS, Flexbox, Grid y Bootstrap 4</li>
-        <li><i class="fa-solid fa-certificate"></i> Angular — The Complete Guide (2020)</li>
-        <li><i class="fa-solid fa-certificate"></i> SEO y Posicionamiento web para Devs</li>
-        <li><i class="fa-solid fa-certificate"></i> Charming Development in Symfony 5</li>
-      </ul>
+      <h2 class="animate-character sm">Education</h2>
+      <div class="edu">
+        <div class="edu-item">
+          <h4>Bachelor's Degree in Computer Science</h4>
+          <span>Universidad de Oriente, Cuba · 2006 — 2012</span>
+        </div>
+        <div class="edu-item">
+          <h4>Italian L2 — Adult Secondary Education</h4>
+          <span>CPIA 1 Firenze · 2019 — 2020</span>
+        </div>
+      </div>
+
+      <h2 class="animate-character sm">Skills</h2>
+      <div class="skills-grid" id="skillsGrid">
+        <div class="skill hl"><div class="sk-name">.NET Core</div><div class="sk-meta"><span>4+ yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill hl"><div class="sk-name">React</div><div class="sk-meta"><span>6 yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill hl"><div class="sk-name">TypeScript</div><div class="sk-meta"><span>6 yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill hl"><div class="sk-name">SQL Server</div><div class="sk-meta"><span>4+ yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill"><div class="sk-name">JavaScript</div><div class="sk-meta"><span>10+ yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill"><div class="sk-name">PHP / Symfony</div><div class="sk-meta"><span>10+ yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill"><div class="sk-name">Angular</div><div class="sk-meta"><span>7 yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill"><div class="sk-name">Docker</div><div class="sk-meta"><span>5 yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill"><div class="sk-name">Laravel</div><div class="sk-meta"><span>4 yrs</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill"><div class="sk-name">Nest.js</div><div class="sk-meta"><span>3 yrs</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">Spring Boot</div><div class="sk-meta"><span>3 yrs</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">Python</div><div class="sk-meta"><span>4 yrs</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">Vue.js</div><div class="sk-meta"><span>3 yrs</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">Ionic</div><div class="sk-meta"><span>4 yrs</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">Flutter</div><div class="sk-meta"><span>2 yrs</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">LangChain</div><div class="sk-meta"><span>1 yr</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">n8n</div><div class="sk-meta"><span>1 yr</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">Jenkins</div><div class="sk-meta"><span>4 yrs</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">Git / Gitflow</div><div class="sk-meta"><span>10+ yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill hidden"><div class="sk-name">Azure / AWS</div><div class="sk-meta"><span>3 yrs</span><span class="sk-stars">★ 4</span></div></div>
+        <div class="skill hidden"><div class="sk-name">Clean Architecture</div><div class="sk-meta"><span>5 yrs</span><span class="sk-stars">★ 5</span></div></div>
+        <div class="skill hidden"><div class="sk-name">HTML / CSS</div><div class="sk-meta"><span>13+ yrs</span><span class="sk-stars">★ 5</span></div></div>
+      </div>
+      <button class="see-more" id="seeMore">See more</button>
     </aside>
 
-    <!-- ============ MAIN ============ -->
+    <!-- ============ RIGHT COLUMN ============ -->
     <main class="main">
       <section class="card panel">
-        <h2 class="animate-character">Perfil</h2>
-        <p class="profile-text">
-          Desarrollador <b>Full Stack</b> e <b>arquitecto de software</b> con metodologías ágiles (SCRUM, XP).
-          Trabajo con <b>.NET</b>, <b>React</b>, <b>SQL Server</b>, JavaScript, TypeScript, PHP y frameworks como
-          Angular, Vue.js, Ionic, Symfony, Laravel y Nest.js. Experiencia en entornos <b>CI/CD</b>
-          (Git, Jira, Jenkins, Docker, DevContainers) sobre macOS, Windows y Linux. Ingeniero informático
-          por la Universidad de Oriente (Cuba). Apasionado de la <b>IA generativa</b> y la automatización de
-          flujos con LLMs open-source, LangChain, agentes conversacionales y n8n.
-        </p>
-      </section>
-
-      <section class="card panel">
-        <h2 class="animate-character">Experiencia</h2>
+        <h2 class="animate-character">Experience</h2>
         <div class="timeline">
 
           <div class="job">
             <h3>Senior Software Architect</h3>
-            <div class="meta">Feb 2026 — Presente <span class="at">@ Zucchetti · Colle di Val d'Elsa, IT</span></div>
-            <p>Definición y evolución de ecosistemas software complejos garantizando escalabilidad, seguridad y alto rendimiento. Diseño de arquitecturas de microservicios y monolito modular, pipelines CI/CD avanzadas, e integración de IA generativa (LLM) para automatización de procesos. Liderazgo técnico, code reviews y promoción de Clean Architecture, SOLID y Design Patterns.</p>
-            <p class="tech-label">Tecnologías</p>
+            <div class="meta">Feb 2026 — Present <span class="at">@ Zucchetti · Colle di Val d'Elsa, IT</span></div>
+            <ul>
+              <li>Design and implementation of <strong>microservices and modular monolith architectures</strong> with .NET (Core/6+) and React, optimizing maintainability and system performance.</li>
+              <li>Modeling and optimization of complex relational databases on <strong>SQL Server</strong> for high-traffic scenarios.</li>
+              <li>Definition of <strong>advanced CI/CD pipelines</strong> and management of Docker-based distributed infrastructure.</li>
+              <li>Integration of <strong>Generative AI (LLM)</strong> solutions for internal process automation.</li>
+              <li>Technical leadership: mentoring, critical code reviews, and <strong>Clean Architecture, SOLID, Design Patterns</strong>.</li>
+            </ul>
+            <p class="tech-label">Technologies</p>
             <div class="chips">
               <span class="chip">.NET</span><span class="chip">React</span><span class="chip">SQL Server</span>
               <span class="chip">Azure / AWS</span><span class="chip">Docker</span><span class="chip">Jenkins</span>
@@ -315,15 +375,21 @@
 
           <div class="job">
             <h3>Senior Developer</h3>
-            <div class="meta">Jun 2025 — Ene 2026 <span class="at">@ Advinser · Toscana, IT</span></div>
-            <p>Desarrollo senior de soluciones a medida con foco en calidad de código, rendimiento y buenas prácticas de ingeniería.</p>
+            <div class="meta">Jun 2025 — Jan 2026 <span class="at">@ Advinser · Tuscany, IT</span></div>
+            <ul>
+              <li>Senior full-stack development of custom solutions focused on code quality, performance and engineering best practices.</li>
+            </ul>
           </div>
 
           <div class="job">
             <h3>Full Stack Developer</h3>
-            <div class="meta">Jul 2023 — Jun 2025 <span class="at">@ ETRURIA P.A. S.P.A. · Empoli, Firenze, IT</span></div>
-            <p>Diseño, desarrollo y mantenimiento de sistemas y aplicaciones para la administración pública (servicios a policía y entes locales). Entornos CI/CD y bases de datos SQL sobre Linux (Debian).</p>
-            <p class="tech-label">Tecnologías</p>
+            <div class="meta">Jul 2023 — Jun 2025 <span class="at">@ ETRURIA P.A. S.P.A. · Empoli, Florence, IT</span></div>
+            <ul>
+              <li>Designed, developed and maintained systems for a <strong>public administration entity</strong> serving police and local authorities.</li>
+              <li>Full-stack work with Laravel, Nest.js and Java (Android Studio) across HTML, CSS, JS, TS, Python and PHP.</li>
+              <li>CI/CD with <strong>Jira, Jenkins, Docker, DevContainers</strong> and SQL databases on Linux (Debian).</li>
+            </ul>
+            <p class="tech-label">Technologies</p>
             <div class="chips">
               <span class="chip">PHP / Laravel</span><span class="chip">Python</span><span class="chip">TypeScript</span>
               <span class="chip">Nest.js</span><span class="chip">Java / Android</span><span class="chip">Docker</span>
@@ -334,8 +400,10 @@
           <div class="job">
             <h3>Full Stack Developer</h3>
             <div class="meta">Oct 2020 — May 2023 <span class="at">@ Peoplewalking · Barcelona, ES</span></div>
-            <p>Desarrollo full stack y liderazgo de equipo en aplicaciones multiplataforma con metodologías ágiles.</p>
-            <p class="tech-label">Tecnologías</p>
+            <ul>
+              <li>Full-stack development and <strong>team leadership</strong> building cross-platform applications with agile methodologies.</li>
+            </ul>
+            <p class="tech-label">Technologies</p>
             <div class="chips">
               <span class="chip">Angular</span><span class="chip">Ionic</span><span class="chip">Flutter</span>
               <span class="chip">Spring Boot</span><span class="chip">Symfony</span><span class="chip">Dart</span>
@@ -344,62 +412,74 @@
           </div>
 
           <div class="job">
-            <h3>Full-Stack Web Developer (Remoto)</h3>
+            <h3>Full-Stack Web Developer (Remote)</h3>
             <div class="meta">Oct 2019 — Jul 2023 <span class="at">@ Freelance / Online</span></div>
-            <p>Aplicaciones multiplataforma front-end & back-end con SCRUM y XP. JavaScript, TypeScript, PHP, Bootstrap, Angular, Ionic, Symfony.</p>
+            <ul>
+              <li>Cross-platform front-end &amp; back-end applications with SCRUM and XP using JavaScript, TypeScript, PHP, Bootstrap, Angular, Ionic and Symfony.</li>
+            </ul>
           </div>
 
           <div class="job">
-            <h3>Profesor de Programación</h3>
+            <h3>Programming Professor</h3>
             <div class="meta">Sep 2016 — Oct 2019 <span class="at">@ Universidad de Oriente · Santiago de Cuba</span></div>
-            <p>Profesor asistente impartiendo Ingeniería del Software, Bases de Datos y Programación Web Avanzada. Tribunal y tutor de tesis de grado.</p>
+            <ul>
+              <li>Assistant professor teaching <strong>Software Engineering, Databases and Advanced Web Programming</strong>.</li>
+              <li>Thesis tutor and jury member for graduation projects.</li>
+            </ul>
           </div>
 
           <div class="job">
-            <h3>Especialista Informático</h3>
-            <div class="meta">Ene 2013 — Sep 2016 <span class="at">@ Astilleros de Oriente · Santiago de Cuba</span></div>
-            <p>Desarrollo de aplicaciones web y desktop para la gestión estadística, económica e investigativa de la empresa.</p>
+            <h3>IT Specialist</h3>
+            <div class="meta">Jan 2013 — Sep 2016 <span class="at">@ Astilleros de Oriente · Santiago de Cuba</span></div>
+            <ul>
+              <li>Developed web and desktop applications for <strong>statistical, economic and research management</strong>.</li>
+            </ul>
           </div>
 
         </div>
       </section>
 
       <section class="card panel">
-        <h2 class="animate-character">Stack</h2>
-        <div class="chips">
-          <span class="chip">Python</span><span class="chip">.NET</span><span class="chip">React</span>
-          <span class="chip">SQL Server</span><span class="chip">JavaScript</span><span class="chip">TypeScript</span>
-          <span class="chip">PHP</span><span class="chip">Angular</span><span class="chip">Vue.js</span>
-          <span class="chip">Ionic</span><span class="chip">Symfony</span><span class="chip">Laravel</span>
-          <span class="chip">Nest.js</span><span class="chip">Spring Boot</span><span class="chip">Flutter</span>
-          <span class="chip">Docker</span><span class="chip">Jenkins</span><span class="chip">Git</span>
-          <span class="chip">LangChain</span><span class="chip">n8n</span><span class="chip">CI/CD</span>
+        <h2 class="animate-character">Certificates</h2>
+        <div class="cert-grid">
+          <div class="cert-card"><h4>Problem Solving Certificate</h4><span>Nov 2020 · HackerRank</span></div>
+          <div class="cert-card"><h4>React Certificate</h4><span>Dec 2020 · HackerRank</span></div>
+          <div class="cert-card"><h4>JavaScript Certificate</h4><span>Apr 2022 · HackerRank</span></div>
+          <div class="cert-card"><h4>Flutter &amp; Dart Certificate</h4><span>Apr 2024 · Udemy</span></div>
+          <div class="cert-card"><h4>Claude Code in Action</h4><span>Apr 2025 · Anthropic</span></div>
+          <div class="cert-card"><h4>EF SET English Certificate (B2)</h4><span>Feb 2023 · EF Standard English Test</span></div>
         </div>
       </section>
 
       <section class="card panel">
-        <h2 class="animate-character">Formación</h2>
-        <div class="edu">
-          <div class="edu-item">
-            <h4>Licenciatura en Ciencias de la Computación</h4>
-            <span>Universidad de Oriente, Cuba · 2006 — 2012</span>
-          </div>
-          <div class="edu-item">
-            <h4>Italiano L2 — Escuela Secundaria 1º Grado</h4>
-            <span>CPIA 1 Firenze · 2019 — 2020</span>
-          </div>
+        <h2 class="animate-character">Languages</h2>
+        <div class="lang-row"><span>Spanish</span><span>Native</span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <div class="lang-row"><span>Italian</span><span>Native</span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <div class="lang-row"><span>English</span><span>Professional</span></div>
+        <div class="bar"><i style="width:75%"></i></div>
+      </section>
+
+      <section class="card panel">
+        <h2 class="animate-character">Interests</h2>
+        <div class="interests">
+          <div class="interest"><i class="fa-solid fa-headphones"></i><span>Music</span></div>
+          <div class="interest"><i class="fa-solid fa-mug-hot"></i><span>Coffee</span></div>
+          <div class="interest"><i class="fa-solid fa-plane"></i><span>Travel</span></div>
+          <div class="interest"><i class="fa-solid fa-book-open"></i><span>Reading</span></div>
+          <div class="interest"><i class="fa-solid fa-puzzle-piece"></i><span>Puzzles</span></div>
         </div>
       </section>
 
       <div class="footer">
-        <h2 class="animate-character">Yasmany Montiel</h2>
-        <p>© 2026 · Construido con código y café.</p>
+        <h2 class="animate-character">Montiel Rivera Yasmany</h2>
+        <p>© 2026 · Built with code and coffee.</p>
       </div>
     </main>
   </div>
 
 <script>
-  /* ===== geometric shapes ===== */
   function createShapes() {
     const bg = document.getElementById('geometric-background');
     const types = ['square','circle','triangle','rectangle'];
@@ -413,7 +493,6 @@
       bg.appendChild(s);
     }
   }
-  /* ===== particles ===== */
   function createParticles() {
     const c = document.getElementById('particles');
     for (let i = 0; i < 100; i++) {
@@ -426,7 +505,6 @@
       c.appendChild(p);
     }
   }
-  /* ===== subtle mouse parallax ===== */
   function addMouseInteraction() {
     document.addEventListener('mousemove', (e) => {
       const x = e.clientX / window.innerWidth;
@@ -438,7 +516,6 @@
       });
     });
   }
-  /* ===== theme toggle ===== */
   function setupTheme() {
     const btn = document.getElementById('themeToggle');
     const icon = btn.querySelector('i');
@@ -448,12 +525,21 @@
       icon.className = dark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
     });
   }
+  function setupSkills() {
+    const grid = document.getElementById('skillsGrid');
+    const btn = document.getElementById('seeMore');
+    btn.addEventListener('click', () => {
+      const expanded = grid.classList.toggle('expanded');
+      btn.textContent = expanded ? 'See less' : 'See more';
+    });
+  }
 
   document.addEventListener('DOMContentLoaded', () => {
     createShapes();
     createParticles();
     addMouseInteraction();
     setupTheme();
+    setupSkills();
   });
 </script>
 </body>
